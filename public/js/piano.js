@@ -2,18 +2,32 @@
 
 var piano_0_1 = piano_0_1 || {};
 
-(function ($, piano) {
+(function (piano) {
+    var note = 440;
     var toFreq = function(m){
         return Math.pow(2, ((m-69)/12))*440;
     };
-	
+    
+    var synth = flock.synth({
+        ugen: "flock.ugen.sinOsc",
+        freq: note,
+        mul: {
+            ugen: "flock.ugen.env.simpleASR",
+            attack: 0.25,
+            sustain: 0.6,
+            release: 0.5,
+            gate: {
+                ugen: "flock.ugen.mouse.click"
+            }
+        }
+    });
+    flock.enviro.shared.play();
     noteOn = function (midinote, id){
-	    var freq =  toFreq(midinote);
-        console.log(freq + " " + id);
+        console.log(synth.freq);
+        
 	};
     
     noteOff = function (midinote, id){
-	    var freq =  toFreq(midinote);
-        console.log(freq + " " + id);
+        // flock.enviro.shared.stop();
 	};
-})(jQuery, piano_0_1);
+})(piano_0_1);
