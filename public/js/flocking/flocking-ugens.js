@@ -1385,7 +1385,6 @@ var flock = flock || {};
         
         that.mouseDownListener = function (e) {
             that.model.value = 1.0;
-			console.log(that)
         };
         
         that.mouseUpListener = function (e) {
