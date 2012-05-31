@@ -3,14 +3,15 @@
 var piano_0_1 = piano_0_1 || {};
 
 (function (piano) {
-    var note = 440;
+    var that = piano;
+    that.note = 440;
     var toFreq = function(m){
         return Math.pow(2, ((m-69)/12))*440;
     };
     
     var synth = flock.synth({
         ugen: "flock.ugen.sinOsc",
-        freq: note,
+        freq: piano.note,
         mul: {
             ugen: "flock.ugen.env.simpleASR",
             attack: 0.25,
@@ -22,12 +23,13 @@ var piano_0_1 = piano_0_1 || {};
         }
     });
     flock.enviro.shared.play();
+    console.log(piano.note);
+    console.log(synth);
     noteOn = function (midinote, id){
-        console.log(synth.freq);
-        
+        that.note = toFreq(midinote);
+        console.log(that.note);
 	};
     
     noteOff = function (midinote, id){
-        // flock.enviro.shared.stop();
 	};
 })(piano_0_1);
