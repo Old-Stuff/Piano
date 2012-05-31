@@ -1,14 +1,13 @@
 // I have no idea what I'm doing . gif
 
-var piano_0_1 = piano_0_1 || {};
+var piano = piano || {};
 
-(function (piano) {
+(function ($, piano) {
     var that = piano;
     that.note = 440;
     var toFreq = function(m){
         return Math.pow(2, ((m-69)/12))*440;
     };
-    
     that.synth = flock.synth({
         id: "carrier",
         ugen: "flock.ugen.sinOsc",
@@ -24,9 +23,7 @@ var piano_0_1 = piano_0_1 || {};
             }
         }
     });
-    
     flock.enviro.shared.play();
-    
     noteOn = function (midinote, id){
         that.note = toFreq(midinote);
 	};
@@ -34,4 +31,4 @@ var piano_0_1 = piano_0_1 || {};
     noteOff = function (midinote, id){
         that.note = null;
 	};
-})(piano_0_1);
+})(jQuery, piano);
