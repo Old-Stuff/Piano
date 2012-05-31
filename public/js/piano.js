@@ -3,30 +3,17 @@
 var piano_0_1 = piano_0_1 || {};
 
 (function ($, piano) {
+    var toFreq = function(m){
+        return Math.pow(2, ((m-69)/12))*440;
+    };
 	
     noteOn = function (midinote, id){
-	    console.log(midinote + " " + id);
+	    var freq =  toFreq(midinote);
+        console.log(freq + " " + id);
 	};
     
     noteOff = function (midinote, id){
-	    console.log(midinote + " " + id);
+	    var freq =  toFreq(midinote);
+        console.log(freq + " " + id);
 	};
-})(jQuery, piano_0_1);    
-
-// var test = function (string){
-//     console.log(string);
-// }
-
-// function cat(name) {
-//   var that = {};
-//   that.name = name;
-//   that.meow = function () {
-//     console.log(that.name + " says Meow!");
-// 
-//     };
-// 
-//   return that;
-//   }
-// var myCat = cat("Richard");
-// 
-// myCat.meow();
+})(jQuery, piano_0_1);
