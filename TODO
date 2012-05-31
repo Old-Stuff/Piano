@@ -1,0 +1,5 @@
+convert keyup / keydown to touch events
+bind keyboard to piano as well
+
+port keyboard to infusion componet
+generate markup from a model
