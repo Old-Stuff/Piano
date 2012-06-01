@@ -15,7 +15,20 @@ var myles = myles || {};
             white: [60,62,64,65,67,69,71],
             black: [61,63,66,68,70]
         };
-        // console.log(that.keys);
+        that.keyCodes = {
+            "65": 60,
+            "87": 61,
+            "83": 62,
+            "69": 63,
+            "68": 64,
+            "70": 65,
+            "84": 66,
+            "71": 67,
+            "89": 68,
+            "72": 69,
+            "85": 70,
+            "74": 71
+        };
         that.noteOn = function(note){
             // Flocking Related 
             var freq = myles.midiToFreq(note[0].id);
@@ -37,26 +50,36 @@ var myles = myles || {};
         };
         that.bindEvents = function(){
             var lastPressed = {};
-            that.isPressed = false;
+            var isPressed = false;
+            $(document).keydown(function(e){
+                var note = that.container.find("#"+that.keyCodes[e.keyCode]+".note");
+                that.noteOn(note);
+             });
+             $(document).keyup(function(e){
+                 var note = that.container.find("#"+that.keyCodes[e.keyCode]+".note");
+                 that.noteOff(note);
+             });
             that.notes = that.container.find(".note");
             that.notes.each(function(i,note){
                 note = $(note);
+                note.mousedown(function(){
+                    lastPressed = note;
+                    isPressed = true;
+                    that.noteOn(note);
+                });
+                note.mouseup(function(){
+                    isPressed = false;
+                    that.noteOff(note);
+                    lastPressed = {}
+                });
                 note.hover(function(){
-                    if(that.isPressed){
+                    if(isPressed){
                         that.noteOff(lastPressed);
                         that.noteOn(note);
                         lastPressed = note;
                     }
                 });
-                note.mousedown(function(){
-                    lastPressed = note;
-                    that.isPressed = true;
-                    that.noteOn(note);
-                });
-                note.mouseup(function(){
-                    that.isPressed = false;
-                    that.noteOff(note);
-                });
+                
             });
         };
         that.init = function(){
