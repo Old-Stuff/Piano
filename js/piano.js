@@ -16,13 +16,24 @@ var myles = myles || {};
             black: [61,63,66,68,70]
         };
         // console.log(that.keys);
-        that.noteOn = function(midinote){
-            var freq = myles.midiToFreq(midinote);
+        that.noteOn = function(note){
+            // Flocking Related 
+            var freq = myles.midiToFreq(note[0].id);
             that.synth.input("carrier.freq", freq);
             that.synth.input("asr.gate", 1.0);
+            // UI related
+            note.css('fill', 'yellow');
         };
-        that.noteOff = function(midinote){
+        that.noteOff = function(note){
+            // Flocking Related
             that.synth.input("asr.gate", 0.0);
+            // UI Related
+            if($.inArray(parseInt(note[0].id), that.keys.white) != -1){
+                note.css('fill', 'white');
+            }
+            else{
+                note.css('fill', 'black');
+            }
         };
         that.bindEvents = function(){
             var lastPressed = {};
@@ -32,33 +43,19 @@ var myles = myles || {};
                 note = $(note);
                 note.hover(function(){
                     if(that.isPressed){
-                        if($.inArray(parseInt(lastPressed[0].id), that.keys.white) != -1){
-                            lastPressed.css('fill', 'white');
-                        }
-                        else{
-                            lastPressed.css('fill', 'black');
-                        }
-                        that.noteOff(lastPressed[0].id);
+                        that.noteOff(lastPressed);
+                        that.noteOn(note);
                         lastPressed = note;
-                        note.css('fill', 'yellow');
-                        that.noteOn(note[0].id);
                     }
                 });
                 note.mousedown(function(){
                     lastPressed = note;
                     that.isPressed = true;
-                    note.css('fill', 'yellow');
-                    that.noteOn(note[0].id);
+                    that.noteOn(note);
                 });
                 note.mouseup(function(){
                     that.isPressed = false;
-                    if($.inArray(parseInt(note[0].id), that.keys.white) != -1){
-                        note.css('fill', 'white');
-                    }
-                    else{
-                        note.css('fill', 'black');
-                    }
-                    that.noteOff(note[0].id);
+                    that.noteOff(note);
                 });
             });
         };
