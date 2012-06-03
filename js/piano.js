@@ -12,9 +12,13 @@ var myles = myles || {};
         that.container = $(container);
         that.svg = that.container.svg()
         that.keys = {
-            white: [60,62,64,65,67,69,71,73,75,76,78,80,82],
-            black: [61,63,66,68,70,72,74,77,79,81]
+            white: [],
+            black: []
         };
+        that.pattern = ['white','black','white','black','white','white','black','white','black','white','black','white'];
+        for (i = 0; i < 128; i+=1){
+            that.keys[that.pattern[i % 12]].push(i);
+        }
         that.keyCodes = {
             "65": 60,
             "87": 61,

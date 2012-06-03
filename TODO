@@ -3,3 +3,5 @@ convert keyup / keydown to touch events
 
 port keyboard to infusion componet
 generate markup from a model
+
+current keyboard mapping causing problems with Uncaught Type Error... prolly want to catch that.
