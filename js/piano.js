@@ -12,8 +12,8 @@ var myles = myles || {};
         that.container = $(container);
         that.svg = that.container.svg()
         that.keys = {
-            white: [60,62,64,65,67,69,71],
-            black: [61,63,66,68,70]
+            white: [60,62,64,65,67,69,71,73,75,76,78,80,82],
+            black: [61,63,66,68,70,72,74,77,79,81]
         };
         that.keyCodes = {
             "65": 60,
