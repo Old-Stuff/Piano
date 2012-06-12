@@ -13,10 +13,11 @@
 <script src="js/piano.js"></script>
 </head>
     <body>
-        <div id="piano" style="padding: 20px;">
+        <div id="piano">
         <!-- This below part needs some serious work -->
         <!-- Much of the functionality should be generated in javascript / jquery -->
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 350 200">  
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 400 250">
+            <g transform="translate(25,25)">  
             <rect id="60" x="0" y="0" width="50" height="200" stroke="black" fill="white" class="note" />
             <rect id="62" x="50" y="0" width="50" height="200" stroke="black" fill="white" class="note" />
             <rect id="64" x="100" y="0" width="50" height="200" stroke="black" fill="white" class="note" />
@@ -30,7 +31,8 @@
             <rect id="66" x="185" y="0" width="30" height="125" stroke="black" fill="black" class="note"  />
             <rect id="68" x="235" y="0" width="30" height="125" stroke="black" fill="black" class="note"  />
             <rect id="70" x="285" y="0" width="30" height="125" stroke="black" fill="black" class="note"  />
-        </svg>  
+            </g>
+        </svg>
     </div>
     <script>
         var piano = myles.piano("#piano");
