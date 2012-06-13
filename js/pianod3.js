@@ -8,31 +8,33 @@ var automm = automm || {};
         var that = {};
         // Initializae values
         var firstNote = 60;         // Note Number of first key drawn
-        var octaves = 1;             // Number of Octaves to Draw
+        var octaves = 2;             // Number of Octaves to Draw
         var octaveNotes = 12;       // Number of notes per octave
         var afour = 69;             // Note Number of A4
         var afourFreq = 440;        // Frequency of A4
-        var buffer = 50;            // Size of buffer to be 
+        var padding = 50;            // Size of padding to be 
         
         // Store variable to be used for drawing
         // Stores width and height of both white and black notes as well as fill colour and highlight colour
-        var typeNote = {};
-        typeNote.white = {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow"};
-        typeNote.black = {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow"};
+        var keys = {
+            white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+            black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+        };
         var pattern = ['white','black','white','black','white','white','black','white','black','white','black','white'];
-        // for (i = 0; i < 128; i+=1){
-        //     that.keys[that.pattern[i % 12]].push(i);
-        // }
         
-        var whiteNotes = 7; // This is just to simplify things right now... will need to calculate number of white notes
+        // Assign Specific Notes to key Based on Pattern
+        for (i = firstNote; i < (firstNote + (octaves * octaveNotes)); i+=1){
+            keys[pattern[i % octaveNotes]].notes.push(i);
+        }
         
+        var whiteNotes = keys.white.notes.length; // This is just to simplify things right now... will need to calculate number of white notes
+        var blackNotes = keys.black.notes.length;
         // Calculations to figure out size of viewbox
         var viewbox = {
-            width: (typeNote.white.width * octaves * whiteNotes) + buffer,
-            height: typeNote.white.height + buffer
+            width: (keys.white.width * whiteNotes) + padding,
+            height: keys.white.height + padding,
         };
-        var viewboxDim = "0 0 " + viewbox.width + " " + viewbox.height;
-       
+        viewbox.dim = "0 0 " + viewbox.width + " " + viewbox.height
         
         // Equation for converting note numbers to frequencies
         that.noteToFreq = function(notenum){
@@ -49,27 +51,36 @@ var automm = automm || {};
                 .attr("id", id)
                 .attr("class", "note");
         };
-        // keycodes = function(){... generate key bindings for keyboard to displayed octaves}
+        that.draw = function(){
+            var blackX = 0 - (keys.black.width / 2),
+                prevNote;
+            // Draw White Keys
+            for (i = 0; i < keys.white.notes.length; i+=1){
+                that.drawNote(that.svg, keys.white, i * keys.white.width, 0, keys.white.notes[i]);
+            }
+            for (i = 0; i < octaves * octaveNotes; i+=1){
+                if (pattern[i%12] === "black") {
+                    blackX = blackX + keys.white.width;
+                    that.drawNote(that.svg, keys.black, blackX, 0, keys.black.notes[i]);
+                }
+                if (pattern[i%12] === prevNote){
+                    blackX = blackX + keys.white.width;
+                }
+                prevNote = pattern[i%12]
+            }
+        }
+        
         // Start Drawing
         that.init = function(){
             that.container = $(container);
             that.svg = d3.select(container)
                 .append("svg")
-                .attr("viewBox", viewboxDim)
+                .attr("viewBox", viewbox.dim)
                 .append("g")
-                .attr("transform", "translate(25,25)");
-            that.drawNote(that.svg, typeNote.white, 0, 0, 60);
-            that.drawNote(that.svg, typeNote.white, 50, 0, 60);
+                .attr("transform", "translate(" + padding / 2 + "," + padding / 2 + ")");
+            that.draw();
         };
         that.init();
         return that;
     };
 }(jQuery));
-
-// Things to keep track of.
-// number of octaves
-// number of notes per octave
-// number of first note
-// note number for a4
-// frequency of a4
-// pattern for note rendering
