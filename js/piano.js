@@ -10,7 +10,6 @@ var myles = myles || {};
     myles.piano = function (container){
         var that = {};
         that.container = $(container);
-        that.svg = that.container.svg()
         that.keys = {
             white: [],
             black: []

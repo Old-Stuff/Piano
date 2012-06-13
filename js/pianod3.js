@@ -1,9 +1,6 @@
 var automm = automm || {};
 
 (function ($) {
-    automm.midiToFreq = function(m){
-        return Math.pow(2, ((m-69)/12))*440;
-    };
     automm.piano = function (container){
         // Initialize that
         var that = {};
