@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">@import "js/jquery.svg.1.4.5/jquery.svg.css";</style> 
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.svg.1.4.5/jquery.svg.js"></script>
+<script src="js/jquery.svg.1.4.5/jquery.svgdom.js"></script>
+<script src="js/raphael-min.js"></script>
+<script src="js/flocking/flocking-core.js"></script>
+<script src="js/flocking/flocking-parser.js"></script>
+<script src="js/flocking/flocking-ugens.js"></script>
+<script src="js/piano.js"></script>
+</head>
+    <body>
+        <div id="piano" style="padding: 20px;">
+        <!-- This below part needs some serious work -->
+        <!-- Much of the functionality should be generated in javascript / jquery -->
+        <script>
+            // Initial Declaration
+            var paper = Raphael(document.getElementById("piano"), 500, 500);
+            //  Making initial outline
+            var outline = paper.rect(0,0,445,445);
+            outline.attr({stroke:'black'});
+            var offset = 5;
+            // Setting intial values
+            var button = {
+                 height: 50,
+                 width: 50,
+                 buffer: 5
+             };
+             var midiNote = 60;
+             var pattern = ['white','black','white','black','white','white','black','white','black','white','black','white'];
+             var grid = {};
+             for (i = 0; i < 8; i += 1){
+                 for (j = 0; j < 8; j += 1){midiNote
+                     patternCount = midiNote % 12;
+                     grid[midiNote] = paper.rect((j * button.width) + offset + (button.buffer * j), (i * button.height) + offset + (button.buffer * i), 50, 50);
+                     grid[midiNote].attr({fill: pattern[patternCount], stroke: 'black'});
+                     grid[midiNote].node.setAttribute('id', midiNote);
+                     grid[midiNote].node.setAttribute('class', 'note');
+                     
+                     //Properly colour based on pattern
+                     if((patternCount + 1) % 12 != 0){
+                         patternCount += 1;
+                     }
+                     else{
+                         patternCount = 0;
+                     }
+                     midiNote += 1;
+                
+                 }
+             }
+             var piano = myles.piano("#piano");
+        </script>
+    </div>
+    </body>
+</html>
