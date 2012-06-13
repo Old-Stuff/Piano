@@ -1,6 +1,6 @@
 // I have no idea what I'm doing . gif
 // Starting to figure it out though yipee
-
+// Update of color should be moved out of here
 var myles = myles || {};
 
 (function ($) {

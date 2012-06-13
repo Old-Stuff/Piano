@@ -12,12 +12,16 @@
 <script src="js/piano.js"></script>
 </head>
     <body>
-        <div id="piano" style="padding: 20px;">
-        <!-- This below part needs some serious work -->
-        <!-- Much of the functionality should be generated in javascript / jquery -->
+        <!-- <div id="piano" style="padding: 10px;"> -->
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 500 500" id="piano">
+            <g id="grid">
+            </g>
+        </svg>
+        <!-- </div> -->
         <script>
             // Initial Declaration
-            var paper = Raphael(document.getElementById("piano"), 500, 500);
+            var paper = Raphael(document.getElementById("grid"));
+            paper.setViewBox(0, 0, 500, 500)
             //  Making initial outline
             var outline = paper.rect(0,0,445,445);
             outline.attr({stroke:'black'});
@@ -52,6 +56,5 @@
              }
              var piano = myles.piano("#piano");
         </script>
-    </div>
     </body>
 </html>
