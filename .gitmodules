@@ -1,3 +1,6 @@
 [submodule "js/Flocking"]
 	path = js/Flocking
 	url = https://github.com/colinbdclark/Flocking.git
+[submodule "js/d3"]
+	path = js/d3
+	url = https://github.com/mbostock/d3.git
