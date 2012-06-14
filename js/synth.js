@@ -39,31 +39,78 @@ var automm = automm || {};
         var whiteNotes = keys.white.notes;
         var blackNotes = keys.black.notes;
         
+        // Function to play note on synth
         that.noteOn = function(midinote){
             var freq = automm.midiToFreq(midinote);
             that.synth.input("carrier.freq", freq);
             that.synth.input("asr.gate", 1.0);
         };
         
+        // Function to stop note on synth
         that.noteOff = function(midinote){
             that.synth.input("asr.gate", 0.0);
         };
         
         that.bindEvents = function(){
+            // Variables to keep track of currently pressed notes
+            var lastClicked = {};
+            var isClicking = false;
+            
+            // Get an Array of all notes on canvas
             that.notes = that.container.find(".note");
+            
+            // Iterate through each note
             that.notes.each(function(i,note){
+                // Make sure the note element is set up properly
                 note = $(note);
+                
+                // mousedown event binding
                 note.mousedown(function(){
+                    // For Keeping track
+                    lastClicked = note;
+                    isClicking = true;
                     that.noteOn(note[0].id);
-                    note.css('fill', 'yellow');
-                });
-                note.mouseup(function(){
-                    that.noteOff(note[0].id);
                     if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
-                        note.css('fill','white');
+                        note.css('fill',keys.white.highlight);
                     }
                     else{
-                        note.css('fill','black');
+                        note.css('fill',keys.black.highlight);
+                    }
+                    
+                });
+                // mousup event binding
+                note.mouseup(function(){
+                    isClicking = false;
+                    that.noteOff(note[0].id);
+                    if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
+                        note.css('fill',keys.white.fill);
+                    }
+                    else{
+                        note.css('fill',keys.black.fill);
+                    }
+                    lastClicked = {};
+                });
+                // mouse hover event binding
+                note.hover(function(){
+                    if(isClicking){
+                        // Turn off the last note played
+                        that.noteOff(lastClicked[0].id);
+                        // Set its fill back to what it was before (This is the reason the css stuff was moved to note on / off)
+                        if($.inArray(parseInt(lastClicked[0].id), whiteNotes) != -1){
+                            lastClicked.css('fill',keys.white.fill);
+                        }
+                        else{
+                            lastClicked.css('fill',keys.black.fill);
+                        }
+                        // Turn on  New Note
+                        that.noteOn(note[0].id);
+                        lastClicked = note;
+                        if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
+                            note.css('fill',keys.white.highlight);
+                        }
+                        else{
+                            note.css('fill',keys.black.highlight);
+                        }
                     }
                 });
             });
