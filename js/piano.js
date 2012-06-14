@@ -53,16 +53,16 @@ var automm = automm || {};
         // Function used to draw individual notes regardless of colour
         // noteType is supplied to fill in all sorts of details
         // Perhaps with the size that the key object is getting (tracking all notes) this object is getting too big?
-        that.drawNote = function(svg, noteType, x, y, id){
-            svg.append("rect")
-                .style("stroke", noteType.stroke)
-                .style("fill", noteType.fill)
-                .attr("x", x)
-                .attr("y", y)
-                .attr("width", noteType.width)
-                .attr("height", noteType.height)
-                .attr("id", id)
-                .attr("class", "note");
+        that.drawNote = function(noteType, x, y, id){
+            var r = that.noteGroup.append("rect");
+            r.style("stroke", noteType.stroke);
+            r.style("fill", noteType.fill);
+            r.attr("x", x);
+            r.attr("y", y);
+            r.attr("width", noteType.width);
+            r.attr("height", noteType.height);
+            r.attr("id", id);
+            r.attr("class", "note");
         };
         
         // Automation of drawing all the keys on the canvas
@@ -73,7 +73,7 @@ var automm = automm || {};
             
             // Draw White Keys
             for (i = 0; i < keys.white.notes.length; i+=1){
-                that.drawNote(that.svg, keys.white, i * keys.white.width, 0, keys.white.notes[i]);
+                that.drawNote(keys.white, i * keys.white.width, 0, keys.white.notes[i]);
             }
             
             // Draw Black Keys
@@ -82,7 +82,7 @@ var automm = automm || {};
                 // If the current key in the pattern is black then draw it!
                 if (pattern[i%12] === "black") {
                     blackX = blackX + keys.white.width;
-                    that.drawNote(that.svg, keys.black, blackX, 0, keys.black.notes[blackCount]);
+                    that.drawNote(keys.black, blackX, 0, keys.black.notes[blackCount]);
                     blackCount = blackCount + 1;
                 }
                 
@@ -99,15 +99,15 @@ var automm = automm || {};
         // Start Drawing
         that.init = function(){
             // Find place in DOM to draw keyboard
-            that.container = $(container);
+            that.container = d3.select(container);
             
             // Draw viewbox and subsequent group to draw keys into
-            that.svg = d3.select(container)
-                .append("svg")
-                .attr("viewBox", viewbox.dim)
-                .attr("id", "viewbox")
-                .append("g")
-                .attr("transform", "translate(" + padding / 2 + "," + padding / 2 + ")");
+            var svg = that.container.append("svg");
+            svg.attr("viewBox", viewbox.dim)
+            svg.attr("id", "viewbox")
+            
+            that.noteGroup = svg.append("g")
+            that.noteGroup.attr("transform", "translate(" + padding / 2 + "," + padding / 2 + ")");
             
             // Draw the keys
             that.draw();
