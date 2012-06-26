@@ -41,19 +41,26 @@ var automm = automm || {};
         });
         that.updateFreq = function (newFreq){
             that.applier.requestChange("freq", newFreq);
-            that.osc.input("carrier.freq", freq);
+            that.osc.input("carrier.freq", newFreq);
         };
-        that.updateOSC = function (newOSC){
-            that.applier.requestChange("osc", newOSC);
-        };
+        
+        // Not sure how to get this one to work just yet
+        // that.updateOSC = function (newOSC){
+        //     that.applier.requestChange("osc", newOSC);
+        //     that.osc.input("carrier.ugen", newOSC);
+        // };
+        
         that.updateAttack = function (newAttack){
             that.applier.requestChange("attack", newAttack);
+            that.osc.input("asr.attack", newAttack);
         };
         that.updateSustain = function (newSustain){
             that.applier.requestChange("sustain", newSustain);
+            that.osc.input("asr.sustain", newSustain);
         };
         that.updateRelease = function (newRelease){
             that.applier.requestChange("release", newRelease);
+            that.osc.input("asr.release", newRelease);
         };
         that.updateGate = function (newGate){
             that.applier.requestChange("gate", newGate);
