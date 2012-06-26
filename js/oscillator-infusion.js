@@ -23,6 +23,14 @@ var automm = automm || {};
             sustain: 0.6,
             release: 0.5,
             gate: 0
+        },
+        
+        paramMap: {
+            "freq": "carrier.freq",
+            "attack": "asr.attack",
+            "sustain": "asr.sustain",
+            "release": "asr.release",
+            "gate": "asr.gate"
         }
     });
     
@@ -39,36 +47,18 @@ var automm = automm || {};
                 release: that.model.release
             }
         });
-        that.updateFreq = function (newFreq){
-            that.applier.requestChange("freq", newFreq);
-            that.osc.input("carrier.freq", newFreq);
-        };
         
-        // Not sure how to get this one to work just yet
-        // that.updateOSC = function (newOSC){
-        //     that.applier.requestChange("osc", newOSC);
-        //     that.osc.input("carrier.ugen", newOSC);
-        // };
+        that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
+            var path = changeSpec[0].path;
+            var oscPath = that.options.paramMap[path];
+            that.osc.input(oscPath, newModel[path]);
+        });
         
-        that.updateAttack = function (newAttack){
-            that.applier.requestChange("attack", newAttack);
-            that.osc.input("asr.attack", newAttack);
+        that.update = function (param, value) {
+            that.applier.requestChange(param, value);
         };
-        that.updateSustain = function (newSustain){
-            that.applier.requestChange("sustain", newSustain);
-            that.osc.input("asr.sustain", newSustain);
-        };
-        that.updateRelease = function (newRelease){
-            that.applier.requestChange("release", newRelease);
-            that.osc.input("asr.release", newRelease);
-        };
-        that.updateGate = function (newGate){
-            that.applier.requestChange("gate", newGate);
-            that.osc.input("asr.gate", newGate);
-        };  
-        
-        flock.enviro.shared.play();
-        console.log("it's alive");      
+
+        flock.enviro.shared.play();    
     };
     
 })(jQuery, fluid_1_4);

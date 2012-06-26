@@ -18,7 +18,11 @@
     <div id="piano"></div>
         <script type/="text/javascript">
         osc = automm.oscillator();
-        piano = automm.piano("#piano", {octaves:1});
+        piano = automm.piano("#piano", {
+            model: {
+                octaves:1
+            }
+        });
         </script>
 </body>
 </html>

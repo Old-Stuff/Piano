@@ -95,7 +95,7 @@ var automm = automm || {};
         
         that.init = function(){            
             // Draw viewbox and subsequent group to draw keys into
-            that.d3container = d3.select("#piano");
+            that.d3container = d3.select("#piano");  // ??????
             var svg = that.d3container.append("svg");
             svg.attr("viewBox", that.model.viewbox.dim)
             svg.attr("id", "viewbox")
