@@ -1,3 +1,19 @@
+/*
+Google Summer of Code 2012: Automagic Music Maker
+
+Primarily written by Myles Borins
+Strongly influenced by GSOC Mentor Colin Clark
+Using the Infusion framework and Flocking Library
+
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+
 var automm = automm || {};
 
 (function ($, fluid) {
@@ -8,7 +24,7 @@ var automm = automm || {};
         
         model: {
             firstNote: 60, // Middle C
-            octaves: 2,
+            octaves: 1,
             octaveNotes: 12,
             afour: 69,
             afourFreq: 440,
@@ -18,10 +34,6 @@ var automm = automm || {};
                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
             },
-        },
-                
-        selectors: {
-            
         },
         
         events: {
@@ -124,5 +136,44 @@ var automm = automm || {};
     automm.piano.postInitFunction = function (that) {
         that.init();
     };
+    
+    // fluid.defaults("automm.key", {
+    //     gradeNames: ["fluid.modelComponent", "autoInit"],
+    //     postInitFunction: "automm.key.postInitFunction",
+    //     
+    //     model: {
+    //         x: 0,
+    //         y: 0,
+    //         width: 50,
+    //         height: 200,
+    //         stroke: black,
+    //         fill: white,
+    //         id: 60,
+    //         cssclass: "note",
+    //         shape: "rect"
+    //     }
+    // });
+    // 
+    // automm.key.postInitFunction = function (that){
+    //     that.html = function (){
+    //         return "<" + shape +"style\"stoke: " + 
+    //     };
+    // };
+    
+    // fluid.defaults("automm.viewBox", {
+    //     gradeNames: ["fluid.modelComponent", "autoInit"],
+    //     postInitFunction: "automm.viewBox.postInitFunction",
+    //     
+    //     model: {
+    //         width: 600,
+    //         height: 200
+    //     }
+    // });
+    // 
+    // automm.viewBox.postInitFunction = function (that){
+    //     that.html = function(){
+    //         return ["<svg viewbox=\"0 0 " + that.model.width + " " + that.model.height + "\" id=\"viewbox\">", "</svg>"];
+    //     }
+    // };
     
 })(jQuery, fluid_1_4);

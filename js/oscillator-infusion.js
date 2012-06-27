@@ -1,5 +1,10 @@
 /*
-Copyright 2011 OCAD University
+Google Summer of Code 2012: Automagic Music Maker
+
+Primarily written by Myles Borins
+Strongly influenced by GSOC Mentor Colin Clark
+Using the Infusion framework and Flocking Library
+
 
 Licensed under the Educational Community License (ECL), Version 2.0 or the New
 BSD license. You may not use this file except in compliance with one these
@@ -25,6 +30,7 @@ var automm = automm || {};
             gate: 0
         },
         
+        // Maps parameter between this model and the model of flocking
         paramMap: {
             "freq": "carrier.freq",
             "attack": "asr.attack",
@@ -48,6 +54,10 @@ var automm = automm || {};
             }
         });
         
+        // That.update creates a function that takes a parameter from the model
+        // and updates it's value
+        //  the applier directly below adds a listener to all instances of the model chaning
+        //  it then updates the synth accordingly
         that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
             var path = changeSpec[0].path;
             var oscPath = that.options.paramMap[path];
