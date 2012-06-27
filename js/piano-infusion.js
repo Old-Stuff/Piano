@@ -34,20 +34,25 @@ var automm = automm || {};
     });
     
     automm.piano.preInitFunction = function (that) {
-        for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i+=1){
-            that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
-        }
+        that.setup = function (){
+            that.model.keys.white.notes = [];
+            that.model.keys.black.notes = [];
+            for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i+=1){
+                that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
+            }
         
-        that.model.whiteNotes = that.model.keys.white.notes.length;
-        that.model.blackNotes = that.model.keys.black.notes.length;
+            that.model.whiteNotes = that.model.keys.white.notes.length;
+            that.model.blackNotes = that.model.keys.black.notes.length;
         
-        that.model.viewbox = {
-            width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
-            height: that.model.keys.white.height + that.model.padding,
+            that.model.viewbox = {
+                width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
+                height: that.model.keys.white.height + that.model.padding,
+            };
+            
+            // Calculate to create string neccesary to generate viewbox (should be in JSON?)
+            that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
         };
         
-        // Calculate to create string neccesary to generate viewbox (should be in JSON?)
-        that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height
         
         // Automation of drawing all the keys on the canvas
         that.drawNote = function(noteType, x, y, id){
@@ -94,6 +99,8 @@ var automm = automm || {};
         };
         
         that.init = function(){            
+            // Calculate it all
+            that.setup();
             // Draw viewbox and subsequent group to draw keys into
             that.d3container = d3.select("#piano");  // ??????
             var svg = that.d3container.append("svg");
@@ -105,6 +112,12 @@ var automm = automm || {};
             
             // Draw the keys
             that.draw();
+        };
+        
+        that.update = function (param, value) {
+            that.applier.requestChange(param, value);
+            that.container.html('');
+            that.init();
         };
     };
     
