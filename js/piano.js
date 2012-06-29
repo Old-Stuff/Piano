@@ -34,15 +34,19 @@ var automm = automm || {};
                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
             },
+            keyTypes: {
+                keyOne: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow"},
+                keyTwo: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow"}
+            }
         },
         
-        events: {
-            
-        },
-        
-        listeners: {
-            
-        }
+        // events: {
+        //     
+        // },
+        // 
+        // listeners: {
+        //     
+        // }
     });
     
     automm.piano.preInitFunction = function (that) {
@@ -77,40 +81,50 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
+            r.attr("noteType", noteType.fill)
         };
         
         // Automation of drawing all the keys on the canvas
-        that.draw = function(){
+        that.render = function(){
             var blackX = 0 - (that.model.keys.black.width / 2),
                 prevNote,
                 blackCount = 0;
             
+            if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]){
+                blackX = blackX - that.model.keys.white.width + (that.model.keys.black.width / 2);
+            }
             // Draw White Keys
             for (i = 0; i < that.model.keys.white.notes.length; i+=1){
-                that.drawNote(that.model.keys.white, i * that.model.keys.white.width, 0, that.model.keys.white.notes[i]);
+                if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]){
+                    that.drawNote(that.model.keys.white, (i * that.model.keys.white.width) + that.model.keys.black.width / 2, 0, that.model.keys.white.notes[i]);
+                }
+                else{
+                    that.drawNote(that.model.keys.white, i * that.model.keys.white.width, 0, that.model.keys.white.notes[i]);
+                }
             }
             
             // Draw Black Keys
-            for (i = 0; i < that.model.octaves * that.model.octaveNotes; i+=1){
+            for (i = that.model.firstNote; i < (that.model.octaves * that.model.octaveNotes) + that.model.firstNote; i+=1){
+                //get width going
                 
                 // If the current key in the pattern is black then draw it!
-                if (that.model.pattern[i%12] === "black") {
-                    blackX = blackX + that.model.keys.white.width;
+                if (that.model.pattern[i%that.model.octaveNotes] === "black") {
+                    blackX = blackX + that.model.keys.white.width; 
                     that.drawNote(that.model.keys.black, blackX, 0, that.model.keys.black.notes[blackCount]);
                     blackCount = blackCount + 1;
                 }
                 
                 // If it is white, but the previous key was white, skip the key
-                if (that.model.pattern[i%12] === prevNote){
+                if (that.model.pattern[i%that.model.octaveNotes] === prevNote){
                     blackX = blackX + that.model.keys.white.width;
                 }
                 
                 // Keep track of previous key
-                prevNote = that.model.pattern[i%12]
+                prevNote = that.model.pattern[i%that.model.octaveNotes]
             }
         };
         
-        that.init = function(){            
+        that.draw = function(){
             // Calculate it all
             that.setup();
             // Draw viewbox and subsequent group to draw keys into
@@ -123,42 +137,42 @@ var automm = automm || {};
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
             
             // Draw the keys
-            that.draw();
+            that.render();
         };
         
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
             that.container.html('');
-            that.init();
+            that.draw();
+            return that;
         };
     };
     
     automm.piano.postInitFunction = function (that) {
-        that.init();
+        that.update();
     };
     
     // fluid.defaults("automm.key", {
     //     gradeNames: ["fluid.modelComponent", "autoInit"],
     //     postInitFunction: "automm.key.postInitFunction",
-    //     
+    //         
     //     model: {
     //         x: 0,
     //         y: 0,
-    //         width: 50,
-    //         height: 200,
-    //         stroke: black,
-    //         fill: white,
     //         id: 60,
     //         cssclass: "note",
-    //         shape: "rect"
+    //         shape: "rect",
+    //         keyType: "keyOne"
     //     }
     // });
-    // 
+    //     
     // automm.key.postInitFunction = function (that){
     //     that.html = function (){
-    //         return "<" + shape +"style\"stoke: " + 
+    //         return "<" + that.model.shape +" style\"stoke: " + piano.model[that.model.keyType].stroke + "><" + that.model.shape + ">";
     //     };
     // };
+    
+    
     
     // fluid.defaults("automm.viewBox", {
     //     gradeNames: ["fluid.modelComponent", "autoInit"],

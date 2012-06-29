@@ -19,6 +19,7 @@ var automm = automm || {};
 (function ($, fluid) {
     fluid.defaults("automm.oscillator", {
         gradeNames: ["fluid.modelComponent", "autoInit"],
+        preInitFunction: "automm.oscillator.preInitFunction",
         postInitFunction: "automm.oscillator.postInitFunction",
         
         model: {
@@ -40,7 +41,7 @@ var automm = automm || {};
         }
     });
     
-    automm.oscillator.postInitFunction = function (that) {
+    automm.oscillator.preInitFunction = function (that) {
         that.osc = flock.synth({
             id: "carrier",
             ugen: that.model.osc,
@@ -53,11 +54,16 @@ var automm = automm || {};
                 release: that.model.release
             }
         });
+    };
+    
+    
+    automm.oscillator.postInitFunction = function (that) {
         
         // That.update creates a function that takes a parameter from the model
         // and updates it's value
         //  the applier directly below adds a listener to all instances of the model chaning
         //  it then updates the synth accordingly
+        
         that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
             var path = changeSpec[0].path;
             var oscPath = that.options.paramMap[path];

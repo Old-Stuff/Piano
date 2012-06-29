@@ -23,6 +23,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     <script src="js/third_party/MyInfusion.js"></script>
     <script src="js/oscillator.js"></script>
     <script src="js/piano.js"></script>
+    <script src="js/instrument.js"></script>
+    
 </head>
 <body>
     <div id="piano"></div>
@@ -48,6 +50,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
         
         piano = automm.piano("#piano", {
             model: {
+                firstNote: 60,
                 octaves:2,
                 keys:{
                     white:{
@@ -61,7 +64,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
                 }
             }
         });
-   
+        
+        instrument = automm.instrument("#piano");
         </script>
 </body>
 </html>
