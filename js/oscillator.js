@@ -14,9 +14,14 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
+/*global jQuery, fluid, flock, console*/
+
+
+
 var automm = automm || {};
 
-(function ($, fluid) {
+(function ($) {
+    "use strict";
     fluid.defaults("automm.oscillator", {
         gradeNames: ["fluid.modelComponent", "autoInit"],
         preInitFunction: "automm.oscillator.preInitFunction",
@@ -64,6 +69,10 @@ var automm = automm || {};
         //  the applier directly below adds a listener to all instances of the model chaning
         //  it then updates the synth accordingly
         
+        that.noteOn = function () {
+            console.log("It's Alive");
+        };
+        
         that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
             var path = changeSpec[0].path;
             var oscPath = that.options.paramMap[path];
@@ -77,4 +86,4 @@ var automm = automm || {};
         flock.enviro.shared.play();    
     };
     
-})(jQuery, fluid_1_4);
+}(jQuery));

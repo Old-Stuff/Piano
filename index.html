@@ -30,7 +30,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     <div id="piano"></div>
         <script type/="text/javascript">
         // Make an Oscillator
-        osc = automm.oscillator();
+        // osc = automm.oscillator();
         
         // Draw a piano based on the below model (Subject to change)
         // model: {
@@ -48,24 +48,28 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
         //
         // As you can see only a portion of the model has been 
         
-        piano = automm.piano("#piano", {
-            model: {
-                firstNote: 60,
-                octaves:2,
-                keys:{
-                    white:{
-                        fill: "yellow",
-                        highlight: "black"
-                    },
-                    black:{
-                        fill: "orange",
-                        highlight: "white"
-                    }
-                }
-            }
-        });
+        // piano = automm.piano("#piano", {
+        //                             model: {
+        //                                 firstNote: 60,
+        //                                 octaves:2,
+        //                                 keys:{
+        //                                     white:{
+        //                                         fill: "yellow",
+        //                                         highlight: "black"
+        //                                     },
+        //                                     black:{
+        //                                         fill: "orange",
+        //                                         highlight: "white"
+        //                                     }
+        //                                 }
+        //                             }
+        //                         });
         
-        instrument = automm.instrument("#piano");
+        instrument = automm.instrument("#piano", {
+             model: {
+                 firstNote: 60
+             }
+        });
         </script>
 </body>
 </html>

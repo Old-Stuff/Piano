@@ -13,26 +13,58 @@ Licenses.
 You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
+/*global jQuery, fluid, */
 
 var automm = automm || {};
 
-(function ($, fluid) {
+(function ($) {
+    "use strict";
     fluid.defaults("automm.instrument", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        preInitFunction: "automm.instrument.preInitFunction",
         postInitFunction: "automm.instrument.postInitFunction",
         
-        model: {
-            freq: 440,
-            osc: "flock.ugen.sinOsc",
-            attack: 0.25,
-            sustain: 0.6,
-            release: 0.5,
-            gate: 0
+        events: {
+            onNote: null,
+            afterNote: null
+        },
+        
+        components: {
+            piano: {
+                type: "automm.piano",
+                container: "{instrument}.container",
+                options: {
+                    model: {
+                        firstNote: "{instrument}.model.firstNote",
+                        octaves: 2,
+                        keys: {
+                            white: {
+                                fill: "yellow",
+                                highlight: "black"
+                            },
+                            black: {
+                                fill: "orange",
+                                highlight: "white"
+                            }
+                        }
+                    },
+                    listeners: {
+                        afterUpdate: "{instrument}.bindEvents"
+                    }
+                }
+            },
+            
+            oscillator: {
+                type: "automm.oscillator",
+                options: {
+                    listeners: {
+                        
+                    }
+                }
+            }
         }
     });
     
-    automm.instrument.preInitFunction = function(that) {
+    automm.instrument.postInitFunction = function(that) {
         that.bindEvents = function(){
             // Variables to keep track of currently pressed notes
             var lastClicked = {};
@@ -45,63 +77,46 @@ var automm = automm || {};
             that.notes.each(function(i,note){
                 // Make sure the note element is set up properly
                 note = $(note);
-                
                 // mousedown event binding
                 note.mousedown(function(){
                     // For Keeping track
                     lastClicked = note;
                     isClicking = true;
                     
-                    // noteOn function (fire event?) !!! that.noteOn(note[0].id);
+                    that.events.onNote.fire(note);                    
                     
-                    if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
-                        note.css('fill',keys.white.highlight);
-                    }
-                    else{
-                        note.css('fill',keys.black.highlight);
-                    }
+                    // noteOn function (fire event?) !!! that.noteOn(note[0].id);
+                    // if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
+                    //                        note.css('fill',keys.white.highlight);
+                    //                    }
+                    //                    else{
+                    //                        note.css('fill',keys.black.highlight);
+                    //                    }
                     
                 });
                 // mousup event binding
                 note.mouseup(function(){
                     isClicking = false;
                     // that.noteOff(note[0].id);
-                    if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
-                        note.css('fill',keys.white.fill);
-                    }
-                    else{
-                        note.css('fill',keys.black.fill);
-                    }
+                    // if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
+                    //                         note.css('fill',keys.white.fill);
+                    //                     }
+                    //                     else{
+                    //                         note.css('fill',keys.black.fill);
+                    //                     }
                     lastClicked = {};
                 });
                 // mouse hover event binding
                 note.hover(function(){
                     if(isClicking){
                         // Turn off the last note played
-                        // that.noteOff(lastClicked[0].id);
                         // Set its fill back to what it was before (This is the reason the css stuff was moved to note on / off)
-                        // if($.inArray(parseInt(lastClicked[0].id), whiteNotes) != -1){
-                        //     lastClicked.css('fill',keys.white.fill);
-                        // }
-                        // else{
-                        //     lastClicked.css('fill',keys.black.fill);
-                        // }
                         // Turn on  New Note
-                        // that.noteOn(note[0].id);
-                        lastClicked = note;
-                        // if($.inArray(parseInt(note[0].id), whiteNotes) != -1){
-                        //     note.css('fill',keys.white.highlight);
-                        // }
-                        // else{
-                        //     note.css('fill',keys.black.highlight);
-                        // }
+                        
                     }
                 });
             });
+            // that.events.onNote.addListener("that.piano.noteOn");
         };
     };
-    
-    automm.instrument.postInitFunction = function(that) {
-        that.bindEvents()
-    };
-})(jQuery, fluid_1_4);
+}(jQuery));

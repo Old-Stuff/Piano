@@ -14,9 +14,13 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
+/*global jQuery, fluid, console, d3*/
+
 var automm = automm || {};
 
-(function ($, fluid) {
+(function ($) {
+    "use strict";
+    
     fluid.defaults("automm.piano", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         preInitFunction: "automm.piano.preInitFunction",
@@ -40,20 +44,16 @@ var automm = automm || {};
             }
         },
         
-        // events: {
-        //     
-        // },
-        // 
-        // listeners: {
-        //     
-        // }
+        events: {
+            afterUpdate: null
+        }
     });
     
     automm.piano.preInitFunction = function (that) {
         that.setup = function (){
             that.model.keys.white.notes = [];
             that.model.keys.black.notes = [];
-            for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i+=1){
+            for (var i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i+=1){
                 that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
             }
         
@@ -62,7 +62,7 @@ var automm = automm || {};
         
             that.model.viewbox = {
                 width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
-                height: that.model.keys.white.height + that.model.padding,
+                height: that.model.keys.white.height + that.model.padding
             };
             
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
@@ -81,12 +81,12 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
-            r.attr("noteType", noteType.fill)
+            r.attr("noteType", noteType.fill);
         };
         
         // Automation of drawing all the keys on the canvas
         that.render = function(){
-            var blackX = 0 - (that.model.keys.black.width / 2),
+            var blackX = -(that.model.keys.black.width / 2),
                 prevNote,
                 blackCount = 0;
             
@@ -94,7 +94,7 @@ var automm = automm || {};
                 blackX = blackX - that.model.keys.white.width + (that.model.keys.black.width / 2);
             }
             // Draw White Keys
-            for (i = 0; i < that.model.keys.white.notes.length; i+=1){
+            for (var i = 0; i < that.model.keys.white.notes.length; i+=1){
                 if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]){
                     that.drawNote(that.model.keys.white, (i * that.model.keys.white.width) + that.model.keys.black.width / 2, 0, that.model.keys.white.notes[i]);
                 }
@@ -120,7 +120,7 @@ var automm = automm || {};
                 }
                 
                 // Keep track of previous key
-                prevNote = that.model.pattern[i%that.model.octaveNotes]
+                prevNote = that.model.pattern[i%that.model.octaveNotes];
             }
         };
         
@@ -130,10 +130,10 @@ var automm = automm || {};
             // Draw viewbox and subsequent group to draw keys into
             that.d3container = d3.select("#piano");  // ??????
             var svg = that.d3container.append("svg");
-            svg.attr("viewBox", that.model.viewbox.dim)
-            svg.attr("id", "viewbox")
+            svg.attr("viewBox", that.model.viewbox.dim);
+            svg.attr("id", "viewbox");
             
-            that.noteGroup = svg.append("g")
+            that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
             
             // Draw the keys
@@ -149,8 +149,20 @@ var automm = automm || {};
     };
     
     automm.piano.postInitFunction = function (that) {
+        that.noteOn = function (note){
+            console.log(note);
+        };
         that.update();
+        that.events.afterUpdate.fire();
     };
+    
+    // fluid.demands("automm.piano", "automm.instrument", {
+    //     options: {
+    //         listeners: {
+    //             "{instrument}.events.onNote": "{piano}.noteOn"
+    //         }
+    //     }
+    // });
     
     // fluid.defaults("automm.key", {
     //     gradeNames: ["fluid.modelComponent", "autoInit"],
@@ -190,4 +202,4 @@ var automm = automm || {};
     //     }
     // };
     
-})(jQuery, fluid_1_4);
+}(jQuery));
