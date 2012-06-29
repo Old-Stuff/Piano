@@ -1,58 +1,72 @@
+/*
+Google Summer of Code 2012: Automagic Music Maker
+
+Primarily written by Myles Borins
+Strongly influenced by GSOC Mentor Colin Clark
+Using the Infusion framework and Flocking Library
+
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+*/
+
 var automm = automm || {};
 
-(function ($) {
-    automm.piano = function (container){
-        // Initialize that
-        var that = {};
+(function ($, fluid) {
+    fluid.defaults("automm.piano", {
+        gradeNames: ["fluid.viewComponent", "autoInit"],
+        preInitFunction: "automm.piano.preInitFunction",
+        postInitFunction: "automm.piano.postInitFunction",
         
-        // Initializae key values ~ These should be coming in via JSON
-        var firstNote = 60;         // Note Number of first key drawn
-        var octaves = 2;             // Number of Octaves to Draw
-        var octaveNotes = 12;       // Number of notes per octave
-        var afour = 69;             // Note Number of A4
-        var afourFreq = 440;        // Frequency of A4
-        var padding = 50;            // Size of padding to be 
+        model: {
+            firstNote: 60, // Middle C
+            octaves: 1,
+            octaveNotes: 12,
+            afour: 69,
+            afourFreq: 440,
+            padding: 50,
+            pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
+            keys: {
+                white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+                black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+            },
+        },
         
-        // Store variable to be used for drawing
-        // Stores width and height of both white and black notes as well as fill colour and highlight colour
-        // This too should be coming in via json
-        var keys = {
-            white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-            black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+        events: {
+            
+        },
+        
+        listeners: {
+            
+        }
+    });
+    
+    automm.piano.preInitFunction = function (that) {
+        that.setup = function (){
+            that.model.keys.white.notes = [];
+            that.model.keys.black.notes = [];
+            for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i+=1){
+                that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
+            }
+        
+            that.model.whiteNotes = that.model.keys.white.notes.length;
+            that.model.blackNotes = that.model.keys.black.notes.length;
+        
+            that.model.viewbox = {
+                width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
+                height: that.model.keys.white.height + that.model.padding,
+            };
+            
+            // Calculate to create string neccesary to generate viewbox (should be in JSON?)
+            that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
         };
         
-        // Pattern of how keys should be drawn
-        var pattern = ['white','black','white','black','white','white','black','white','black','white','black','white'];
         
-        // Assign Specific Notes to key Based on Pattern
-        // Assuming that info is coming in via JSON these three lines could be executed outside of this code
-        // JSON could serve the keys object complete with all notes already in there
-        for (i = firstNote; i < (firstNote + (octaves * octaveNotes)); i+=1){
-            keys[pattern[i % octaveNotes]].notes.push(i);
-        }
-        
-        // Perhaps these would be better as part of the keys object, but for not this was a bit cleaner
-        var whiteNotes = keys.white.notes.length;
-        var blackNotes = keys.black.notes.length;
-        
-        // Calculations to figure out size of viewbox
-        // This also could be supplied with the json
-        var viewbox = {
-            width: (keys.white.width * whiteNotes) + padding,
-            height: keys.white.height + padding,
-        };
-        
-        // Calculate to create string neccesary to generate viewbox (should be in JSON?)
-        viewbox.dim = "0 0 " + viewbox.width + " " + viewbox.height
-        
-        // Equation for converting note numbers to frequencies
-        that.noteToFreq = function(notenum){
-            return Math.pow(2, ((notenum-afour)/octaveNotes))*afourFreq;
-        }
-        
-        // Function used to draw individual notes regardless of colour
-        // noteType is supplied to fill in all sorts of details
-        // Perhaps with the size that the key object is getting (tracking all notes) this object is getting too big?
+        // Automation of drawing all the keys on the canvas
         that.drawNote = function(noteType, x, y, id){
             var r = that.noteGroup.append("rect");
             r.style("stroke", noteType.stroke);
@@ -67,56 +81,99 @@ var automm = automm || {};
         
         // Automation of drawing all the keys on the canvas
         that.draw = function(){
-            var blackX = 0 - (keys.black.width / 2),
-                prevNote
+            var blackX = 0 - (that.model.keys.black.width / 2),
+                prevNote,
                 blackCount = 0;
             
             // Draw White Keys
-            for (i = 0; i < keys.white.notes.length; i+=1){
-                that.drawNote(keys.white, i * keys.white.width, 0, keys.white.notes[i]);
+            for (i = 0; i < that.model.keys.white.notes.length; i+=1){
+                that.drawNote(that.model.keys.white, i * that.model.keys.white.width, 0, that.model.keys.white.notes[i]);
             }
             
             // Draw Black Keys
-            for (i = 0; i < octaves * octaveNotes; i+=1){
+            for (i = 0; i < that.model.octaves * that.model.octaveNotes; i+=1){
                 
                 // If the current key in the pattern is black then draw it!
-                if (pattern[i%12] === "black") {
-                    blackX = blackX + keys.white.width;
-                    that.drawNote(keys.black, blackX, 0, keys.black.notes[blackCount]);
+                if (that.model.pattern[i%12] === "black") {
+                    blackX = blackX + that.model.keys.white.width;
+                    that.drawNote(that.model.keys.black, blackX, 0, that.model.keys.black.notes[blackCount]);
                     blackCount = blackCount + 1;
                 }
                 
-                // If it is white, bu tthe previous key was white, skip the key
-                if (pattern[i%12] === prevNote){
-                    blackX = blackX + keys.white.width;
+                // If it is white, but the previous key was white, skip the key
+                if (that.model.pattern[i%12] === prevNote){
+                    blackX = blackX + that.model.keys.white.width;
                 }
                 
                 // Keep track of previous key
-                prevNote = pattern[i%12]
+                prevNote = that.model.pattern[i%12]
             }
-        }
+        };
         
-        // Start Drawing
-        that.init = function(){
-            // Find place in DOM to draw keyboard
-            that.container = d3.select(container);
-            
+        that.init = function(){            
+            // Calculate it all
+            that.setup();
             // Draw viewbox and subsequent group to draw keys into
-            var svg = that.container.append("svg");
-            svg.attr("viewBox", viewbox.dim)
+            that.d3container = d3.select("#piano");  // ??????
+            var svg = that.d3container.append("svg");
+            svg.attr("viewBox", that.model.viewbox.dim)
             svg.attr("id", "viewbox")
             
             that.noteGroup = svg.append("g")
-            that.noteGroup.attr("transform", "translate(" + padding / 2 + "," + padding / 2 + ")");
+            that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
             
             // Draw the keys
             that.draw();
         };
         
-        // Execute Init Function from Above
-        that.init();
-        
-        // Return object, to allow for cascading
-        return that;
+        that.update = function (param, value) {
+            that.applier.requestChange(param, value);
+            that.container.html('');
+            that.init();
+        };
     };
-}(jQuery));
+    
+    automm.piano.postInitFunction = function (that) {
+        that.init();
+    };
+    
+    // fluid.defaults("automm.key", {
+    //     gradeNames: ["fluid.modelComponent", "autoInit"],
+    //     postInitFunction: "automm.key.postInitFunction",
+    //     
+    //     model: {
+    //         x: 0,
+    //         y: 0,
+    //         width: 50,
+    //         height: 200,
+    //         stroke: black,
+    //         fill: white,
+    //         id: 60,
+    //         cssclass: "note",
+    //         shape: "rect"
+    //     }
+    // });
+    // 
+    // automm.key.postInitFunction = function (that){
+    //     that.html = function (){
+    //         return "<" + shape +"style\"stoke: " + 
+    //     };
+    // };
+    
+    // fluid.defaults("automm.viewBox", {
+    //     gradeNames: ["fluid.modelComponent", "autoInit"],
+    //     postInitFunction: "automm.viewBox.postInitFunction",
+    //     
+    //     model: {
+    //         width: 600,
+    //         height: 200
+    //     }
+    // });
+    // 
+    // automm.viewBox.postInitFunction = function (that){
+    //     that.html = function(){
+    //         return ["<svg viewbox=\"0 0 " + that.model.width + " " + that.model.height + "\" id=\"viewbox\">", "</svg>"];
+    //     }
+    // };
+    
+})(jQuery, fluid_1_4);
