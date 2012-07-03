@@ -157,14 +157,12 @@ var automm = automm || {};
         };
         
         that.update = function (param, value) {
-            if (that.model.hasOwnProperty(param)){
-                that.applier.requestChange(param, value);
-                that.container.html('');
-                that.draw();
+            that.applier.requestChange(param, value);
+            that.container.html('');
+            that.draw();
             
-                // Fire event that piano is drawn
-                that.events.afterUpdate.fire();
-            }
+            // Fire event that piano is drawn
+            that.events.afterUpdate.fire();
         };
     };
     
