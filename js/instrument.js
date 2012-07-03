@@ -21,7 +21,7 @@ var automm = automm || {};
     "use strict";
     fluid.defaults("automm.instrument", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        postInitFunction: "automm.instrument.postInitFunction",
+        // postInitFunction: "automm.instrument.postInitFunction",
         
         model: {
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
@@ -46,10 +46,6 @@ var automm = automm || {};
             afterNote: null
         },
         
-        listeners: {
-            onNote: "{instrument}.noteOn"
-        },
-        
         components: {
             piano: {
                 type: "automm.piano",
@@ -63,27 +59,20 @@ var automm = automm || {};
                         pattern: "{instrument}.model.pattern",
                         keys: "{instrument}.model.keys",
                         keyTypes: "{instrument}.model.keyTypes"
+                    },
+                    events: {
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote"
                     }
-                    // listeners: {
-                    //     afterUpdate: "{instrument}.bindEvents"
-                    // }
                 }
             },
             
             oscillator: {
-                type: "automm.oscillator",
-                options: {
-                    listeners: {
-                        
-                    }
-                }
+                type: "automm.oscillator"
             }
         }
     });
     
-    automm.instrument.postInitFunction = function(that) {
-        that.onNote() = function () {
-            console.log("test");
-        };
-    };
+    // automm.instrument.postInitFunction = function(that) {
+    //     };
 }(jQuery));

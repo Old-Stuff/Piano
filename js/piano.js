@@ -43,13 +43,15 @@ var automm = automm || {};
         },
         
         events: {
-            afterUpdate: null
+            afterUpdate: null,
+            onNote: null,
+            afterNote: null
         },
         
         components: {
             eventBinder: {
                 type: "automm.eventBinder",
-                container: "{piano}.container",
+                container: "{piano}.container"
             }
         }
     });
@@ -151,23 +153,34 @@ var automm = automm || {};
             that.draw();
             return that;
         };
+        
+        that.bindEvents = function () {
+            that.events.onNote.addListener(that.onNote);
+            that.events.afterNote.addListener(that.afterNote);
+        };
     };
     
     automm.piano.postInitFunction = function (that) {
-        that.noteOn = function (note){
-            console.log(note);
+        that.onNote = function (note){
+            if($.inArray(parseInt(note[0].id), that.model.keys.white.notes) != -1){
+                note.css('fill',that.model.keys.white.highlight);
+            }
+            else{
+                note.css('fill',that.model.keys.black.highlight);
+            }
         };
+        that.afterNote = function (note){
+            if($.inArray(parseInt(note[0].id), that.model.keys.white.notes) != -1){
+                note.css('fill',that.model.keys.white.fill);
+            }
+            else{
+                note.css('fill',that.model.keys.black.fill);
+            }
+        };
+        that.bindEvents();
         that.update();
         that.events.afterUpdate.fire();
     };
-    
-    // fluid.demands("automm.piano", "automm.instrument", {
-    //     options: {
-    //         listeners: {
-    //             "{instrument}.events.onNote": "{piano}.noteOn"
-    //         }
-    //     }
-    // });
     
     // fluid.defaults("automm.key", {
     //     gradeNames: ["fluid.modelComponent", "autoInit"],

@@ -24,9 +24,10 @@ var automm = automm || {};
         postInitFunction: "automm.eventBinder.postInitFunction",
         
         events: {
-                    onNote: "{instrument}.events.onNote",
-                    afterNote: "{instrument}.events.afterNote"
-                }
+            onNote: "{instrument}.events.onNote",
+            afterNote: "{instrument}.events.afterNote"
+        }
+
     });
     
     automm.eventBinder.postInitFunction = function (that) {
@@ -52,17 +53,16 @@ var automm = automm || {};
                     // mousup event binding
                     note.mouseup(function(){
                         isClicking = false;
-                        that.events.
+                        that.events.afterNote.fire(note);
                         lastClicked = {};
                     });
                     // mouse hover event binding
                     note.hover(function(){
                         if(isClicking){
-                            // Turn off the last note played
-                            // Set its fill back to what it was before (This is the reason the css stuff was moved to note on / off)
-                            // Turn on  New Note
-                            isClicking = !isClicking;
+                            that.events.afterNote.fire(lastClicked);
+                            that.events.onNote.fire(note);
                         }
+                        lastClicked = note;
                     });
                 }); 
             };
