@@ -14,7 +14,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid, console, d3*/
+/*global jQuery, fluid, d3*/
 
 var automm = automm || {};
 
