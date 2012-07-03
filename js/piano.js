@@ -45,7 +45,8 @@ var automm = automm || {};
         events: {
             afterUpdate: null,
             onNote: null,
-            afterNote: null
+            afterNote: null,
+            afterInstrumentUpdate: null
         },
         
         components: {
@@ -156,12 +157,14 @@ var automm = automm || {};
         };
         
         that.update = function (param, value) {
-            that.applier.requestChange(param, value);
-            that.container.html('');
-            that.draw();
+            if (that.model.hasOwnProperty(param)){
+                that.applier.requestChange(param, value);
+                that.container.html('');
+                that.draw();
             
-            // Fire event that piano is drawn
-            that.events.afterUpdate.fire();
+                // Fire event that piano is drawn
+                that.events.afterUpdate.fire();
+            }
         };
     };
     
@@ -184,10 +187,12 @@ var automm = automm || {};
         };
         
         // Draw the svg
-        that.update();
+        that.draw();
+        that.events.afterUpdate.fire();
         // Fire event that piano is drawn
         that.events.onNote.addListener(that.onNote);
-        that.events.afterNote.addListener(that.afterNote);        
+        that.events.afterNote.addListener(that.afterNote);
+        that.events.afterInstrumentUpdate.addListener(that.update);
     };
     
     // fluid.defaults("automm.key", {

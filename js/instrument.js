@@ -44,7 +44,7 @@ var automm = automm || {};
         events: {
             onNote: null,
             afterNote: null,
-            afterUpdate: null
+            afterInstrumentUpdate: null
         },
         
         components: {
@@ -64,7 +64,7 @@ var automm = automm || {};
                     events: {
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
-                        afterUpdate: "{instrument}.events.afterUpdate"
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }
             },
@@ -80,7 +80,7 @@ var automm = automm || {};
                     events: {
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
-                        afterUpdate: "{instrument}.events.afterUpdate"
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }
             }
@@ -91,7 +91,7 @@ var automm = automm || {};
     automm.instrument.postInitFunction = function(that) {
         that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
             var path = changeSpec[0].path;
-            newModel[path];
+            that.events.afterInstrumentUpdate.fire(path, newModel[path]);
         });
         
         that.update = function (param, value) {

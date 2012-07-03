@@ -42,7 +42,7 @@ var automm = automm || {};
         events: {
             onNote: null,
             afterNote: null,
-            afterUpdate: null
+            afterInstrumentUpdate: null
         },
         // Maps parameter between this model and the model of flocking
         paramMap: {
@@ -84,7 +84,9 @@ var automm = automm || {};
         });
         
         that.update = function (param, value) {
-            that.applier.requestChange(param, value);
+            if (that.model.hasOwnProperty(param)){
+                that.applier.requestChange(param, value);
+            }
         };
         
         that.onNote = function (note) {
@@ -100,15 +102,11 @@ var automm = automm || {};
         that.midiToFreq = function (noteNum) {
             return Math.pow(2, ((noteNum-that.model.afour)/that.model.octaveNotes))*that.model.afourFreq;
         };
-        
-        that.afterUpdate = function (param, value) {
-            
-        }
 
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
-        that.events.afterUpdate.addListener(that.afterUpdate);
+        that.events.afterInstrumentUpdate.addListener(that.update);
     };
     
 }(jQuery));
