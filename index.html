@@ -24,13 +24,12 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     <script src="js/oscillator.js"></script>
     <script src="js/piano.js"></script>
     <script src="js/instrument.js"></script>
+    <script src="js/eventBinder.js"></script>
     
 </head>
 <body>
     <div id="piano"></div>
         <script type/="text/javascript">
-        // Make an Oscillator
-        // osc = automm.oscillator();
         
         // Draw a piano based on the below model (Subject to change)
         // model: {
@@ -46,28 +45,21 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
         //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
         //             }
         //
-        // As you can see only a portion of the model has been 
-        
-        // piano = automm.piano("#piano", {
-        //                             model: {
-        //                                 firstNote: 60,
-        //                                 octaves:2,
-        //                                 keys:{
-        //                                     white:{
-        //                                         fill: "yellow",
-        //                                         highlight: "black"
-        //                                     },
-        //                                     black:{
-        //                                         fill: "orange",
-        //                                         highlight: "white"
-        //                                     }
-        //                                 }
-        //                             }
-        //                         });
         
         instrument = automm.instrument("#piano", {
              model: {
-                 firstNote: 60
+                 firstNote: 60,
+                 octaves: 2,
+                 keys: {
+                     white: {
+                         fill: 'yellow',
+                         highlight: 'black'
+                     },
+                     black: {
+                         fill: 'orange',
+                         highlight: 'white'
+                     }
+                 }
              }
         });
         </script>

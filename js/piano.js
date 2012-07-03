@@ -30,8 +30,6 @@ var automm = automm || {};
             firstNote: 60, // Middle C
             octaves: 1,
             octaveNotes: 12,
-            afour: 69,
-            afourFreq: 440,
             padding: 50,
             pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
             keys: {
@@ -46,6 +44,13 @@ var automm = automm || {};
         
         events: {
             afterUpdate: null
+        },
+        
+        components: {
+            eventBinder: {
+                type: "automm.eventBinder",
+                container: "{piano}.container",
+            }
         }
     });
     
@@ -104,7 +109,7 @@ var automm = automm || {};
             }
             
             // Draw Black Keys
-            for (i = that.model.firstNote; i < (that.model.octaves * that.model.octaveNotes) + that.model.firstNote; i+=1){
+            for (var i = that.model.firstNote; i < (that.model.octaves * that.model.octaveNotes) + that.model.firstNote; i+=1){
                 //get width going
                 
                 // If the current key in the pattern is black then draw it!
