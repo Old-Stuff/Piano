@@ -41,7 +41,8 @@ var automm = automm || {};
         
         events: {
             onNote: null,
-            afterNote: null
+            afterNote: null,
+            afterUpdate: null
         },
         // Maps parameter between this model and the model of flocking
         paramMap: {
@@ -99,10 +100,15 @@ var automm = automm || {};
         that.midiToFreq = function (noteNum) {
             return Math.pow(2, ((noteNum-that.model.afour)/that.model.octaveNotes))*that.model.afourFreq;
         };
+        
+        that.afterUpdate = function (param, value) {
+            
+        }
 
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
-        that.events.afterNote.addListener(that.afterNote);  
+        that.events.afterNote.addListener(that.afterNote);
+        that.events.afterUpdate.addListener(that.afterUpdate);
     };
     
 }(jQuery));

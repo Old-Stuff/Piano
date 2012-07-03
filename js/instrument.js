@@ -21,7 +21,7 @@ var automm = automm || {};
     "use strict";
     fluid.defaults("automm.instrument", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        // postInitFunction: "automm.instrument.postInitFunction",
+        postInitFunction: "automm.instrument.postInitFunction",
         
         model: {
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
@@ -43,7 +43,8 @@ var automm = automm || {};
         
         events: {
             onNote: null,
-            afterNote: null
+            afterNote: null,
+            afterUpdate: null
         },
         
         components: {
@@ -62,7 +63,8 @@ var automm = automm || {};
                     },
                     events: {
                         onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote"
+                        afterNote: "{instrument}.events.afterNote",
+                        afterUpdate: "{instrument}.events.afterUpdate"
                     }
                 }
             },
@@ -77,13 +79,23 @@ var automm = automm || {};
                     },
                     events: {
                         onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote"
+                        afterNote: "{instrument}.events.afterNote",
+                        afterUpdate: "{instrument}.events.afterUpdate"
                     }
                 }
             }
         }
     });
     
-    // automm.instrument.postInitFunction = function(that) {
-    //     };
+
+    automm.instrument.postInitFunction = function(that) {
+        that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
+            var path = changeSpec[0].path;
+            newModel[path];
+        });
+        
+        that.update = function (param, value) {
+            that.applier.requestChange(param, value);
+        };
+    };
 }(jQuery));
