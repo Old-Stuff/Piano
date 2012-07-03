@@ -51,7 +51,12 @@ var automm = automm || {};
         components: {
             eventBinder: {
                 type: "automm.eventBinder",
-                container: "{piano}.container"
+                container: "{piano}.container",
+                options: {
+                    events: {
+                        afterUpdate: "{piano}.events.afterUpdate"
+                    }
+                }
             }
         }
     });
@@ -95,13 +100,14 @@ var automm = automm || {};
         that.render = function(){
             var blackX = -(that.model.keys.black.width / 2),
                 prevNote,
-                blackCount = 0;
+                blackCount = 0,
+                i;
             
             if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]){
                 blackX = blackX - that.model.keys.white.width + (that.model.keys.black.width / 2);
             }
             // Draw White Keys
-            for (var i = 0; i < that.model.keys.white.notes.length; i+=1){
+            for (i = 0; i < that.model.keys.white.notes.length; i+=1){
                 if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]){
                     that.drawNote(that.model.keys.white, (i * that.model.keys.white.width) + that.model.keys.black.width / 2, 0, that.model.keys.white.notes[i]);
                 }
@@ -111,7 +117,7 @@ var automm = automm || {};
             }
             
             // Draw Black Keys
-            for (var i = that.model.firstNote; i < (that.model.octaves * that.model.octaveNotes) + that.model.firstNote; i+=1){
+            for (i = that.model.firstNote; i < (that.model.octaves * that.model.octaveNotes) + that.model.firstNote; i+=1){
                 //get width going
                 
                 // If the current key in the pattern is black then draw it!
@@ -151,18 +157,15 @@ var automm = automm || {};
             that.applier.requestChange(param, value);
             that.container.html('');
             that.draw();
-            return that;
-        };
-        
-        that.bindEvents = function () {
-            that.events.onNote.addListener(that.onNote);
-            that.events.afterNote.addListener(that.afterNote);
+            
+            // Fire event that piano is drawn
+            that.events.afterUpdate.fire();
         };
     };
     
     automm.piano.postInitFunction = function (that) {
         that.onNote = function (note){
-            if($.inArray(parseInt(note[0].id), that.model.keys.white.notes) != -1){
+            if($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1){
                 note.css('fill',that.model.keys.white.highlight);
             }
             else{
@@ -170,16 +173,19 @@ var automm = automm || {};
             }
         };
         that.afterNote = function (note){
-            if($.inArray(parseInt(note[0].id), that.model.keys.white.notes) != -1){
+            if($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1){
                 note.css('fill',that.model.keys.white.fill);
             }
             else{
                 note.css('fill',that.model.keys.black.fill);
             }
         };
-        that.bindEvents();
+        
+        // Draw the svg
         that.update();
-        that.events.afterUpdate.fire();
+        // Fire event that piano is drawn
+        that.events.onNote.addListener(that.onNote);
+        that.events.afterNote.addListener(that.afterNote);        
     };
     
     // fluid.defaults("automm.key", {

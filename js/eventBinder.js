@@ -18,12 +18,13 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 var automm = automm || {};
 
 (function ($) {
-    // "use strict";
+    "use strict";
     fluid.defaults("automm.eventBinder", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
         postInitFunction: "automm.eventBinder.postInitFunction",
         
         events: {
+            afterUpdate: null,
             onNote: "{instrument}.events.onNote",
             afterNote: "{instrument}.events.afterNote"
         }
@@ -67,5 +68,6 @@ var automm = automm || {};
                 }); 
             };
             that.bindEvents();
+            that.events.afterUpdate.addListener(that.bindEvents);
         };
 }(jQuery));
