@@ -74,6 +74,10 @@ var automm = automm || {};
                         afour: "{instrument}.afour",
                         afourFreq: "{instrument}.afourFreq",
                         ocaveNotes: "{instrument}.octaveNotes"
+                    },
+                    events: {
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote"
                     }
                 }
             }

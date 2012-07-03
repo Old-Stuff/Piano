@@ -40,8 +40,8 @@ var automm = automm || {};
         },
         
         events: {
-            onNote: "{instrument}.events.onNote",
-            afterNote: "{instrument}.events.afterNote"
+            onNote: null,
+            afterNote: null
         },
         // Maps parameter between this model and the model of flocking
         paramMap: {

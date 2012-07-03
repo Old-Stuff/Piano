@@ -54,7 +54,9 @@ var automm = automm || {};
                 container: "{piano}.container",
                 options: {
                     events: {
-                        afterUpdate: "{piano}.events.afterUpdate"
+                        afterUpdate: "{piano}.events.afterUpdate",
+                        onNote: "{piano}.events.onNote",
+                        afterNote: "{piano}.events.afterNote"
                     }
                 }
             }

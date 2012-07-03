@@ -25,8 +25,8 @@ var automm = automm || {};
         
         events: {
             afterUpdate: null,
-            onNote: "{instrument}.events.onNote",
-            afterNote: "{instrument}.events.afterNote"
+            onNote: null,
+            afterNote: null
         }
 
     });
