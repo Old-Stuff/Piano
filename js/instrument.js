@@ -68,7 +68,14 @@ var automm = automm || {};
             },
             
             oscillator: {
-                type: "automm.oscillator"
+                type: "automm.oscillator",
+                options: { 
+                    model: {
+                        afour: "{instrument}.afour",
+                        afourFreq: "{instrument}.afourFreq",
+                        ocaveNotes: "{instrument}.octaveNotes"
+                    }
+                }
             }
         }
     });
