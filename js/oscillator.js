@@ -14,7 +14,7 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid, flock, console*/
+/*global jQuery, fluid, flock*/
 
 
 
@@ -94,11 +94,11 @@ var automm = automm || {};
         
         that.afterNote = function (note) {
             that.update("gate", 0);
-        }
+        };
         
         that.midiToFreq = function (noteNum) {
             return Math.pow(2, ((noteNum-that.model.afour)/that.model.octaveNotes))*that.model.afourFreq;
-        }
+        };
 
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
