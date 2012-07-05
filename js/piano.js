@@ -67,9 +67,9 @@ var automm = automm || {};
     automm.piano.preInitFunction = function (that) {
         that.setup = function () {
             var i;
-
             that.model.keys.white.notes = [];
             that.model.keys.black.notes = [];
+            
             for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i += 1) {
                 that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
             }
@@ -85,7 +85,6 @@ var automm = automm || {};
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
             that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
         };
-
 
         // Automation of drawing all the keys on the canvas
         that.drawNote = function (noteType, x, y, id) {
@@ -148,6 +147,7 @@ var automm = automm || {};
             that.d3container = d3.select("#" + that.container.attr('id'));  // ??????
             var svg = that.d3container.append("svg");
             svg.attr("viewBox", that.model.viewbox.dim);
+            svg.attr("preserveAspectRatio","xMidYMid meet");
             svg.attr("id", "viewbox");
 
             that.noteGroup = svg.append("g");
@@ -165,9 +165,7 @@ var automm = automm || {};
             // Fire event that piano is drawn
             that.events.afterUpdate.fire();
         };
-    };
-
-    automm.piano.postInitFunction = function (that) {
+        
         that.onNote = function (note) {
             if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
                 note.css('fill', that.model.keys.white.highlight);
@@ -175,6 +173,7 @@ var automm = automm || {};
                 note.css('fill', that.model.keys.black.highlight);
             }
         };
+
         that.afterNote = function (note) {
             if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
                 note.css('fill', that.model.keys.white.fill);
@@ -183,6 +182,9 @@ var automm = automm || {};
             }
         };
 
+    };
+
+    automm.piano.postInitFunction = function (that) {
         // Draw the svg
         that.draw();
         that.events.afterUpdate.fire();
