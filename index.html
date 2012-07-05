@@ -13,22 +13,60 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
 <!DOCTYPE html>
-<html>
-<head>
-    <script src="js/third_party/jquery-1.7.2.min.js"></script>
-    <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
-    <script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
-    <script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
-    <script src="js/third_party/d3/d3.v2.js"></script>
-    <script src="js/third_party/MyInfusion.js"></script>
-    <script src="js/oscillator.js"></script>
-    <script src="js/piano.js"></script>
-    <script src="js/instrument.js"></script>
-    <script src="js/eventBinder.js"></script>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Automagic Music Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Automagic Music Maker">
+    <meta name="author" content="Myles Borins">
     
+    <!-- Le styles -->
+    <link href="css/third_party/bootstrap.css" rel="stylesheet">
+    <link href="css/third_party/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
-    <div id="piano"></div>
+    <div class="container">
+
+      <h1>The Automagic Music Maker</h1>
+      <p>A Fancy New Way to AutoMagically Make Music.</p>
+
+    </div> <!-- /container -->
+    
+    
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="span4" id="piano"> .</div>
+          <div class="span4">
+            <h2>Heading</h2>
+             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+         </div>
+          <div class="span4">
+            <h2>Heading</h2>
+            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+          </div>
+        </div>
+        
+        <!-- <div class="row">
+            <div id="piano" class"span4">Test</div>
+            <div id="gui" class"span4">Test</div>
+        </div> -->
+    </div>
+
+        <!-- Place At the end to make things load faster -->
+        <script src="js/third_party/jquery-1.7.2.min.js"></script>
+        <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
+        <script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
+        <script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
+        <script src="js/third_party/d3/d3.v2.js"></script>
+        <script src="js/third_party/MyInfusion.js"></script>
+        <script src="js/oscillator.js"></script>
+        <script src="js/piano.js"></script>
+        <script src="js/instrument.js"></script>
+        <script src="js/eventBinder.js"></script>
         <script type/="text/javascript">
         /*global jQuery, fluid*/
         var automm = automm || {};
@@ -50,24 +88,24 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
             //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
             //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
             //             }
-            //
 
             var instrument = automm.instrument("#piano", {
-                 model: {
-                     firstNote: 60,
-                     octaves: 2,
-                     keys: {
-                         white: {
-                             fill: 'yellow',
-                             highlight: 'black'
-                         },
-                         black: {
-                             fill: 'orange',
-                             highlight: 'white'
-                         }
-                     }
-                 }
-            });
+                  model: {
+                      padding: 50,
+                      firstNote: 60,
+                      octaves: 2,
+                      keys: {
+                          white: {
+                              fill: 'yellow',
+                              highlight: 'black'
+                          },
+                          black: {
+                              fill: 'orange',
+                              highlight: 'white'
+                          }
+                      }
+                  }
+             });
         }());
 
         </script>
