@@ -26,7 +26,7 @@ var automm = automm || {};
         gradeNames: ["fluid.modelComponent", "fluid.eventedComponent", "autoInit"],
         preInitFunction: "automm.oscillator.preInitFunction",
         postInitFunction: "automm.oscillator.postInitFunction",
-        
+
         model: {
             freq: 440,
             osc: "flock.ugen.sinOsc",
@@ -38,7 +38,7 @@ var automm = automm || {};
             afourFreq: 440,
             octaveNotes: 12
         },
-        
+
         events: {
             onNote: null,
             afterNote: null,
@@ -53,7 +53,7 @@ var automm = automm || {};
             "gate": "asr.gate"
         }
     });
-    
+
     automm.oscillator.preInitFunction = function (that) {
         that.osc = flock.synth({
             id: "carrier",
@@ -68,39 +68,37 @@ var automm = automm || {};
             }
         });
     };
-    
-    
+
     automm.oscillator.postInitFunction = function (that) {
-        
         // That.update creates a function that takes a parameter from the model
         // and updates it's value
         //  the applier directly below adds a listener to all instances of the model chaning
         //  it then updates the synth accordingly
-                
+
         that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
-            var path = changeSpec[0].path;
-            var oscPath = that.options.paramMap[path];
+            var path = changeSpec[0].path,
+                oscPath = that.options.paramMap[path];
             that.osc.input(oscPath, newModel[path]);
         });
-        
+
         that.update = function (param, value) {
-            if (that.model.hasOwnProperty(param)){
+            if (that.model.hasOwnProperty(param)) {
                 that.applier.requestChange(param, value);
             }
         };
-        
+
         that.onNote = function (note) {
             var freq = that.midiToFreq(note[0].id);
             that.update("freq", freq);
             that.update("gate", 1);
         };
-        
-        that.afterNote = function (note) {
+
+        that.afterNote = function () {
             that.update("gate", 0);
         };
-        
+
         that.midiToFreq = function (noteNum) {
-            return Math.pow(2, ((noteNum-that.model.afour)/that.model.octaveNotes))*that.model.afourFreq;
+            return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
         };
 
         flock.enviro.shared.play();
@@ -108,5 +106,4 @@ var automm = automm || {};
         that.events.afterNote.addListener(that.afterNote);
         that.events.afterInstrumentUpdate.addListener(that.update);
     };
-    
 }(jQuery));
