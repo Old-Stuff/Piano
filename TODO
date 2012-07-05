@@ -1,4 +1,37 @@
-Make key manager... child of piano
-Responsible for binding jquery events to instruments events
+----------------------------------------
+-         Todo                         -
+----------------------------------------
 
-;w
+Add signature to events... can use that to filter for arpeggios
+Add Arpegiator
+
+----------------------------------------
+
+Afour: should be calculated based on a algorithm rather than supplied
+
+With a 12 note octave, A4 is 69
+If the count Starts at C... an A is the 10th note
+
+Octave -1:  1 - 11
+Octave  0: 12 - 23
+Octave  1: 24 - 35
+Octave  2: 36 - 47
+octave  3: 48 - 59
+Octave  4: 60 - 71 <--- This is the fourth octave on the piano
+
+A4 | Notes Per Octave | Octave Number  |  Frequency
+   |                  |                |
+69 |        12        |     4          |      440
+
+Algorithm for Equal Tempered Tuning:
+
+((Note - A4) / OctaveNotes)^2 * A4freq
+
+----------------------------------------
+
+should it only send note number?
+This would be good if each key was a note object, with its own oscillator
+
+----------------------------------------
+
+add both midi and osc support... preferably done client side... but might have to be done with node
