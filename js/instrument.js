@@ -91,6 +91,7 @@ var automm = automm || {};
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
             that.events.afterInstrumentUpdate.fire(param, value);
+            return that;
         };
     };
 }(jQuery));
