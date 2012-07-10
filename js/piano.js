@@ -148,8 +148,6 @@ var automm = automm || {};
             var svg = that.d3container.append("svg");
             svg.attr("style", "height: 100%;");
             svg.attr("viewBox", that.model.viewbox.dim);
-            // svg.attr("preserveAspectRatio", "xMidYMin meet");
-            // svg.attr("id", "viewbox");
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
@@ -162,7 +160,6 @@ var automm = automm || {};
             that.applier.requestChange(param, value);
             that.container.html('');
             that.draw();
-
             // Fire event that piano is drawn
             that.events.afterUpdate.fire();
         };
