@@ -17,7 +17,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 var automm = automm || {};
 
-(function ($) {
+(function () {
     "use strict";
     fluid.defaults("automm.instrument", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
@@ -94,4 +94,4 @@ var automm = automm || {};
             return that;
         };
     };
-}(jQuery));
+}());
