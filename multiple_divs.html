@@ -15,124 +15,158 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
+     <!-- This is all so meta -->
     <meta charset="utf-8">
     <title>Automagic Music Maker</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The Automagic Music Maker">
     <meta name="author" content="Myles Borins">
-    
+
     <!-- Le styles -->
     <link href="css/third_party/normalize.css" rel="stylesheet">
-    <link href="css/third_party/bootstrap.css" rel="stylesheet">
-    <link href="css/third_party/bootstrap-responsive.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-
-      <h1>The Automagic Music Maker</h1>
-      <p>A Fancy New Way to AutoMagically Make Music.</p>
-
-    </div> <!-- /container -->
-    
-    
-    <div class="container-fluid">
-        <!-- Example row of columns -->
-        <div class="row-fluid">
-          <div class="span8" id="piano"></div>
-          <div class="span4">
-            <h2>Heading</h2>
-             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-         </div>
-        </div>
-        
-        <div class="row-fluid">
-          <div class="span6" id="piano2"></div>
-          <div class="span6">
-            <h2>Heading</h2>
-             <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-            <p><a class="btn" href="#">View details &raquo;</a></p>
-         </div>
-        </div>
-        
-        
-        <!-- <div class="row">
-            <div id="piano" class"span4">Test</div>
-            <div id="gui" class"span4">Test</div>
-        </div> -->
+    <div id="mosttoppiano"></div>
+    <div>
+        <div style="float:left; width:50%;" id="topleftpiano"></div>
+        <div style="float:left; width:50%;" id="toprightpiano"></div>
     </div>
+    <div>
+        <div style="float:left; width:50%;" id="bottomleftpiano"></div>
+        <div style="float:left; width:50%;" id="bottomrightpiano"></div>
+    </div>
+        
 
-        <!-- Place At the end to make things load faster -->
-        <script src="js/third_party/jquery-1.7.2.min.js"></script>
-        <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
-        <script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
-        <script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
-        <script src="js/third_party/d3/d3.v2.js"></script>
-        <script src="js/third_party/MyInfusion.js"></script>
-        <script src="js/oscillator.js"></script>
-        <script src="js/piano.js"></script>
-        <script src="js/instrument.js"></script>
-        <script src="js/eventBinder.js"></script>
-        <script type/="text/javascript">
-        /*global jQuery, fluid*/
-        var automm = automm || {};
-        var instrument = instrument || {};
-        var instrument2 = instrument2 || {};
-        (function(){
-            "use strict";
 
-            // Draw a piano based on the below model (Subject to change)
-            // model: {
-            //             firstNote: 60, // Middle C
-            //             octaves: 1,
-            //             octaveNotes: 12,
-            //             afour: 69,
-            //             afourFreq: 440,
-            //             padding: 50,
-            //             pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
-            //             keys: {
-            //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-            //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
-            //             }
+    <!-- Place At the end to make things load faster -->
+    <script src="js/third_party/jquery-1.7.2.min.js"></script>
+    <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
+    <script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
+    <script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
+    <script src="js/third_party/d3/d3.v2.js"></script>
+    <script src="js/third_party/MyInfusion.js"></script>
+    <script src="js/oscillator.js"></script>
+    <script src="js/piano.js"></script>
+    <script src="js/instrument.js"></script>
+    <script src="js/eventBinder.js"></script>
+    <script type/="text/javascript">
+    /*global jQuery, fluid*/
+    var automm = automm || {};
+    var demo = demo || {};
 
-            instrument = automm.instrument("#piano", {
-                  model: {
-                      padding: 50,
-                      firstNote: 60,
-                      octaves: 2,
-                      keys: {
-                          white: {
-                              fill: 'yellow',
-                              highlight: 'black'
-                          },
-                          black: {
-                              fill: 'orange',
-                              highlight: 'white'
-                          }
+    (function(){
+        "use strict";
+
+        // Draw a piano based on the below model (Subject to change)
+        // model: {
+        //             firstNote: 60, // Middle C
+        //             octaves: 1,
+        //             octaveNotes: 12,
+        //             afour: 69,
+        //             afourFreq: 440,
+        //             padding: 50,
+        //             pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
+        //             keys: {
+        //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+        //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+        //             }
+        demo.mosttoppiano = automm.instrument("#mosttoppiano", {
+              model: {
+                  padding: 50,
+                  firstNote: 60,
+                  octaves: 2,
+                  keys: {
+                      white: {
+                          fill: 'white',
+                          highlight: 'yellow'
+                      },
+                      black: {
+                          fill: 'black',
+                          highlight: 'yellow'
                       }
                   }
-             });
+              }
+         });
 
-             instrument2 = automm.instrument("#piano2", {
-                   model: {
-                       padding: 50,
-                       firstNote: 60,
-                       octaves: 2,
-                       keys: {
-                           white: {
-                               fill: 'yellow',
-                               highlight: 'black'
-                           },
-                           black: {
-                               fill: 'orange',
-                               highlight: 'white'
-                           }
+        demo.topleftpiano = automm.instrument("#topleftpiano", {
+              model: {
+                  padding: 50,
+                  firstNote: 60,
+                  octaves: 4,
+                  octaveNotes: 10,
+                  keys: {
+                      white: {
+                          fill: 'yellow',
+                          highlight: 'black'
+                      },
+                      black: {
+                          fill: 'orange',
+                          highlight: 'white'
+                      }
+                  }
+              }
+         });
+
+         demo.toprightpiano = automm.instrument("#toprightpiano", {
+               model: {
+                   padding: 50,
+                   firstNote: 60,
+                   octaveNotes: 11,
+                   octaves: 4,
+                   keys: {
+                       white: {
+                           fill: 'black',
+                           highlight: 'yellow',
+                           stroke: 'white'
+                       },
+                       black: {
+                           fill: 'white',
+                           highlight: 'orange',
+                           Stroke: 'white'
                        }
                    }
-              });
+               }
+          });
 
-        }());
+          demo.bottomleftpiano = automm.instrument("#bottomleftpiano", {
+                model: {
+                    padding: 50,
+                    firstNote: 61,
+                    octaveNotes: 8,
+                    octaves: 2,
+                    keys: {
+                        white: {
+                            fill: 'LightSkyBlue',
+                            highlight: 'purple'
+                        },
+                        black: {
+                            fill: 'silver',
+                            highlight: 'hotpink'
+                        }
+                    }
+                }
+           });
 
-        </script>
+           demo.bottomrightpiano = automm.instrument("#bottomrightpiano", {
+                 model: {
+                     padding: 50,
+                     firstNote: 64,
+                     octaveNotes: 8,
+                     octaves: 2,
+                     keys: {
+                         white: {
+                             fill: 'purple',
+                             highlight: 'LightSkyBlue'
+                         },
+                         black: {
+                             fill: 'hotpink',
+                             highlight: 'silver'
+                         }
+                     }
+                 }
+            });
+    }());
+
+    </script>
 </body>
 </html>
