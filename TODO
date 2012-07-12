@@ -1,11 +1,18 @@
-----------------------------------------
--         Todo                         -
-----------------------------------------
+--------------------------------------------------------------------------------
+-         Todo                                                                 -
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+GUI stuffs... should I use kontrol?  Can it be done with d3?  
+Do it all in svg and embed html element?
+
+--------------------------------------------------------------------------------
 
 Add signature to events... can use that to filter for arpeggios
 Add Arpegiator
 
-----------------------------------------
+--------------------------------------------------------------------------------
 
 Afour: should be calculated based on a algorithm rather than supplied
 
@@ -27,11 +34,14 @@ Algorithm for Equal Tempered Tuning:
 
 ((Note - A4) / OctaveNotes)^2 * A4freq
 
-----------------------------------------
+--------------------------------------------------------------------------------
 
 should it only send note number?
 This would be good if each key was a note object, with its own oscillator
 
-----------------------------------------
+--------------------------------------------------------------------------------
 
-add both midi and osc support... preferably done client side... but might have to be done with node
+add both midi and osc support... preferably done client side... 
+but might have to be done with node
+
+--------------------------------------------------------------------------------
