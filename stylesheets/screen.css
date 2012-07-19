@@ -120,8 +120,9 @@ div.shell {
 
 a#forkme_banner {
   position: absolute;
+  float: right;
   top: 0;
-  left: 0;
+  right: 0;
   width: 138px;
   height: 138px;
   display: block;
