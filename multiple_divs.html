@@ -1,0 +1,167 @@
+<!-- Google Summer of Code 2012: Automagic Music Maker
+
+Primarily written by Myles Borins
+Strongly influenced by GSOC Mentor Colin Clark
+Using the Infusion framework and Flocking Library
+
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+     <!-- This is all so meta -->
+    <meta charset="utf-8">
+    <title>Automagic Music Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Automagic Music Maker">
+    <meta name="author" content="Myles Borins">
+
+    <!-- Le styles -->
+    <link href="css/third_party/normalize.css" rel="stylesheet">
+</head>
+<body>
+    <div id="mosttoppiano"></div>
+    <div>
+        <div style="float:left; width:50%;" id="topleftpiano"></div>
+        <div style="float:left; width:50%;" id="toprightpiano"></div>
+    </div>
+    <div>
+        <div style="float:left; width:50%;" id="bottomleftpiano"></div>
+        <div style="float:left; width:50%;" id="bottomrightpiano"></div>
+    </div>
+        
+
+
+    <!-- Place At the end to make things load faster -->
+    <script src="js/third_party/jquery-1.7.2.min.js"></script>
+    <script src="js/third_party/flocking.min.js"></script>
+    <script src="js/third_party/d3.v2.min.js"></script>
+    <script src="js/third_party/MyInfusion.min.js"></script>
+    <script src="js/automm.min.js"></script>
+    <script type/="text/javascript">
+    /*global jQuery, fluid*/
+    var automm = automm || {};
+    var demo = demo || {};
+
+    (function(){
+        "use strict";
+
+        // Draw a piano based on the below model (Subject to change)
+        // model: {
+        //             firstNote: 60, // Middle C
+        //             octaves: 1,
+        //             octaveNotes: 12,
+        //             afour: 69,
+        //             afourFreq: 440,
+        //             padding: 50,
+        //             pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
+        //             keys: {
+        //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+        //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+        //             }
+        demo.mosttoppiano = automm.instrument("#mosttoppiano", {
+              model: {
+                  padding: 50,
+                  firstNote: 60,
+                  octaves: 2,
+                  keys: {
+                      white: {
+                          fill: 'white',
+                          highlight: 'yellow'
+                      },
+                      black: {
+                          fill: 'black',
+                          highlight: 'yellow'
+                      }
+                  }
+              }
+         });
+
+        demo.topleftpiano = automm.instrument("#topleftpiano", {
+              model: {
+                  padding: 50,
+                  firstNote: 60,
+                  octaves: 4,
+                  octaveNotes: 10,
+                  keys: {
+                      white: {
+                          fill: 'yellow',
+                          highlight: 'black'
+                      },
+                      black: {
+                          fill: 'orange',
+                          highlight: 'white'
+                      }
+                  }
+              }
+         });
+
+         demo.toprightpiano = automm.instrument("#toprightpiano", {
+               model: {
+                   padding: 50,
+                   firstNote: 60,
+                   octaveNotes: 11,
+                   octaves: 4,
+                   keys: {
+                       white: {
+                           fill: 'black',
+                           highlight: 'yellow',
+                           stroke: 'white'
+                       },
+                       black: {
+                           fill: 'white',
+                           highlight: 'orange',
+                           Stroke: 'white'
+                       }
+                   }
+               }
+          });
+
+          demo.bottomleftpiano = automm.instrument("#bottomleftpiano", {
+                model: {
+                    padding: 50,
+                    firstNote: 61,
+                    octaveNotes: 8,
+                    octaves: 2,
+                    keys: {
+                        white: {
+                            fill: 'LightSkyBlue',
+                            highlight: 'purple'
+                        },
+                        black: {
+                            fill: 'silver',
+                            highlight: 'hotpink'
+                        }
+                    }
+                }
+           });
+
+           demo.bottomrightpiano = automm.instrument("#bottomrightpiano", {
+                 model: {
+                     padding: 50,
+                     firstNote: 64,
+                     octaveNotes: 8,
+                     octaves: 2,
+                     keys: {
+                         white: {
+                             fill: 'purple',
+                             highlight: 'LightSkyBlue'
+                         },
+                         black: {
+                             fill: 'hotpink',
+                             highlight: 'silver'
+                         }
+                     }
+                 }
+            });
+    }());
+
+    </script>
+</body>
+</html>
