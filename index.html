@@ -29,11 +29,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     <script type="text/javascript" src="javascripts/modernizr.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
     <title>The Automagic Music Maker by TheAlphaNerd</title>
   </head>
 
@@ -63,15 +58,30 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
 
       <section id="main_content">
-          <div id="mosttoppiano"></div>
-        <h3>Make music, in your browser!</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+          <section>
+              <div id="instrument">
+                  <div id="piano"></div>
+                  <div id="gui"></div>
+                  <div class="buffer" style="height:50px;"></div>
+              </div>
+          </section>
+          
+        <h3><center>Make music, in your browser!</center></h3>
+<center>
+<p>Built using the flocking audio synthesis library and the fluid infusion framework "The Automagic Music Maker" offers developers and musicians the ability to generate various type of keyboard in the browser.  
+<br><br>
+Create keyboards with custom sizes, colors, and tunings.  Want a 7 note octave of pink and brown nights, be my guest!  Microtonal compositions with 100 note octaves, our specialty!
+<br><br>
+Feel free to open up your console right now and start tinkering, the above keyboard is a global object called Instrument
+</p>
+</center>
+<br>
+<pre><code>$ instrument.model                     // Take a peak at the model
+$ instrument.update("ocataves", 3)     // 3 Octaves
+$ instrument.update("aFourFreq", 435)  // 19th Century Austria
+$ instrument.update("octaveNotes", 7)  // Just try it!
 </code></pre>
+<br>
           <div>
               <div style="float:left; width:50%;" id="topleftpiano"></div>
               <div style="float:left; width:50%;" id="toprightpiano"></div>
@@ -81,7 +91,9 @@ $ git checkout gh-pages
               <div style="float:left; width:50%;" id="bottomrightpiano"></div>
           </div>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<center><p>These are just some of the nifty keyboards you can make.</p>
+
+<p>Upcoming features include ARIA support, keyboard binding, touch support, diatonic / scale based filtering, a grid layout, and an arpeggiator</p></center>
       </section>
 
       <footer>
@@ -103,11 +115,13 @@ $ git checkout gh-pages
     <script src="js/third_party/flocking.min.js"></script>
     <script src="js/third_party/d3.v2.min.js"></script>
     <script src="js/third_party/MyInfusion.min.js"></script>
+    <script src="js/third_party/dat.gui.js"></script>
     <script src="js/automm.min.js"></script>
     <script type/="text/javascript">
     /*global jQuery, fluid*/
     var automm = automm || {};
     var demo = demo || {};
+    var instrument = instrument || {};
 
     (function(){
         "use strict";
@@ -125,24 +139,25 @@ $ git checkout gh-pages
         //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
         //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
         //             }
-        demo.mosttoppiano = automm.instrument("#mosttoppiano", {
-              model: {
-                  padding: 50,
-                  firstNote: 60,
-                  octaves: 2,
-                  keys: {
-                      white: {
-                          fill: 'white',
-                          highlight: 'yellow'
-                      },
-                      black: {
-                          fill: 'black',
-                          highlight: 'yellow'
-                      }
-                  }
-              }
-         });
-
+        instrument = automm.instrument("#piano", {
+             model: {
+                 firstNote: 60,
+                 octaves: 2,
+                 padding: 0,
+                 keys: {
+                     white: {
+                         fill: '#fff000',
+                         stroke: '#000000',
+                         highlight: '#000000'
+                     },
+                     black: {
+                         fill: '#ffa400',
+                         stroke: '#000000',
+                         highlight: '#ffffff'
+                     }
+                 }
+             }
+        });
         demo.topleftpiano = automm.instrument("#topleftpiano", {
               model: {
                   padding: 50,
@@ -220,7 +235,62 @@ $ git checkout gh-pages
                      }
                  }
             });
-    }());
+            var gui = new dat.GUI({ autoPlace: false });
+            var customContainer = document.getElementById('gui');
+            gui.close();
+            customContainer.appendChild(gui.domElement);
+            $('#gui').attr('align','center').children().attr('align','left');
+
+            instrument.gui = {}
+            instrument.gui.octaves = gui.add(instrument.model, 'octaves', 1, 5);
+            instrument.gui.firstNote = gui.add(instrument.model, 'firstNote', 24, 84).step(1);
+        
+            // Folder for style
+            instrument.gui.style = gui.addFolder('Style');
+            instrument.gui.padding = instrument.gui.style.add(instrument.model, 'padding', 0, 200);
+        
+            // Do White Keys
+            instrument.gui.whiteKeys = instrument.gui.style.addFolder('White Keys');
+            instrument.gui.whiteKeysFill = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'fill');
+            instrument.gui.whiteKeysStroke = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'stroke');
+            instrument.gui.whiteKeysHighlight = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'highlight');
+        
+            // Do Black Keys
+            instrument.gui.blackKeys = instrument.gui.style.addFolder('Black Keys');
+            instrument.gui.blackKeysFill = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'fill');
+            instrument.gui.blackKeysStroke = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'stroke');
+            instrument.gui.blackKeysHighlight = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'highlight');
+        
+        
+            // Events ~ should be bubbled or at least done cleaner... this is so bad :(
+            instrument.gui.octaves.onChange(function(value){
+                instrument.update("octaves",value);
+            });
+            instrument.gui.firstNote.onChange(function(value){
+                instrument.update("firstNote",value);
+            });
+            instrument.gui.padding.onChange(function(value){
+                instrument.update("padding",value);
+            });
+            instrument.gui.whiteKeysFill.onChange(function(value){
+                instrument.update("keys.white.fill",value);
+            });
+            instrument.gui.whiteKeysStroke.onChange(function(value){
+                instrument.update("keys.white.stroke",value);
+            });
+            instrument.gui.whiteKeysHighlight.onChange(function(value){
+                instrument.update("keys.white.highlight",value);
+            });
+            instrument.gui.blackKeysFill.onChange(function(value){
+                instrument.update("keys.black.fill",value);
+            });
+            instrument.gui.blackKeysStroke.onChange(function(value){
+                instrument.update("keys.black.stroke",value);
+            });
+            instrument.gui.blackKeysHighlight.onChange(function(value){
+                instrument.update("keys.black.highlight",value);
+            });
+        }());
     </script>    
     <script type="text/javascript">
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
