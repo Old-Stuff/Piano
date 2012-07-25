@@ -29,15 +29,19 @@ var automm = automm || {};
             firstNote: 60, // Middle C
             octaves: 1,
             octaveNotes: 12,
-            padding: 50,
+            padding: 0,
             pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
-                white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-                black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
-            },
-            keyTypes: {
-                keyOne: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow"},
-                keyTwo: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow"}
+                white: {
+                    fill: '#fff000',
+                    stroke: '#000000',
+                    highlight: '#ffffff'
+                },
+                black: {
+                    fill: '#ffa400',
+                    stroke: '#000000',
+                    highlight: '#000000'
+                }
             }
         },
 

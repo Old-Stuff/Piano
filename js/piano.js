@@ -35,10 +35,6 @@ var automm = automm || {};
             keys: {
                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
-            },
-            keyTypes: {
-                keyOne: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow"},
-                keyTwo: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow"}
             }
         },
 
