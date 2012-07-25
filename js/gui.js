@@ -21,66 +21,41 @@ var automm = automm || {};
     "use strict";
     fluid.defaults("automm.gui", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        postInitFunction: "automm.gui.postInitFunction",
-        preInitFunction: "automm.gui.preInitFunction"
+        preInitFunction: "automm.gui.preInitFunction",
+        postInitFunction: "automm.gui.postInitFunction"
     });
 
-    automm.eventBinder.preInitFunction = function (that) {
-        that.model.datgui = new dat.GUI({ autoPlace: false }),
-        that.model.customContainer = that.container.children('#gui');
-        that.model.datgui.close();
-        that.model.customContainer.append(gui.domElement);
-        that.model.customContainer.attr('align', 'center').children().attr('align', 'left');
+    automm.gui.preInitFunction = function (that) {
+        that.init = function () {
+            that.datgui = new dat.GUI({ autoPlace: false });
+            that.customContainer = that.container.children('#gui');
+            that.datgui.close();
+            that.customContainer.append(that.datgui.domElement);
+            that.customContainer.attr('align', 'center').children().attr('align', 'left');
+        };
+        // that.bind = function () {
+        //     that.datgui.octaves = that.datgui.add(instrument.model, 'octaves', 1, 5);
+        //     that.datgui.firstNote = that.datgui.add(instrument.model, 'firstNote', 24, 84).step(1);
+        // 
+        //     // Folder for style
+        //     that.datgui.style = that.datgui.addFolder('Style');
+        //     that.datgui.padding = that.datgui.style.add(instrument.model, 'padding', 0, 200);
+        // 
+        //     // Do White Keys
+        //     that.datgui.whiteKeys = that.datgui.style.addFolder('White Keys');
+        //     that.datgui.whiteKeysFill = that.datgui.whiteKeys.addColor(instrument.model.keys.white, 'fill');
+        //     that.datgui.whiteKeysStroke = that.datgui.whiteKeys.addColor(instrument.model.keys.white, 'stroke');
+        //     that.datgui.whiteKeysHighlight = that.datgui.whiteKeys.addColor(instrument.model.keys.white, 'highlight');
+        // 
+        //     // Do Black Keys
+        //     that.datgui.blackKeys = that.datgui.style.addFolder('Black Keys');
+        //     that.datgui.blackKeysFill = that.datgui.blackKeys.addColor(instrument.model.keys.black, 'fill');
+        //     that.datgui.blackKeysStroke = that.datgui.blackKeys.addColor(instrument.model.keys.black, 'stroke');
+        //     that.datgui.blackKeysHighlight = that.datgui.blackKeys.addColor(instrument.model.keys.black, 'highlight');
+        // };
     };
 
-    automm.eventBinder.postInitFunction = function (that) {
-        that.model.datgui.octaves = gui.add(instrument.model, 'octaves', 1, 5);
-        that.model.datgui.firstNote = gui.add(instrument.model, 'firstNote', 24, 84).step(1);
-        
-        // Folder for style
-        that.model.datgui.style = gui.addFolder('Style');
-        that.model.datgui.padding = that.model.datgui.style.add(instrument.model, 'padding', 0, 200);
-        
-        // Do White Keys
-        that.model.datgui.whiteKeys = that.model.datgui.style.addFolder('White Keys');
-        that.model.datgui.whiteKeysFill = that.model.datgui.whiteKeys.addColor(instrument.model.keys.white, 'fill');
-        that.model.datgui.whiteKeysStroke = that.model.datgui.whiteKeys.addColor(instrument.model.keys.white, 'stroke');
-        that.model.datgui.whiteKeysHighlight = that.model.datgui.whiteKeys.addColor(instrument.model.keys.white, 'highlight');
-        
-        // Do Black Keys
-        that.model.datgui.blackKeys = that.model.datgui.style.addFolder('Black Keys');
-        that.model.datgui.blackKeysFill = that.model.datgui.blackKeys.addColor(instrument.model.keys.black, 'fill');
-        that.model.datgui.blackKeysStroke = that.model.datgui.blackKeys.addColor(instrument.model.keys.black, 'stroke');
-        that.model.datgui.blackKeysHighlight = that.model.datgui.blackKeys.addColor(instrument.model.keys.black, 'highlight');
-        
-        
-        // Events ~ should be bubbled or at least done cleaner... this is so bad :(
-        that.model.datgui.octaves.onChange(function(value){
-            {piano}.update("octaves",value);
-        });
-        that.model.datgui.firstNote.onChange(function(value){
-            instrument.update("firstNote",value);
-        });
-        that.model.datgui.padding.onChange(function(value){
-            instrument.update("padding",value);
-        });
-        that.model.datgui.whiteKeysFill.onChange(function(value){
-            instrument.update("keys.white.fill",value);
-        });
-        that.model.datgui.whiteKeysStroke.onChange(function(value){
-            instrument.update("keys.white.stroke",value);
-        });
-        that.model.datgui.whiteKeysHighlight.onChange(function(value){
-            instrument.update("keys.white.highlight",value);
-        });
-        that.model.datgui.blackKeysFill.onChange(function(value){
-            instrument.update("keys.black.fill",value);
-        });
-        that.model.datgui.blackKeysStroke.onChange(function(value){
-            instrument.update("keys.black.stroke",value);
-        });
-        that.model.datgui.blackKeysHighlight.onChange(function(value){
-            instrument.update("keys.black.highlight",value);
-        });
+    automm.gui.postInitFunction = function (that) {
+        that.init();
     };
 }(jQuery));

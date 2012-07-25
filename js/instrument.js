@@ -83,6 +83,11 @@ var automm = automm || {};
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }
+            },
+            
+            gui: {
+                type: "automm.gui",
+                container: "{instrument}.container"
             }
         }
     });
