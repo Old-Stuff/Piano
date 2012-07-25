@@ -132,6 +132,7 @@ var automm = automm || {};
     automm.gui.postInitFunction = function (that) {
         if (that.model.drawGui) {
             that.init();
+            that.container.append("<div class='buffer' style='height:50px;'></div>");
         }
     };
 }(jQuery));
