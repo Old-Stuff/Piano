@@ -94,6 +94,7 @@ var automm = automm || {};
                 container: "{instrument}.container",
                 options: {
                     model: {
+                        drawGui: true,
                         firstNote: "{instrument}.model.firstNote", // Middle C
                         octaves: "{instrument}.model.octaves",
                         octaveNotes: "{instrument}.model.octaveNotes",
@@ -102,7 +103,6 @@ var automm = automm || {};
                         keys: "{instrument}.model.keys",
                     },
                     events: {
-                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
                         afterGuiUpdate: "{instrument}.events.afterGuiUpdate"
                     }
                 }
@@ -116,5 +116,6 @@ var automm = automm || {};
             that.events.afterInstrumentUpdate.fire(param, value);
             return that;
         };
+        that.events.afterGuiUpdate.addListener(that.update);
     };
 }());

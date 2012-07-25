@@ -66,20 +66,23 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
         //
 
         instrument = automm.instrument("#instrument", {
-             model: {
-                 firstNote: 60,
-                 octaves: 2,
-                 keys: {
-                     white: {
-                         fill: 'yellow',
-                         highlight: 'black'
-                     },
-                     black: {
-                         fill: 'orange',
-                         highlight: 'white'
-                     }
-                 }
-             }
+            model: {
+                firstNote: 60,
+                octaves: 2,
+                padding: 0,
+                keys: {
+                    white: {
+                        fill: '#fff000',
+                        stroke: '#000000',
+                        highlight: '#ffffff'
+                    },
+                    black: {
+                        fill: '#ffa400',
+                        stroke: '#000000',
+                        highlight: '#000000'
+                    }
+                }
+            }
         });
     }());
 

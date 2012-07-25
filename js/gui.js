@@ -23,6 +23,7 @@ var automm = automm || {};
         gradeNames: ["fluid.viewComponent", "autoInit"],
 
         model: {
+            drawGui: false,
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
             afourFreq: 440, // Standard freq for A4, used to calculate all other notes
             firstNote: 60, // Middle C
@@ -45,7 +46,7 @@ var automm = automm || {};
         },
 
         events: {
-            afterInstrumentUpdate: null
+            afterGuiUpdate: null
         },
         
         
@@ -60,36 +61,77 @@ var automm = automm || {};
             that.datgui.close();
             that.customContainer.append(that.datgui.domElement);
             that.customContainer.attr('align', 'center').children().attr('align', 'left');
+
+            that.datgui.octaves = that.datgui.add(that.model, 'octaves', 1, 5);
+            that.datgui.firstNote = that.datgui.add(that.model, 'firstNote', 24, 84).step(1);
+
+            // Folder for style
+            that.datgui.style = that.datgui.addFolder('Style');
+            that.datgui.padding = that.datgui.style.add(that.model, 'padding', 0, 200);
+
+            // Do White Keys
+            that.datgui.whiteKeys = that.datgui.style.addFolder('White Keys');
+            that.datgui.whiteKeysFill = that.datgui.whiteKeys.addColor(that.model.keys.white, 'fill');
+            that.datgui.whiteKeysStroke = that.datgui.whiteKeys.addColor(that.model.keys.white, 'stroke');
+            that.datgui.whiteKeysHighlight = that.datgui.whiteKeys.addColor(that.model.keys.white, 'highlight');
+
+            // Do Black Keys
+            that.datgui.blackKeys = that.datgui.style.addFolder('Black Keys');
+            that.datgui.blackKeysFill = that.datgui.blackKeys.addColor(that.model.keys.black, 'fill');
+            that.datgui.blackKeysStroke = that.datgui.blackKeys.addColor(that.model.keys.black, 'stroke');
+            that.datgui.blackKeysHighlight = that.datgui.blackKeys.addColor(that.model.keys.black, 'highlight');
+
+            // Events ~ should be bubbled or at least done cleaner... this is so bad :(
+            that.datgui.octaves.onChange(function(value){
+                that.update("octaves",value);
+            });
+            that.datgui.firstNote.onChange(function(value){
+                that.update("firstNote",value);
+            });
+            that.datgui.padding.onChange(function(value){
+                that.update("padding",value);
+            });
+            that.datgui.whiteKeysFill.onChange(function(value){
+                that.update("keys.white.fill",value);
+            });
+            that.datgui.whiteKeysStroke.onChange(function(value){
+                that.update("keys.white.stroke",value);
+            });
+            that.datgui.whiteKeysHighlight.onChange(function(value){
+                that.update("keys.white.highlight",value);
+            });
+            that.datgui.blackKeysFill.onChange(function(value){
+                that.update("keys.black.fill",value);
+            });
+            that.datgui.blackKeysStroke.onChange(function(value){
+                that.update("keys.black.stroke",value);
+            });
+            that.datgui.blackKeysHighlight.onChange(function(value){
+                that.update("keys.black.highlight",value);
+            });
+
         };
+
+        // Not sure if I should even bother with this
+        // that.addControl = function (param) {
+        //     that.datgui[param] = that.datgui[param] || that.datgui.add(that.model, param, 1, 5);
+        // };
+        // that.addFolder = function (name) {
+        //     
+        // };
+        // that.appendFolder = function (name) {
+        //     
+        // }
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
+            that.events.afterGuiUpdate.fire(param, value);
+            return that;
         };
-        // that.bind = function () {
-        //     that.datgui.octaves = that.datgui.add(instrument.model, 'octaves', 1, 5);
-        //     that.datgui.firstNote = that.datgui.add(instrument.model, 'firstNote', 24, 84).step(1);
-        // 
-        //     // Folder for style
-        //     that.datgui.style = that.datgui.addFolder('Style');
-        //     that.datgui.padding = that.datgui.style.add(instrument.model, 'padding', 0, 200);
-        // 
-        //     // Do White Keys
-        //     that.datgui.whiteKeys = that.datgui.style.addFolder('White Keys');
-        //     that.datgui.whiteKeysFill = that.datgui.whiteKeys.addColor(instrument.model.keys.white, 'fill');
-        //     that.datgui.whiteKeysStroke = that.datgui.whiteKeys.addColor(instrument.model.keys.white, 'stroke');
-        //     that.datgui.whiteKeysHighlight = that.datgui.whiteKeys.addColor(instrument.model.keys.white, 'highlight');
-        // 
-        //     // Do Black Keys
-        //     that.datgui.blackKeys = that.datgui.style.addFolder('Black Keys');
-        //     that.datgui.blackKeysFill = that.datgui.blackKeys.addColor(instrument.model.keys.black, 'fill');
-        //     that.datgui.blackKeysStroke = that.datgui.blackKeys.addColor(instrument.model.keys.black, 'stroke');
-        //     that.datgui.blackKeysHighlight = that.datgui.blackKeys.addColor(instrument.model.keys.black, 'highlight');
-        // };
     };
 
     automm.gui.postInitFunction = function (that) {
-        if (that.container.children("#gui") !== []) {
+        if (that.model.drawGui) {
             that.init();
-            that.events.afterInstrumentUpdate.addListener(that.update);
         }
     };
 }(jQuery));
