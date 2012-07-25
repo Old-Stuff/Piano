@@ -48,8 +48,7 @@ var automm = automm || {};
         events: {
             afterGuiUpdate: null
         },
-        
-        
+
         preInitFunction: "automm.gui.preInitFunction",
         postInitFunction: "automm.gui.postInitFunction"
     });
@@ -82,32 +81,32 @@ var automm = automm || {};
             that.datgui.blackKeysHighlight = that.datgui.blackKeys.addColor(that.model.keys.black, 'highlight');
 
             // Events ~ should be bubbled or at least done cleaner... this is so bad :(
-            that.datgui.octaves.onChange(function(value){
-                that.update("octaves",value);
+            that.datgui.octaves.onChange(function (value) {
+                that.update("octaves", value);
             });
-            that.datgui.firstNote.onChange(function(value){
-                that.update("firstNote",value);
+            that.datgui.firstNote.onChange(function (value) {
+                that.update("firstNote", value);
             });
-            that.datgui.padding.onChange(function(value){
-                that.update("padding",value);
+            that.datgui.padding.onChange(function (value) {
+                that.update("padding", value);
             });
-            that.datgui.whiteKeysFill.onChange(function(value){
-                that.update("keys.white.fill",value);
+            that.datgui.whiteKeysFill.onChange(function (value) {
+                that.update("keys.white.fill", value);
             });
-            that.datgui.whiteKeysStroke.onChange(function(value){
-                that.update("keys.white.stroke",value);
+            that.datgui.whiteKeysStroke.onChange(function (value) {
+                that.update("keys.white.stroke", value);
             });
-            that.datgui.whiteKeysHighlight.onChange(function(value){
-                that.update("keys.white.highlight",value);
+            that.datgui.whiteKeysHighlight.onChange(function (value) {
+                that.update("keys.white.highlight", value);
             });
-            that.datgui.blackKeysFill.onChange(function(value){
-                that.update("keys.black.fill",value);
+            that.datgui.blackKeysFill.onChange(function (value) {
+                that.update("keys.black.fill", value);
             });
-            that.datgui.blackKeysStroke.onChange(function(value){
-                that.update("keys.black.stroke",value);
+            that.datgui.blackKeysStroke.onChange(function (value) {
+                that.update("keys.black.stroke", value);
             });
-            that.datgui.blackKeysHighlight.onChange(function(value){
-                that.update("keys.black.highlight",value);
+            that.datgui.blackKeysHighlight.onChange(function (value) {
+                that.update("keys.black.highlight", value);
             });
 
         };

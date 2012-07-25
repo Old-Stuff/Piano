@@ -63,7 +63,7 @@ var automm = automm || {};
                         octaveNotes: "{instrument}.model.octaveNotes",
                         padding: "{instrument}.model.padding",
                         pattern: "{instrument}.model.pattern",
-                        keys: "{instrument}.model.keys",
+                        keys: "{instrument}.model.keys"
                     },
                     events: {
                         onNote: "{instrument}.events.onNote",
@@ -88,7 +88,7 @@ var automm = automm || {};
                     }
                 }
             },
-            
+
             gui: {
                 type: "automm.gui",
                 container: "{instrument}.container",
@@ -100,7 +100,7 @@ var automm = automm || {};
                         octaveNotes: "{instrument}.model.octaveNotes",
                         padding: "{instrument}.model.padding",
                         pattern: "{instrument}.model.pattern",
-                        keys: "{instrument}.model.keys",
+                        keys: "{instrument}.model.keys"
                     },
                     events: {
                         afterGuiUpdate: "{instrument}.events.afterGuiUpdate"
