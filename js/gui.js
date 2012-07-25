@@ -56,6 +56,8 @@ var automm = automm || {};
     };
 
     automm.gui.postInitFunction = function (that) {
-        that.init();
+        if (that.container.children("#gui") !== []) {
+            that.init();
+        }
     };
 }(jQuery));
