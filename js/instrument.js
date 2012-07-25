@@ -48,7 +48,8 @@ var automm = automm || {};
         events: {
             onNote: null,
             afterNote: null,
-            afterInstrumentUpdate: null
+            afterInstrumentUpdate: null,
+            afterGuiUpdate: null
         },
 
         components: {
@@ -63,7 +64,6 @@ var automm = automm || {};
                         padding: "{instrument}.model.padding",
                         pattern: "{instrument}.model.pattern",
                         keys: "{instrument}.model.keys",
-                        keyTypes: "{instrument}.model.keyTypes"
                     },
                     events: {
                         onNote: "{instrument}.events.onNote",
@@ -91,7 +91,21 @@ var automm = automm || {};
             
             gui: {
                 type: "automm.gui",
-                container: "{instrument}.container"
+                container: "{instrument}.container",
+                options: {
+                    model: {
+                        firstNote: "{instrument}.model.firstNote", // Middle C
+                        octaves: "{instrument}.model.octaves",
+                        octaveNotes: "{instrument}.model.octaveNotes",
+                        padding: "{instrument}.model.padding",
+                        pattern: "{instrument}.model.pattern",
+                        keys: "{instrument}.model.keys",
+                    },
+                    events: {
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
+                        afterGuiUpdate: "{instrument}.events.afterGuiUpdate"
+                    }
+                }
             }
         }
     });

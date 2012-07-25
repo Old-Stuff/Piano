@@ -61,6 +61,9 @@ var automm = automm || {};
             that.customContainer.append(that.datgui.domElement);
             that.customContainer.attr('align', 'center').children().attr('align', 'left');
         };
+        that.update = function (param, value) {
+            that.applier.requestChange(param, value);
+        };
         // that.bind = function () {
         //     that.datgui.octaves = that.datgui.add(instrument.model, 'octaves', 1, 5);
         //     that.datgui.firstNote = that.datgui.add(instrument.model, 'firstNote', 24, 84).step(1);
@@ -86,6 +89,7 @@ var automm = automm || {};
     automm.gui.postInitFunction = function (that) {
         if (that.container.children("#gui") !== []) {
             that.init();
+            that.events.afterInstrumentUpdate.addListener(that.update);
         }
     };
 }(jQuery));
