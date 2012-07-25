@@ -154,7 +154,7 @@ var automm = automm || {};
 
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
-            that.container.html('');  // Look into jquery clear
+            that.container.children("#piano").html('');  // Look into jquery clear
             that.draw();
             // Fire event that piano is drawn
             that.events.afterUpdate.fire();
