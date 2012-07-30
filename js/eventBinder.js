@@ -61,14 +61,14 @@ var automm = automm || {};
                 // Make sure the note element is set up properly
                 note = $(note);
                 // mousedown event binding
-                note.mousedown(function () {
+                note.bind('vmousedown', function () {
                     // For Keeping track
                     lastClicked = note;
                     isClicking = true;
                     that.events.onNote.fire(note);
                 });
                 // mousup event binding
-                note.mouseup(function () {
+                note.bind('vmouseup', function () {
                     isClicking = false;
                     if (!that.model.isShift) {
                         that.events.afterNote.fire(note);
@@ -76,7 +76,7 @@ var automm = automm || {};
                     lastClicked = {};
                 });
                 // mouse hover event binding
-                note.mouseover(function () {
+                note.bind('vmouseover', function () {
                     if (isClicking) {
                         if (!that.model.isShift) {
                             that.events.afterNote.fire(lastClicked);
