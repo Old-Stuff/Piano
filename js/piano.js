@@ -93,6 +93,7 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
+            r.attr("data-role", "button");
             r.attr("noteType", noteType.fill);
         };
 
@@ -147,6 +148,7 @@ var automm = automm || {};
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
+            that.noteGroup.attr("data-role", "controlgroup");
 
             // Draw the keys
             that.render();
