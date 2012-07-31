@@ -72,6 +72,26 @@ var automm = automm || {};
                     }
                 }
             },
+            grid: {
+                type: "automm.grid",
+                container: "{instrument}.container",
+                options: {
+                    model: {
+                        columns: "{instrument}.model.columns",
+                        rows: "{instrument}.model.rows",
+                        firstNote: "{instrument}.model.firstNote", // Middle C
+                        octaveNotes: "{instrument}.model.octaveNotes",
+                        padding: "{instrument}.model.padding",
+                        pattern: "{instrument}.model.pattern",
+                        keys: "{instrument}.model.keys"
+                    },
+                    events: {
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote",
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
+                    }
+                }
+            },
 
             oscillator: {
                 type: "automm.oscillator",

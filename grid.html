@@ -38,8 +38,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     <script src="js/third_party/MyInfusion.js"></script>
     <script src="js/third_party/dat.gui.js"></script>
     <script src="js/oscillator.js"></script>
+    <script src="js/piano.js"></script>
     <script src="js/grid.js"></script>
-    <script src="js/instrument_grid.js"></script>
+    <script src="js/instrument.js"></script>
     <script src="js/gui.js"></script>
     <script src="js/eventBinder.js"></script>
     <script type/="text/javascript">
@@ -49,7 +50,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     (function(){
         "use strict";
 
-        // Draw a grid based on the below model (Subject to change)
+        // Draw a piano based on the below model (Subject to change)
         // model: {
         //             firstNote: 60, // Middle C
         //             octaves: 1,
@@ -66,10 +67,21 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
         instrument = automm.instrument("#instrument", {
             model: {
-                columns: 8,
-                rows: 8,
                 firstNote: 60,
+                octaves: 2,
                 padding: 0,
+                keys: {
+                    white: {
+                        fill: '#fff000',
+                        stroke: '#000000',
+                        highlight: '#ffffff'
+                    },
+                    black: {
+                        fill: '#ffa400',
+                        stroke: '#000000',
+                        highlight: '#000000'
+                    }
+                }
             }
         });
     }());

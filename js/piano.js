@@ -181,13 +181,16 @@ var automm = automm || {};
     };
 
     automm.piano.postInitFunction = function (that) {
-        // Draw the svg
-        that.draw();
-        that.events.afterUpdate.fire();
-        // Fire event that piano is drawn
-        that.events.onNote.addListener(that.onNote);
-        that.events.afterNote.addListener(that.afterNote);
-        that.events.afterInstrumentUpdate.addListener(that.update);
+        var emptyArray = [];
+        if(that.container.find("#piano") !== emptyArray){
+            // Draw the svg
+            that.draw();
+            that.events.afterUpdate.fire();
+            // Fire event that piano is drawn
+            that.events.onNote.addListener(that.onNote);
+            that.events.afterNote.addListener(that.afterNote);
+            that.events.afterInstrumentUpdate.addListener(that.update);
+        }
     };
 
     // fluid.defaults("automm.key", {

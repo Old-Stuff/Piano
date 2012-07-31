@@ -174,13 +174,16 @@ var automm = automm || {};
     };
 
     automm.grid.postInitFunction = function (that) {
-        // Draw the svg
-        that.draw();
-        that.events.afterUpdate.fire();
-        // Fire event that grid is drawn
-        that.events.onNote.addListener(that.onNote);
-        that.events.afterNote.addListener(that.afterNote);
-        that.events.afterInstrumentUpdate.addListener(that.update);
+        var emptyArray = [];
+        if(that.container.find("#grid") !== emptyArray){
+            // Draw the svg
+            that.draw();
+            that.events.afterUpdate.fire();
+            // Fire event that grid is drawn
+            that.events.onNote.addListener(that.onNote);
+            that.events.afterNote.addListener(that.afterNote);
+            that.events.afterInstrumentUpdate.addListener(that.update);
+        }
     };
 
     // fluid.defaults("automm.key", {
