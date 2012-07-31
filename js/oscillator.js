@@ -100,7 +100,7 @@ var automm = automm || {};
         that.midiToFreq = function (noteNum) {
             return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
         };
-
+        // flock.enviro.shared = flock.enviro({bufferSize: 4096})
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
