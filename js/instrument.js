@@ -24,6 +24,8 @@ var automm = automm || {};
         postInitFunction: "automm.instrument.postInitFunction",
 
         model: {
+            columns: 8,
+            rows: 8,
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
             afourFreq: 440, // Standard freq for A4, used to calculate all other notes
             firstNote: 60, // Middle C
