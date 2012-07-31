@@ -97,15 +97,15 @@ var automm = automm || {};
             r.attr("data-role", "button");
             r.attr("noteType", noteType.fill);
         };
-        
+
         that.calcNoteDim = function (noteType, noteNumber, dim) {
             var calculation = (noteNumber - that.model.firstNote);
-            if (dim === "width"){
+            if (dim === "width") {
                 calculation = calculation % that.model.columns;
-            } else{
+            } else {
                 calculation = Math.floor(calculation / that.model.columns);
             }
-            calculation = calculation * noteType[dim]; 
+            calculation = calculation * noteType[dim];
             return (calculation);
         };
 
@@ -114,7 +114,7 @@ var automm = automm || {};
             var notePos = {},
                 noteNum,
                 i;
-            
+
             for (i = 0; i < that.model.keys.white.notes.length; i += 1) {
                 noteNum = that.model.keys.white.notes[i];
                 notePos.width = that.calcNoteDim(that.model.keys.white, noteNum, "width");
@@ -127,7 +127,7 @@ var automm = automm || {};
                 notePos.height = that.calcNoteDim(that.model.keys.black, noteNum, "height");
                 that.drawNote(that.model.keys.black, notePos.width, notePos.height, noteNum);
             }
-            
+
         };
 
         that.draw = function () {
@@ -175,7 +175,7 @@ var automm = automm || {};
 
     automm.grid.postInitFunction = function (that) {
         var emptyArray = [];
-        if(that.container.find("#grid") !== emptyArray){
+        if (that.container.find("#grid") !== emptyArray) {
             // Draw the svg
             that.draw();
             that.events.afterUpdate.fire();

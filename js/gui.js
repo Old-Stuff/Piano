@@ -17,7 +17,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 
 var automm = automm || {};
 
-(function ($) {
+(function () {
     "use strict";
     fluid.defaults("automm.gui", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
@@ -129,9 +129,10 @@ var automm = automm || {};
     };
 
     automm.gui.postInitFunction = function (that) {
-        if (that.model.drawGui) {
+        var emptyArray = [];
+        if (that.container.find("#gui") !== emptyArray) {
             that.init();
             that.container.append("<div class='buffer' style='height:50px;'></div>");
         }
     };
-}(jQuery));
+}());
