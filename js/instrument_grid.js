@@ -87,25 +87,6 @@ var automm = automm || {};
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }
-            },
-
-            gui: {
-                type: "automm.gui",
-                container: "{instrument}.container",
-                options: {
-                    model: {
-                        drawGui: true,
-                        firstNote: "{instrument}.model.firstNote", // Middle C
-                        octaves: "{instrument}.model.octaves",
-                        octaveNotes: "{instrument}.model.octaveNotes",
-                        padding: "{instrument}.model.padding",
-                        pattern: "{instrument}.model.pattern",
-                        keys: "{instrument}.model.keys"
-                    },
-                    events: {
-                        afterGuiUpdate: "{instrument}.events.afterGuiUpdate"
-                    }
-                }
             }
         }
     });

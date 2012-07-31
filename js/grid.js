@@ -64,12 +64,14 @@ var automm = automm || {};
 
     automm.grid.preInitFunction = function (that) {
         that.setup = function () {
-            var i;
+            var noteNum = that.model.firstNote,
+                i;
             that.model.keys.white.notes = [];
             that.model.keys.black.notes = [];
 
-            for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i += 1) {
-                that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
+            for (i = 0; i < (that.model.columns * that.model.rows); i += 1) {
+                that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(noteNum);
+                noteNum += 1;
             }
 
             that.model.viewbox = {
@@ -97,7 +99,14 @@ var automm = automm || {};
         };
         
         that.calcNoteDim = function (noteType, noteNumber, dim) {
-            return (((noteNumber - that.model.firstNote) % that.model.columns) * noteType[dim]);
+            var calculation = (noteNumber - that.model.firstNote);
+            if (dim === "width"){
+                calculation = calculation % that.model.columns;
+            } else{
+                calculation = Math.floor(calculation / that.model.rows);
+            }
+            calculation = calculation * noteType[dim]; 
+            return (calculation);
         };
 
         // Automation of drawing all the keys on the canvas
@@ -108,14 +117,14 @@ var automm = automm || {};
             
             for (i = 0; i < that.model.keys.white.notes.length; i += 1) {
                 noteNum = that.model.keys.white.notes[i];
-                notePos.width = that.calcNoteDim("white", noteNum, "width");
-                notePos.height = that.calcNoteDim("white", noteNum, "height");
+                notePos.width = that.calcNoteDim(that.model.keys.white, noteNum, "width");
+                notePos.height = that.calcNoteDim(that.model.keys.white, noteNum, "height");
                 that.drawNote(that.model.keys.white, notePos.width, notePos.height, noteNum);
             }
             for (i = 0; i < that.model.keys.black.notes.length; i += 1) {
                 noteNum = that.model.keys.black.notes[i];
-                notePos.width = that.calcNoteDim("black", noteNum, "width");
-                notePos.height = that.calcNoteDim("black", noteNum, "height");
+                notePos.width = that.calcNoteDim(that.model.keys.black, noteNum, "width");
+                notePos.height = that.calcNoteDim(that.model.keys.black, noteNum, "height");
                 that.drawNote(that.model.keys.black, notePos.width, notePos.height, noteNum);
             }
             
