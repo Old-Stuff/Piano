@@ -27,10 +27,8 @@ var automm = automm || {};
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
             afourFreq: 440, // Standard freq for A4, used to calculate all other notes
             firstNote: 60, // Middle C
-            octaves: 1,
             octaveNotes: 12,
             padding: 0,
-            pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
                 white: {
                     fill: '#fff000',
@@ -58,8 +56,9 @@ var automm = automm || {};
                 container: "{instrument}.container",
                 options: {
                     model: {
+                        columns: "{instrument}.model.columns",
+                        rows: "{instrument}.model.rows",
                         firstNote: "{instrument}.model.firstNote", // Middle C
-                        octaves: "{instrument}.model.octaves",
                         octaveNotes: "{instrument}.model.octaveNotes",
                         padding: "{instrument}.model.padding",
                         pattern: "{instrument}.model.pattern",

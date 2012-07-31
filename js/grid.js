@@ -103,7 +103,7 @@ var automm = automm || {};
             if (dim === "width"){
                 calculation = calculation % that.model.columns;
             } else{
-                calculation = Math.floor(calculation / that.model.rows);
+                calculation = Math.floor(calculation / that.model.columns);
             }
             calculation = calculation * noteType[dim]; 
             return (calculation);

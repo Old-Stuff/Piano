@@ -66,21 +66,10 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
         instrument = automm.instrument("#instrument", {
             model: {
+                columns: 8,
+                rows: 8,
                 firstNote: 60,
-                octaves: 2,
                 padding: 0,
-                keys: {
-                    white: {
-                        fill: '#fff000',
-                        stroke: '#000000',
-                        highlight: '#ffffff'
-                    },
-                    black: {
-                        fill: '#ffa400',
-                        stroke: '#000000',
-                        highlight: '#000000'
-                    }
-                }
             }
         });
     }());
