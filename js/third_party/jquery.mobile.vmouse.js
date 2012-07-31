@@ -19,7 +19,7 @@
 //>>label: Virtual Mouse (vmouse) Bindings
 //>>group: Core
 
-// define( [ "jquery" ], function( $ ) {
+define( [ "jquery" ], function( $ ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, window, document, undefined ) {
 
@@ -508,5 +508,5 @@ if ( eventCaptureSupported ) {
 }
 })( jQuery, window, document );
 //>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
-// });
+});
 //>>excludeEnd("jqmBuildExclude");
