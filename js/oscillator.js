@@ -55,6 +55,14 @@ var automm = automm || {};
     });
 
     automm.oscillator.preInitFunction = function (that) {
+        // Manually adjust buffer size on some platforms until
+        // Flocking does this automatically.
+        // See https://github.com/colinbdclark/Flocking/issues/21 for more details.
+        var platform = navigator.platform || "";
+        flock.enviro.shared = platform.indexOf("Linux") !== -1 ?
+            flock.enviro({bufferSize: 2048}) : $.browser.mozilla && platform === "Win32" ? 
+            flock.enviro({bufferSize: 4096}) : flock.enviro.shared;
+
         that.osc = flock.synth({
             id: "carrier",
             ugen: that.model.osc,
