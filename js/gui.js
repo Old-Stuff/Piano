@@ -121,6 +121,7 @@ var automm = automm || {};
         // that.appendFolder = function (name) {
         //     
         // }
+
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
             that.events.afterGuiUpdate.fire(param, value);
@@ -132,7 +133,6 @@ var automm = automm || {};
         var emptyArray = [];
         if (that.container.find("#gui") !== emptyArray) {
             that.init();
-            that.container.append("<div class='buffer' style='height:50px;'></div>");
         }
     };
 }());
