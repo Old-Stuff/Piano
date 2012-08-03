@@ -61,7 +61,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
           <section>
               <div id="instrument">
                   <div id="piano"></div>
-                  <div id="gui"></div>
               </div>
           </section>
           
@@ -81,16 +80,19 @@ $ instrument.update("afourFreq", 435)  // 19th Century Austria
 $ instrument.update("octaveNotes", 7)  // Just try it!
 </code></pre>
 <br>
-    <div>
-        <div id="gridFrame">
-            <div id="grid"></div>
-        </div>
-    </div> 
+<h1><center><b>Now with grids!</b></center></h1>
+<br>
+    <div id="gridFrame"></div>
+<br>
+<pre><code>$ grid.model                     // Take a peak at the model
+$ grid.update("rows", 2)         // Clear up some space.
+$ grid.update("columns", 13)     // each row becomes a mode!
+$ grid.update("octaveNotes", 7)  // Works too!
+</code></pre>
+<center><p>These are just some of the nifty keyboards you can make.</p></center>
 <br>
     <div>
-        <div style="float:left; width:50%;" id="topleftpiano">
-            <div id="#piano"></div>
-        </div>
+        <div style="float:left; width:50%;" id="topleftpiano"></div>
         <div style="float:left; width:50%;" id="toprightpiano"></div>
     </div>
     <div>
@@ -98,9 +100,7 @@ $ instrument.update("octaveNotes", 7)  // Just try it!
         <div style="float:left; width:50%;" id="bottomrightpiano"></div>
     </div>
 
-<center><p>These are just some of the nifty keyboards you can make.</p>
-
-<p>Upcoming features include ARIA support, keyboard binding, touch support, diatonic / scale based filtering, a grid layout, and an arpeggiator</p></center>
+<center><p>Upcoming features include ARIA support, keyboard binding, touch support, diatonic / scale based filtering, a grid layout, and an arpeggiator</p></center>
       </section>
 
       <footer>
@@ -151,6 +151,7 @@ $ instrument.update("octaveNotes", 7)  // Just try it!
         //             }
         instrument = automm.instrument("#instrument", {
             model: {
+                drawGui: true,
                 firstNote: 60,
                 octaves: 2,
                 padding: 0,
@@ -169,102 +170,107 @@ $ instrument.update("octaveNotes", 7)  // Just try it!
             }
         });
 
-        // grid = automm.instrument("#gridFrame", {
-        //     model: {
-        //         firstNote: 60,
-        //         octaves: 2,
-        //         padding: 0,
-        //         keys: {
-        //             white: {
-        //                 fill: '#fff000',
-        //                 stroke: '#000000',
-        //                 highlight: '#ffffff'
-        //             },
-        //             black: {
-        //                 fill: '#ffa400',
-        //                 stroke: '#000000',
-        //                 highlight: '#000000'
-        //             }
-        //         }
-        //     }
-        // });
+        grid = automm.instrument("#gridFrame", {
+            model: {
+                autoGrid: true,
+                firstNote: 60,
+                octaves: 2,
+                padding: 0,
+                keys: {
+                    white: {
+                        fill: 'magenta',
+                        stroke: 'black',
+                        highlight: 'lime'
+                    },
+                    black: {
+                        fill: 'cyan',
+                        stroke: 'black',
+                        highlight: 'maroon'
+                    }
+                }
+            }
+        });
         
 
         demo.topleftpiano = automm.instrument("#topleftpiano", {
               model: {
+                  autoPiano: true,
                   padding: 50,
                   firstNote: 60,
                   octaves: 4,
                   octaveNotes: 10,
-                  // keys: {
-                  //     white: {
-                  //         fill: 'white',
-                  //         highlight: 'yellow'
-                  //     },
-                  //     black: {
-                  //         fill: 'black',
-                  //         highlight: 'yellow'
-                  //     }
-                  // }
+                  keys: {
+                      white: {
+                          fill: 'white',
+                          highlight: 'yellow'
+                      },
+                      black: {
+                          fill: 'black',
+                          highlight: 'yellow'
+                      }
+                  }
               }
          });
 
          demo.toprightpiano = automm.instrument("#toprightpiano", {
                model: {
+                   autoPiano: true,
                    padding: 50,
                    firstNote: 60,
                    octaveNotes: 11,
                    octaves: 4,
-                   // keys: {
-                   //     white: {
-                   //         fill: 'black',
-                   //         highlight: 'yellow',
-                   //         stroke: 'white'
-                   //     },
-                   //     black: {
-                   //         fill: 'white',
-                   //         highlight: 'orange',
-                   //         Stroke: 'white'
-                   //     }
-                   // }
+                   keys: {
+                       white: {
+                           fill: 'black',
+                           highlight: 'yellow',
+                           stroke: 'white'
+                       },
+                       black: {
+                           fill: 'white',
+                           highlight: 'orange',
+                           Stroke: 'white'
+                       }
+                   }
                }
           });
 
           demo.bottomleftpiano = automm.instrument("#bottomleftpiano", {
                 model: {
+                    autoPiano: true,
                     padding: 50,
                     firstNote: 61,
                     octaveNotes: 8,
                     octaves: 2,
-                    // keys: {
-                    //     white: {
-                    //         fill: 'LightSkyBlue',
-                    //         highlight: 'purple'
-                    //     },
-                    //     black: {
-                    //         fill: 'silver',
-                    //         highlight: 'hotpink'
-                    //     }
-                    // }
+                    keys: {
+                        white: {
+                            fill: 'LightSkyBlue',
+                            highlight: 'purple'
+                        },
+                        black: {
+                            fill: 'silver',
+                            highlight: 'hotpink'
+                        }
+                    }
                 }
            });
 
            demo.bottomrightpiano = automm.instrument("#bottomrightpiano", {
                  model: {
+                     autoPiano: true,
                      padding: 50,
                      firstNote: 64,
                      octaveNotes: 8,
                      octaves: 2,
-                     // keys: {
-                     //     white: {
-                     //         fill: 'purple',
-                     //         highlight: 'LightSkyBlue'
-                     //     },
-                     //     black: {
-                     //         fill: 'hotpink',
-                     //         highlight: 'silver'
-                     //     }
-                     // }
+                     keys: {
+                         white: {
+                             fill: 'purple',
+                             highlight: 'LightSkyBlue'
+                         },
+                         black: {
+                             fill: 'hotpink',
+                             highlight: 'silver'
+                         }
+                     }
                  }
             });
         }());
