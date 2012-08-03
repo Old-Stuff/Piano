@@ -59,7 +59,7 @@ var automm = automm || {};
                     lastClicked = {};
                 });
                 // mouse hover event binding
-                note.hover(function () {
+                note.mouseover(function () {
                     if (isClicking) {
                         that.events.afterNote.fire(lastClicked);
                         that.events.onNote.fire(note);

@@ -21,20 +21,22 @@ var automm = automm || {};
 (function ($) {
     "use strict";
 
-    fluid.defaults("automm.piano", {
+    fluid.defaults("automm.grid", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        preInitFunction: "automm.piano.preInitFunction",
-        postInitFunction: "automm.piano.postInitFunction",
+        preInitFunction: "automm.grid.preInitFunction",
+        postInitFunction: "automm.grid.postInitFunction",
 
         model: {
+            columns: 8,
+            rows: 8,
             firstNote: 60, // Middle C
             octaves: 1,
             octaveNotes: 12,
             padding: 50,
             pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
-                white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-                black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+                white: {width: 50, height: 50, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+                black: {width: 50, height: 50, stroke: "black", fill: "black", highlight: "yellow", notes: []}
             }
         },
 
@@ -48,34 +50,33 @@ var automm = automm || {};
         components: {
             eventBinder: {
                 type: "automm.eventBinder",
-                container: "{piano}.container",
+                container: "{grid}.container",
                 options: {
                     events: {
-                        afterUpdate: "{piano}.events.afterUpdate",
-                        onNote: "{piano}.events.onNote",
-                        afterNote: "{piano}.events.afterNote"
+                        afterUpdate: "{grid}.events.afterUpdate",
+                        onNote: "{grid}.events.onNote",
+                        afterNote: "{grid}.events.afterNote"
                     }
                 }
             }
         }
     });
 
-    automm.piano.preInitFunction = function (that) {
+    automm.grid.preInitFunction = function (that) {
         that.setup = function () {
-            var i;
+            var noteNum = that.model.firstNote,
+                i;
             that.model.keys.white.notes = [];
             that.model.keys.black.notes = [];
 
-            for (i = that.model.firstNote; i < (that.model.firstNote + (that.model.octaves * that.model.octaveNotes)); i += 1) {
-                that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(i);
+            for (i = 0; i < (that.model.columns * that.model.rows); i += 1) {
+                that.model.keys[that.model.pattern[i % that.model.octaveNotes]].notes.push(noteNum);
+                noteNum += 1;
             }
 
-            that.model.whiteNotes = that.model.keys.white.notes.length;
-            that.model.blackNotes = that.model.keys.black.notes.length;
-
             that.model.viewbox = {
-                width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
-                height: that.model.keys.white.height + that.model.padding
+                width: (that.model.keys.white.width * that.model.columns) + that.model.padding,
+                height: (that.model.keys.white.height * that.model.rows) + that.model.padding
             };
 
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
@@ -97,51 +98,43 @@ var automm = automm || {};
             r.attr("noteType", noteType.fill);
         };
 
+        that.calcNoteDim = function (noteType, noteNumber, dim) {
+            var calculation = (noteNumber - that.model.firstNote);
+            if (dim === "width") {
+                calculation = calculation % that.model.columns;
+            } else {
+                calculation = Math.floor(calculation / that.model.columns);
+            }
+            calculation = calculation * noteType[dim];
+            return (calculation);
+        };
+
         // Automation of drawing all the keys on the canvas
         that.render = function () {
-            var blackX = -(that.model.keys.black.width / 2),
-                prevNote,
-                blackCount = 0,
+            var notePos = {},
+                noteNum,
                 i;
 
-            if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]) {
-                blackX = blackX - that.model.keys.white.width + (that.model.keys.black.width / 2);
-            }
-            // Draw White Keys
             for (i = 0; i < that.model.keys.white.notes.length; i += 1) {
-                if (that.model.keys.white.notes[0] > that.model.keys.black.notes[0]) {
-                    that.drawNote(that.model.keys.white, (i * that.model.keys.white.width) + that.model.keys.black.width / 2, 0, that.model.keys.white.notes[i]);
-                } else {
-                    that.drawNote(that.model.keys.white, i * that.model.keys.white.width, 0, that.model.keys.white.notes[i]);
-                }
+                noteNum = that.model.keys.white.notes[i];
+                notePos.width = that.calcNoteDim(that.model.keys.white, noteNum, "width");
+                notePos.height = that.calcNoteDim(that.model.keys.white, noteNum, "height");
+                that.drawNote(that.model.keys.white, notePos.width, notePos.height, noteNum);
+            }
+            for (i = 0; i < that.model.keys.black.notes.length; i += 1) {
+                noteNum = that.model.keys.black.notes[i];
+                notePos.width = that.calcNoteDim(that.model.keys.black, noteNum, "width");
+                notePos.height = that.calcNoteDim(that.model.keys.black, noteNum, "height");
+                that.drawNote(that.model.keys.black, notePos.width, notePos.height, noteNum);
             }
 
-            // Draw Black Keys
-            for (i = that.model.firstNote; i < (that.model.octaves * that.model.octaveNotes) + that.model.firstNote; i += 1) {
-                //get width going
-
-                // If the current key in the pattern is black then draw it!
-                if (that.model.pattern[i % that.model.octaveNotes] === "black") {
-                    blackX = blackX + that.model.keys.white.width;
-                    that.drawNote(that.model.keys.black, blackX, 0, that.model.keys.black.notes[blackCount]);
-                    blackCount = blackCount + 1;
-                }
-
-                // If it is white, but the previous key was white, skip the key
-                if (that.model.pattern[i % that.model.octaveNotes] === prevNote) {
-                    blackX = blackX + that.model.keys.white.width;
-                }
-
-                // Keep track of previous key
-                prevNote = that.model.pattern[i % that.model.octaveNotes];
-            }
         };
 
         that.draw = function () {
             // Calculate it all
             that.setup();
             // Draw viewbox and subsequent group to draw keys into
-            that.d3container = d3.select("#" + that.container.attr('id')).select('#piano');  // ??????
+            that.d3container = d3.select("#" + that.container.attr('id')).select('#grid');  // ??????
             var svg = that.d3container.append("svg");
             svg.attr("style", "height: 100%;");
             svg.attr("viewBox", that.model.viewbox.dim);
@@ -156,9 +149,9 @@ var automm = automm || {};
 
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
-            that.container.children("#piano").html('');  // Look into jquery clear
+            that.container.children("#grid").html('');  // Look into jquery clear
             that.draw();
-            // Fire event that piano is drawn
+            // Fire event that grid is drawn
             that.events.afterUpdate.fire();
         };
 
@@ -180,13 +173,13 @@ var automm = automm || {};
 
     };
 
-    automm.piano.postInitFunction = function (that) {
+    automm.grid.postInitFunction = function (that) {
         var emptyArray = [];
-        if (that.container.find("#piano") !== emptyArray) {
+        if (that.container.find("#grid") !== emptyArray) {
             // Draw the svg
             that.draw();
             that.events.afterUpdate.fire();
-            // Fire event that piano is drawn
+            // Fire event that grid is drawn
             that.events.onNote.addListener(that.onNote);
             that.events.afterNote.addListener(that.afterNote);
             that.events.afterInstrumentUpdate.addListener(that.update);
@@ -209,7 +202,7 @@ var automm = automm || {};
     //     
     // automm.key.postInitFunction = function (that){
     //     that.html = function (){
-    //         return "<" + that.model.shape +" style\"stoke: " + piano.model[that.model.keyType].stroke + "><" + that.model.shape + ">";
+    //         return "<" + that.model.shape +" style\"stoke: " + grid.model[that.model.keyType].stroke + "><" + that.model.shape + ">";
     //     };
     // };
 

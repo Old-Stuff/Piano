@@ -14,13 +14,13 @@ You may obtain a copy of the ECL 2.0 License and BSD License at
 https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
 */
 
-/*global jQuery, fluid, flock*/
+/*global jQuery, fluid, flock, navigator*/
 
 
 
 var automm = automm || {};
 
-(function () {
+(function ($) {
     "use strict";
     fluid.defaults("automm.oscillator", {
         gradeNames: ["fluid.modelComponent", "fluid.eventedComponent", "autoInit"],
@@ -55,6 +55,14 @@ var automm = automm || {};
     });
 
     automm.oscillator.preInitFunction = function (that) {
+        // Manually adjust buffer size on some platforms until
+        // Flocking does this automatically.
+        // See https://github.com/colinbdclark/Flocking/issues/21 for more details.
+        var platform = navigator.platform || "";
+        flock.enviro.shared = platform.indexOf("Linux") !== -1 ?
+                flock.enviro({bufferSize: 2048}) : $.browser.mozilla && platform === "Win32" ?
+                flock.enviro({bufferSize: 4096}) : flock.enviro.shared;
+
         that.osc = flock.synth({
             id: "carrier",
             ugen: that.model.osc,
@@ -100,10 +108,10 @@ var automm = automm || {};
         that.midiToFreq = function (noteNum) {
             return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
         };
-
+        // flock.enviro.shared = flock.enviro({bufferSize: 4096})
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
         that.events.afterInstrumentUpdate.addListener(that.update);
     };
-}());
+}(jQuery));
