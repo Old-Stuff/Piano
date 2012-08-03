@@ -182,7 +182,7 @@ var automm = automm || {};
 
     automm.piano.postInitFunction = function (that) {
         var emptyArray = [];
-        if (that.container.find("#piano") !== emptyArray) {
+        if ((that.container.find("#piano") !== emptyArray) || that.model.auto) {
             // Draw the svg
             that.draw();
             that.events.afterUpdate.fire();

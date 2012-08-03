@@ -175,7 +175,7 @@ var automm = automm || {};
 
     automm.grid.postInitFunction = function (that) {
         var emptyArray = [];
-        if (that.container.find("#grid") !== emptyArray) {
+        if ((that.container.find("#grid") !== emptyArray) || that.model.auto) {
             // Draw the svg
             that.draw();
             that.events.afterUpdate.fire();
