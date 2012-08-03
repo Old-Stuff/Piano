@@ -121,7 +121,6 @@ var automm = automm || {};
         // that.appendFolder = function (name) {
         //     
         // }
-
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
             that.events.afterGuiUpdate.fire(param, value);
@@ -130,9 +129,12 @@ var automm = automm || {};
     };
 
     automm.gui.postInitFunction = function (that) {
-        var emptyArray = [];
-        if (that.container.find("#gui") !== emptyArray) {
+        if (that.model.drawGui) {
+            if (that.container.find("gui").length < 1) {
+                that.container.append("<div id='gui'></div>");
+            }
             that.init();
+            that.container.append("<div class='buffer' style='height:50px;'></div>");
         }
     };
 }());

@@ -24,6 +24,9 @@ var automm = automm || {};
         postInitFunction: "automm.instrument.postInitFunction",
 
         model: {
+            autoPiano: false,
+            autoGrid: false,
+            autoGui: false,
             columns: 8,
             rows: 8,
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
@@ -60,6 +63,7 @@ var automm = automm || {};
                 container: "{instrument}.container",
                 options: {
                     model: {
+                        auto: "{instrument}.model.autoPiano",
                         firstNote: "{instrument}.model.firstNote", // Middle C
                         octaves: "{instrument}.model.octaves",
                         octaveNotes: "{instrument}.model.octaveNotes",
@@ -79,6 +83,7 @@ var automm = automm || {};
                 container: "{instrument}.container",
                 options: {
                     model: {
+                        auto: "{instrument}.model.autoGrid",
                         columns: "{instrument}.model.columns",
                         rows: "{instrument}.model.rows",
                         firstNote: "{instrument}.model.firstNote", // Middle C
@@ -116,7 +121,7 @@ var automm = automm || {};
                 container: "{instrument}.container",
                 options: {
                     model: {
-                        drawGui: true,
+                        drawGui: "{instrument}.model.drawGui",
                         firstNote: "{instrument}.model.firstNote", // Middle C
                         octaves: "{instrument}.model.octaves",
                         octaveNotes: "{instrument}.model.octaveNotes",

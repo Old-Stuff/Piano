@@ -181,8 +181,12 @@ var automm = automm || {};
     };
 
     automm.piano.postInitFunction = function (that) {
-        var emptyArray = [];
-        if (that.container.find("#piano") !== emptyArray) {
+        var pianoElements = that.container.find("#piano").length;
+        if (that.model.auto && pianoElements < 1) {
+            that.container.append("<div id='piano'></div>");
+            pianoElements = 1;
+        }
+        if (pianoElements > 0) {
             // Draw the svg
             that.draw();
             that.events.afterUpdate.fire();
@@ -191,6 +195,7 @@ var automm = automm || {};
             that.events.afterNote.addListener(that.afterNote);
             that.events.afterInstrumentUpdate.addListener(that.update);
         }
+        
     };
 
     // fluid.defaults("automm.key", {
