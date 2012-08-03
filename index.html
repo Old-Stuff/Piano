@@ -29,7 +29,6 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 <body>
     <div id="instrument">
         <div id="piano"></div>
-        <div id="gui"></div>
     </div>
     <script src="js/third_party/jquery-1.7.2.min.js"></script>
     <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
@@ -68,6 +67,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
         instrument = automm.instrument("#instrument", {
             model: {
+                drawGui: true,
                 firstNote: 60,
                 octaves: 2,
                 padding: 0,

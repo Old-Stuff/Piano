@@ -27,6 +27,7 @@ var automm = automm || {};
         postInitFunction: "automm.grid.postInitFunction",
 
         model: {
+            auto: false,
             columns: 8,
             rows: 8,
             firstNote: 60, // Middle C
@@ -174,8 +175,12 @@ var automm = automm || {};
     };
 
     automm.grid.postInitFunction = function (that) {
-        var emptyArray = [];
-        if ((that.container.find("#grid") !== emptyArray) || that.model.auto) {
+        var gridElements = that.container.find("#grid").length;
+        if (that.model.auto && gridElements < 1) {
+            that.container.append("<div id='grid'></div>");
+            gridElements = 1;
+        }
+        if (gridElements > 0) {
             // Draw the svg
             that.draw();
             that.events.afterUpdate.fire();

@@ -27,8 +27,8 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 </head>
 
 <body>
-    <div id="instrument">
-        <div id="grid"></div>
+    <div id="gridstrument">
+        <!-- <div id="grid"></div> -->
     </div>
     <script src="js/third_party/jquery-1.7.2.min.js"></script>
     <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
@@ -46,7 +46,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
     <script type/="text/javascript">
     /*global jQuery, fluid*/
     var automm = automm || {};
-    var instrument = instrument || {};
+    var gridstrument = gridstrument || {};
     (function(){
         "use strict";
 
@@ -65,8 +65,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
         //             }
         //
 
-        instrument = automm.instrument("#instrument", {
+        gridstrument = automm.instrument("#gridstrument", {
             model: {
+                autoGrid: true,
                 firstNote: 60,
                 octaves: 2,
                 padding: 0,
