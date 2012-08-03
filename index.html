@@ -82,14 +82,18 @@ $ instrument.update("afourFreq", 435)  // 19th Century Austria
 $ instrument.update("octaveNotes", 7)  // Just try it!
 </code></pre>
 <br>
-          <div>
-              <div style="float:left; width:50%;" id="topleftpiano"></div>
-              <div style="float:left; width:50%;" id="toprightpiano"></div>
-          </div>
-          <div>
-              <div style="float:left; width:50%;" id="bottomleftpiano"></div>
-              <div style="float:left; width:50%;" id="bottomrightpiano"></div>
-          </div>
+    <div>
+        <div id="newGrids"></div>
+    </div> 
+<br>
+    <div>
+        <div style="float:left; width:50%;" id="topleftpiano"></div>
+        <div style="float:left; width:50%;" id="toprightpiano"></div>
+    </div>
+    <div>
+        <div style="float:left; width:50%;" id="bottomleftpiano"></div>
+        <div style="float:left; width:50%;" id="bottomrightpiano"></div>
+    </div>
 
 <center><p>These are just some of the nifty keyboards you can make.</p>
 
@@ -235,61 +239,61 @@ $ instrument.update("octaveNotes", 7)  // Just try it!
                      }
                  }
             });
-            var gui = new dat.GUI({ autoPlace: false });
-            var customContainer = document.getElementById('gui');
-            gui.close();
-            customContainer.appendChild(gui.domElement);
-            $('#gui').attr('align','center').children().attr('align','left');
-
-            instrument.gui = {}
-            instrument.gui.octaves = gui.add(instrument.model, 'octaves', 1, 5);
-            instrument.gui.firstNote = gui.add(instrument.model, 'firstNote', 24, 84).step(1);
-        
-            // Folder for style
-            instrument.gui.style = gui.addFolder('Style');
-            instrument.gui.padding = instrument.gui.style.add(instrument.model, 'padding', 0, 200);
-        
-            // Do White Keys
-            instrument.gui.whiteKeys = instrument.gui.style.addFolder('White Keys');
-            instrument.gui.whiteKeysFill = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'fill');
-            instrument.gui.whiteKeysStroke = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'stroke');
-            instrument.gui.whiteKeysHighlight = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'highlight');
-        
-            // Do Black Keys
-            instrument.gui.blackKeys = instrument.gui.style.addFolder('Black Keys');
-            instrument.gui.blackKeysFill = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'fill');
-            instrument.gui.blackKeysStroke = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'stroke');
-            instrument.gui.blackKeysHighlight = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'highlight');
-        
-        
-            // Events ~ should be bubbled or at least done cleaner... this is so bad :(
-            instrument.gui.octaves.onChange(function(value){
-                instrument.update("octaves",value);
-            });
-            instrument.gui.firstNote.onChange(function(value){
-                instrument.update("firstNote",value);
-            });
-            instrument.gui.padding.onChange(function(value){
-                instrument.update("padding",value);
-            });
-            instrument.gui.whiteKeysFill.onChange(function(value){
-                instrument.update("keys.white.fill",value);
-            });
-            instrument.gui.whiteKeysStroke.onChange(function(value){
-                instrument.update("keys.white.stroke",value);
-            });
-            instrument.gui.whiteKeysHighlight.onChange(function(value){
-                instrument.update("keys.white.highlight",value);
-            });
-            instrument.gui.blackKeysFill.onChange(function(value){
-                instrument.update("keys.black.fill",value);
-            });
-            instrument.gui.blackKeysStroke.onChange(function(value){
-                instrument.update("keys.black.stroke",value);
-            });
-            instrument.gui.blackKeysHighlight.onChange(function(value){
-                instrument.update("keys.black.highlight",value);
-            });
+            // var gui = new dat.GUI({ autoPlace: false });
+            // var customContainer = document.getElementById('gui');
+            // gui.close();
+            // customContainer.appendChild(gui.domElement);
+            // $('#gui').attr('align','center').children().attr('align','left');
+            // 
+            // instrument.gui = {}
+            // instrument.gui.octaves = gui.add(instrument.model, 'octaves', 1, 5);
+            // instrument.gui.firstNote = gui.add(instrument.model, 'firstNote', 24, 84).step(1);
+            //         
+            // // Folder for style
+            // instrument.gui.style = gui.addFolder('Style');
+            // instrument.gui.padding = instrument.gui.style.add(instrument.model, 'padding', 0, 200);
+            //         
+            // // Do White Keys
+            // instrument.gui.whiteKeys = instrument.gui.style.addFolder('White Keys');
+            // instrument.gui.whiteKeysFill = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'fill');
+            // instrument.gui.whiteKeysStroke = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'stroke');
+            // instrument.gui.whiteKeysHighlight = instrument.gui.whiteKeys.addColor(instrument.model.keys.white, 'highlight');
+            //         
+            // // Do Black Keys
+            // instrument.gui.blackKeys = instrument.gui.style.addFolder('Black Keys');
+            // instrument.gui.blackKeysFill = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'fill');
+            // instrument.gui.blackKeysStroke = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'stroke');
+            // instrument.gui.blackKeysHighlight = instrument.gui.blackKeys.addColor(instrument.model.keys.black, 'highlight');
+            //         
+            //         
+            // // Events ~ should be bubbled or at least done cleaner... this is so bad :(
+            // instrument.gui.octaves.onChange(function(value){
+            //     instrument.update("octaves",value);
+            // });
+            // instrument.gui.firstNote.onChange(function(value){
+            //     instrument.update("firstNote",value);
+            // });
+            // instrument.gui.padding.onChange(function(value){
+            //     instrument.update("padding",value);
+            // });
+            // instrument.gui.whiteKeysFill.onChange(function(value){
+            //     instrument.update("keys.white.fill",value);
+            // });
+            // instrument.gui.whiteKeysStroke.onChange(function(value){
+            //     instrument.update("keys.white.stroke",value);
+            // });
+            // instrument.gui.whiteKeysHighlight.onChange(function(value){
+            //     instrument.update("keys.white.highlight",value);
+            // });
+            // instrument.gui.blackKeysFill.onChange(function(value){
+            //     instrument.update("keys.black.fill",value);
+            // });
+            // instrument.gui.blackKeysStroke.onChange(function(value){
+            //     instrument.update("keys.black.stroke",value);
+            // });
+            // instrument.gui.blackKeysHighlight.onChange(function(value){
+            //     instrument.update("keys.black.highlight",value);
+            // });
         }());
     </script>    
     <script type="text/javascript">
