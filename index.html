@@ -122,16 +122,12 @@ $ instrument.update("octaveNotes", 7)  // Just try it!
     <script src="js/third_party/d3/d3.v2.js"></script>
     <script src="js/third_party/MyInfusion.js"></script>
     <script src="js/third_party/dat.gui.js"></script>
-    <script src="js/oscillator.js"></script>
-    <script src="js/piano.js"></script>
-    <script src="js/grid.js"></script>
-    <script src="js/instrument.js"></script>
-    <script src="js/gui.js"></script>
-    <script src="js/eventBinder.js"></script>
+    <script src="js/automm.min.js"></script>
     <script type/="text/javascript">
     /*global jQuery, fluid*/
     var automm = automm || {};
     var demo = demo || {};
+    var grid = grid || {};
     var instrument = instrument || {};
 
     (function(){
@@ -169,6 +165,27 @@ $ instrument.update("octaveNotes", 7)  // Just try it!
                 }
             }
         });
+
+        grid = automm.instrument("#newGrid", {
+            model: {
+                firstNote: 60,
+                octaves: 2,
+                padding: 0,
+                keys: {
+                    white: {
+                        fill: '#fff000',
+                        stroke: '#000000',
+                        highlight: '#ffffff'
+                    },
+                    black: {
+                        fill: '#ffa400',
+                        stroke: '#000000',
+                        highlight: '#000000'
+                    }
+                }
+            }
+        });
+        
 
         demo.topleftpiano = automm.instrument("#topleftpiano", {
               model: {

@@ -1,60 +1,91 @@
+<!-- Google Summer of Code 2012: Automagic Music Maker
+
+Primarily written by Myles Borins
+Strongly influenced by GSOC Mentor Colin Clark
+Using the Infusion framework and Flocking Library
+
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
+
 <!DOCTYPE html>
-<html>
-<head>
-<style type="text/css">@import "js/jquery.svg.1.4.5/jquery.svg.css";</style> 
-<script src="js/third_party/jquery-1.7.2.min.js"></script>
-<script src="js/third_party/jquery.svg.1.4.5/jquery.svg.js"></script>
-<script src="js/third_party/jquery.svg.1.4.5/jquery.svgdom.js"></script>
-<script src="js/third_party/raphael-min.js"></script>
-<script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
-<script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
-<script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
-<script src="js/piano_old.js"></script>
+<html lang="en">
+  <head>
+     <!-- This is all so meta -->
+    <meta charset="utf-8">
+    <title>Automagic Music Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Automagic Music Maker">
+    <meta name="author" content="Myles Borins">
+
+    <!-- Le styles -->
+    <link href="css/third_party/normalize.css" rel="stylesheet">
 </head>
-    <body>
-        <!-- <div id="piano" style="padding: 10px;"> -->
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 500 500" id="piano">
-            <g id="grid">
-            </g>
-        </svg>
-        <!-- </div> -->
-        <script>
-            // Initial Declaration
-            var paper = Raphael(document.getElementById("grid"));
-            paper.setViewBox(0, 0, 500, 500)
-            //  Making initial outline
-            var outline = paper.rect(0,0,445,445);
-            outline.attr({stroke:'black'});
-            var offset = 5;
-            // Setting intial values
-            var button = {
-                 height: 50,
-                 width: 50,
-                 buffer: 5
-             };
-             var midiNote = 60;
-             var pattern = ['white','black','white','black','white','white','black','white','black','white','black','white'];
-             var grid = {};
-             for (i = 0; i < 8; i += 1){
-                 for (j = 0; j < 8; j += 1){midiNote
-                     patternCount = midiNote % 12;
-                     grid[midiNote] = paper.rect((j * button.width) + offset + (button.buffer * j), (i * button.height) + offset + (button.buffer * i), 50, 50);
-                     grid[midiNote].attr({fill: pattern[patternCount], stroke: 'black'});
-                     grid[midiNote].node.setAttribute('id', midiNote);
-                     grid[midiNote].node.setAttribute('class', 'note');
-                     
-                     //Properly colour based on pattern
-                     if((patternCount + 1) % 12 != 0){
-                         patternCount += 1;
-                     }
-                     else{
-                         patternCount = 0;
-                     }
-                     midiNote += 1;
-                
-                 }
-             }
-             var piano = myles.piano("#piano");
-        </script>
-    </body>
+
+<body>
+    <div id="instrument">
+        <div id="grid"></div>
+    </div>
+    <script src="js/third_party/jquery-1.7.2.min.js"></script>
+    <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
+    <script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
+    <script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
+    <script src="js/third_party/d3/d3.v2.js"></script>
+    <script src="js/third_party/MyInfusion.js"></script>
+    <script src="js/third_party/dat.gui.js"></script>
+    <script src="js/oscillator.js"></script>
+    <script src="js/piano.js"></script>
+    <script src="js/grid.js"></script>
+    <script src="js/instrument.js"></script>
+    <script src="js/gui.js"></script>
+    <script src="js/eventBinder.js"></script>
+    <script type/="text/javascript">
+    /*global jQuery, fluid*/
+    var automm = automm || {};
+    var instrument = instrument || {};
+    (function(){
+        "use strict";
+
+        // Draw a piano based on the below model (Subject to change)
+        // model: {
+        //             firstNote: 60, // Middle C
+        //             octaves: 1,
+        //             octaveNotes: 12,
+        //             afour: 69,
+        //             afourFreq: 440,
+        //             padding: 50,
+        //             pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
+        //             keys: {
+        //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+        //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+        //             }
+        //
+
+        instrument = automm.instrument("#instrument", {
+            model: {
+                firstNote: 60,
+                octaves: 2,
+                padding: 0,
+                keys: {
+                    white: {
+                        fill: '#fff000',
+                        stroke: '#000000',
+                        highlight: '#ffffff'
+                    },
+                    black: {
+                        fill: '#ffa400',
+                        stroke: '#000000',
+                        highlight: '#000000'
+                    }
+                }
+            }
+        });
+    }());
+
+    </script>
+</body>
 </html>
