@@ -85,12 +85,6 @@ var automm = automm || {};
                     }
                     lastClicked = note;
                 });
-
-                note.on('tap', function (event) {
-                    event.preventDefault();
-                    
-                    $("#push").prepend("Type: " + event.type + ", Fingers: " + event.touches.length + ", Direction: " + event.direction + "<br/>");
-                });
             });
             /*jslint unparam: false*/
         };

@@ -23,23 +23,23 @@
     <div id="output">
     </div>
     <script>
-        // (function ($) {
-        //     var $sw = $('#swipeme'),
-        //         $output = $('#output');
-        // 
-        //     $sw.on('hold tap swipe doubletap transformstart transform transformend dragstart drag dragend swipe release', function (event) {
-        //         event.preventDefault();
-        // 
-        //         $output.prepend("Type: " + event.type + ", Fingers: " + event.touches.length + ", Direction: " + event.direction + "<br/>");
-        //     });
-        // 
-        //     // this is how you unbind an event
-        //     /*$sw.on('swipe', function (event) {
-        //         event.preventDefault();
-        // 
-        //         $sw.off('tap');
-        //     });*/
-        // }(jQuery));
+        (function ($) {
+            var $sw = $('#swipeme'),
+                $output = $('#output');
+        
+            $sw.on('hold tap swipe doubletap transformstart transform transformend dragstart drag dragend swipe release', function (event) {
+                event.preventDefault();
+        
+                $output.prepend("Type: " + event.type + ", Fingers: " + event.touches.length + ", Direction: " + event.direction + "<br/>");
+            });
+        
+            // this is how you unbind an event
+            /*$sw.on('swipe', function (event) {
+                event.preventDefault();
+        
+                $sw.off('tap');
+            });*/
+        }(jQuery));
     </script>
 </body>
 </html>
