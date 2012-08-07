@@ -40,14 +40,18 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
     <!-- Place At the end to make things load faster -->
     <script src="js/third_party/jquery-1.7.2.min.js"></script>
+    <script src="js/third_party/jquery.ui.core.js"></script>
     <script src="js/third_party/Flocking/flocking/flocking-core.js"></script>
     <script src="js/third_party/Flocking/flocking/flocking-parser.js"></script>
     <script src="js/third_party/Flocking/flocking/flocking-ugens.js"></script>
     <script src="js/third_party/d3/d3.v2.js"></script>
     <script src="js/third_party/MyInfusion.js"></script>
+    <script src="js/third_party/dat.gui.js"></script>
     <script src="js/oscillator.js"></script>
     <script src="js/piano.js"></script>
+    <script src="js/grid.js"></script>
     <script src="js/instrument.js"></script>
+    <script src="js/gui.js"></script>
     <script src="js/eventBinder.js"></script>
     <script type/="text/javascript">
     /*global jQuery, fluid*/
@@ -72,6 +76,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
         //             }
         demo.mosttoppiano = automm.instrument("#mosttoppiano", {
               model: {
+                  autoPiano: true,
                   padding: 50,
                   firstNote: 60,
                   octaves: 2,
@@ -90,6 +95,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
         demo.topleftpiano = automm.instrument("#topleftpiano", {
               model: {
+                  autoPiano: true,
                   padding: 50,
                   firstNote: 60,
                   octaves: 4,
@@ -109,6 +115,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
          demo.toprightpiano = automm.instrument("#toprightpiano", {
                model: {
+                   autoPiano: true,
                    padding: 50,
                    firstNote: 60,
                    octaveNotes: 11,
@@ -130,6 +137,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
           demo.bottomleftpiano = automm.instrument("#bottomleftpiano", {
                 model: {
+                    autoPiano: true,
                     padding: 50,
                     firstNote: 61,
                     octaveNotes: 8,
@@ -149,6 +157,7 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
 
            demo.bottomrightpiano = automm.instrument("#bottomrightpiano", {
                  model: {
+                     autoPiano: true,
                      padding: 50,
                      firstNote: 64,
                      octaveNotes: 8,
