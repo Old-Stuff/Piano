@@ -5,9 +5,10 @@ Strongly influenced by GSOC Mentor Colin Clark
 Using the Infusion framework and Flocking Library
 
 
-Licensed under the Educational Community License (ECL), Version 2.0 or the New
-BSD license. You may not use this file except in compliance with one these
-Licenses.
+Licensing
+---------
 
-You may obtain a copy of the ECL 2.0 License and BSD License at
-https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt
+The Automagic Music Maker is distributed under the terms the MIT or GPL2 Licenses. 
+Choose the license that best suits your project. The text of the MIT and GPL 
+licenses are at the root of the Piano directory. 
+
