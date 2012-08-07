@@ -19,12 +19,13 @@ licenses are at the root of the Piano directory. -->
 
     <!-- Le styles -->
     <link href="css/third_party/normalize.css" rel="stylesheet">
-</head>
+    </head>
 
 <body>
     <div id="instrument">
         <div id="piano"></div>
     </div>
+
     <script src="js/third_party/jquery-1.7.2.min.js"></script>
     <script src="js/third_party/jquery.ui.core.js"></script>
     <script src="js/third_party/jquery.mobile.define.js"></script>
@@ -35,6 +36,8 @@ licenses are at the root of the Piano directory. -->
     <script src="js/third_party/d3/d3.v2.js"></script>
     <script src="js/third_party/MyInfusion.js"></script>
     <script src="js/third_party/dat.gui.js"></script>
+    <script src="js/third_party/hammer.js/hammer.js"></script>
+    <script src="js/third_party/hammer.js/jquery.specialevent.hammer.js"></script>
     <script src="js/oscillator.js"></script>
     <script src="js/piano.js"></script>
     <script src="js/grid.js"></script>
@@ -48,7 +51,6 @@ licenses are at the root of the Piano directory. -->
     var instrument = instrument || {};
     (function(){
         "use strict";
-
         // Draw a piano based on the below model (Subject to change)
         // model: {
         //     autoPiano: false,
@@ -86,7 +88,45 @@ licenses are at the root of the Piano directory. -->
             }
         });
     }());
+=======
+            // Draw a piano based on the below model (Subject to change)
+            // model: {
+            //             firstNote: 60, // Middle C
+            //             octaves: 1,
+            //             octaveNotes: 12,
+            //             afour: 69,
+            //             afourFreq: 440,
+            //             padding: 50,
+            //             pattern: ['white','black','white','black','white','white','black','white','black','white','black','white'],
+            //             keys: {
+            //                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
+            //                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+            //             }
+            //
+
+            instrument = automm.instrument("#instrument", {
+                model: {
+                    drawGui: true,
+                    firstNote: 60,
+                    octaves: 2,
+                    padding: 0,
+                    keys: {
+                        white: {
+                            fill: '#fff000',
+                            stroke: '#000000',
+                            highlight: '#ffffff'
+                        },
+                        black: {
+                            fill: '#ffa400',
+                            stroke: '#000000',
+                            highlight: '#000000'
+                        }
+                    }
+                }
+            });
+        }());
+>>>>>>> Going somewhere
 
     </script>
-</body>
+    </body>
 </html>

@@ -5,5 +5,5 @@
 	path = js/third_party/d3
 	url = https://github.com/mbostock/d3.git
 [submodule "js/third_party/hammer.js"]
-        path = js/third_party/hammer.js
+	path = js/third_party/hammer.js
 	url = https://github.com/EightMedia/hammer.js.git
