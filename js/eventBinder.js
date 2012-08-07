@@ -10,7 +10,7 @@ Choose the license that best suits your project. The text of the MIT and GPL
 licenses are at the root of the Piano directory. 
 
 */
-/*global jQuery, fluid, document*/
+/*global jQuery, fluid, document, console*/
 
 var automm = automm || {};
 
@@ -85,9 +85,14 @@ var automm = automm || {};
                     }
                     lastClicked = note;
                 });
+
+                note.on('tap', function (event) {
+                    that.events.onNote.fire(note);
+                    that.events.afterNote.fire(note);
+                    console.log(note);
+                });
             });
             /*jslint unparam: false*/
-            
         };
 
         that.onNote = function (note) {
