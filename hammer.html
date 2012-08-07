@@ -1,84 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-   <title>CSS transitions triggered with Hammer.js demo</title>
-   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-   <script src="hammer.js"></script>
-   <script src="jquery.hammer.js"></script>
-
-<style>
-   /* a few initial styles for our containing elements */
-   body {background:#282828 url(img/texture.jpg);}
-   #wrap {width:300px; height:300px; position:relative; overflow:hidden; margin:3em auto;}
-   #blocks {width:300px; height:300px; position:absolute; top:0; left:0; overflow:hidden;}
-   
-   /* our "mask" image positions over top of the animated blocks */
-   .mask {position:absolute; top:118px; left:0; z-index:500; background-image: url("img/abcmask.png"); width: 269px; height: 160px;}
-   
-   /*shared styles and animation definitions for all of our animated blocks*/
-   .col {
-      width:72px;
-      height:144px;
-      position:absolute;
-      top:10px;
-      -webkit-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
-       -moz-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
-       -ms-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
-       -o-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
-       transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425); /* custom */
-   }
-   
-   /* specific images and top positions for each of our blocks */
-   .col1 {background: url(img/aslider.png); top:22px; left:26px;}
-   .col2 {background:url(img/bslider.png); top:4px; left: 100px;}
-   .col3 {background:url(img/cslider.png); top:30px; left:174px;}
-
-   /* the class we'll toggle with jQuery to trigger our transitions */
-   .col-anim {top:96px;}
-
-</style>
-
+    <title>jQuery special event API on hammerjs</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="js/third_party/hammer.js/hammer.js"></script>
+    <script src="js/third_party/hammer.js/jquery.specialevent.hammer.js"></script>
+    <style>
+        #swipeme {
+            border: 3px dashed orange;
+            line-height: 300px;
+            height: 300px;
+            text-align: center;
+            font-size: 3em;
+            width: 100%;
+        }
+    </style>
 </head>
-
 <body>
-   <div id="wrap">
-      <div class="mask"></div>
-      <div id="blocks">
-         <div class="col col1" ></div>
-         <div class="col col2"></div>
-         <div class="col col3"></div>
-      </div>
-   </div>
-   <script>
+    <div id="swipeme">
+        Touch me :)
+    </div>
+    <div id="output">
+    </div>
+    <script>
+        (function ($) {
+            var $sw = $('#swipeme'),
+                $output = $('#output');
 
-   // assign toggle the col-anim class for each of our columns when they are clicked
+            $sw.on('hold tap swipe doubletap transformstart transform transformend dragstart drag dragend swipe release', function (event) {
+                event.preventDefault();
 
-   $(function() {   
-      // bind hammer to our columns tp listen for down drag
-      $(".col").hammer({prevent_default:true}).bind("drag", function(ev) {
-         if (ev.direction == "down") {
-            $(this).addClass("col-anim");
-         }
-      });
+                $output.prepend("Type: " + event.type + ", Fingers: " + event.touches.length + ", Direction: " + event.direction + "<br/>");
+            });
 
-      // once the columns are down, the drag event is triggered on the mask
-      $(".mask").hammer({prevent_default:true}).bind("drag", function(ev) {
-         // check the position in the mask to determine which item the user attempted to drag
-         if (ev.direction == "up") {
-            if (ev.position.x > 26 && ev.position.x < 98) {
-               $(".col1").removeClass("col-anim");
-            }
-            else if (ev.position.x > 100 && ev.position.x < 172) {
-               $(".col2").removeClass("col-anim");
-            }
-            else if (ev.position.x > 174 && ev.position.x < 246) {
-               $(".col3").removeClass("col-anim");
-            }
-         }
-      });
-   });
+            // this is how you unbind an event
+            /*$sw.on('swipe', function (event) {
+                event.preventDefault();
 
-   </script>
+                $sw.off('tap');
+            });*/
+        }(jQuery));
+    </script>
 </body>
-
 </html>
