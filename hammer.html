@@ -1,0 +1,43 @@
+<!-- Google Summer of Code 2012: Automagic Music Maker
+
+Primarily written by Myles Borins
+Strongly influenced by GSOC Mentor Colin Clark
+Using the Infusion framework and Flocking Library
+
+
+Licensed under the Educational Community License (ECL), Version 2.0 or the New
+BSD license. You may not use this file except in compliance with one these
+Licenses.
+
+You may obtain a copy of the ECL 2.0 License and BSD License at
+https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+     <!-- This is all so meta -->
+    <meta charset="utf-8">
+    <title>Automagic Music Maker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Automagic Music Maker">
+    <meta name="author" content="Myles Borins">
+
+    <!-- Le styles -->
+    <link href="css/third_party/normalize.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="container">
+        <div id="textbox"></div>
+    </div>
+    <script src="js/third_party/jquery-1.7.2.min.js"></script>
+    <script src="http://eightmedia.github.com/hammer.js/hammer.js"></script>
+    <script type/="text/javascript">
+    var hammer = new Hammer(document.getElementById("container"));
+    
+    hammer.ontap = function(ev) { 
+        $.append("test");
+    };
+    </script>
+</body>
+</html>
