@@ -38,37 +38,6 @@
 
 </style>
 
-<script>
-
-// assign toggle the col-anim class for each of our columns when they are clicked
-
-$(function() {   
-   // bind hammer to our columns tp listen for down drag
-   $(".col").hammer({prevent_default:true}).bind("drag", function(ev) {
-      if (ev.direction == "down") {
-         $(this).addClass("col-anim");
-      }
-   });
-
-   // once the columns are down, the drag event is triggered on the mask
-   $(".mask").hammer({prevent_default:true}).bind("drag", function(ev) {
-      // check the position in the mask to determine which item the user attempted to drag
-      if (ev.direction == "up") {
-         if (ev.position.x > 26 && ev.position.x < 98) {
-            $(".col1").removeClass("col-anim");
-         }
-         else if (ev.position.x > 100 && ev.position.x < 172) {
-            $(".col2").removeClass("col-anim");
-         }
-         else if (ev.position.x > 174 && ev.position.x < 246) {
-            $(".col3").removeClass("col-anim");
-         }
-      }
-   });
-});
-
-</script>
-
 </head>
 
 <body>
@@ -80,6 +49,36 @@ $(function() {
          <div class="col col3"></div>
       </div>
    </div>
+   <script>
+
+   // assign toggle the col-anim class for each of our columns when they are clicked
+
+   $(function() {   
+      // bind hammer to our columns tp listen for down drag
+      $(".col").hammer({prevent_default:true}).bind("drag", function(ev) {
+         if (ev.direction == "down") {
+            $(this).addClass("col-anim");
+         }
+      });
+
+      // once the columns are down, the drag event is triggered on the mask
+      $(".mask").hammer({prevent_default:true}).bind("drag", function(ev) {
+         // check the position in the mask to determine which item the user attempted to drag
+         if (ev.direction == "up") {
+            if (ev.position.x > 26 && ev.position.x < 98) {
+               $(".col1").removeClass("col-anim");
+            }
+            else if (ev.position.x > 100 && ev.position.x < 172) {
+               $(".col2").removeClass("col-anim");
+            }
+            else if (ev.position.x > 174 && ev.position.x < 246) {
+               $(".col3").removeClass("col-anim");
+            }
+         }
+      });
+   });
+
+   </script>
 </body>
 
 </html>
