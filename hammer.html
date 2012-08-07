@@ -1,43 +1,85 @@
-<!-- Google Summer of Code 2012: Automagic Music Maker
-
-Primarily written by Myles Borins
-Strongly influenced by GSOC Mentor Colin Clark
-Using the Infusion framework and Flocking Library
-
-
-Licensed under the Educational Community License (ECL), Version 2.0 or the New
-BSD license. You may not use this file except in compliance with one these
-Licenses.
-
-You may obtain a copy of the ECL 2.0 License and BSD License at
-https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-     <!-- This is all so meta -->
-    <meta charset="utf-8">
-    <title>Automagic Music Maker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The Automagic Music Maker">
-    <meta name="author" content="Myles Borins">
+<head>
+   <title>CSS transitions triggered with Hammer.js demo</title>
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+   <script src="hammer.js"></script>
+   <script src="jquery.hammer.js"></script>
 
-    <!-- Le styles -->
-    <link href="css/third_party/normalize.css" rel="stylesheet">
+<style>
+   /* a few initial styles for our containing elements */
+   body {background:#282828 url(img/texture.jpg);}
+   #wrap {width:300px; height:300px; position:relative; overflow:hidden; margin:3em auto;}
+   #blocks {width:300px; height:300px; position:absolute; top:0; left:0; overflow:hidden;}
+   
+   /* our "mask" image positions over top of the animated blocks */
+   .mask {position:absolute; top:118px; left:0; z-index:500; background-image: url("img/abcmask.png"); width: 269px; height: 160px;}
+   
+   /*shared styles and animation definitions for all of our animated blocks*/
+   .col {
+      width:72px;
+      height:144px;
+      position:absolute;
+      top:10px;
+      -webkit-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
+       -moz-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
+       -ms-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
+       -o-transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425);
+       transition: all 225ms cubic-bezier(0.545, 0.165, 0.835, 0.425); /* custom */
+   }
+   
+   /* specific images and top positions for each of our blocks */
+   .col1 {background: url(img/aslider.png); top:22px; left:26px;}
+   .col2 {background:url(img/bslider.png); top:4px; left: 100px;}
+   .col3 {background:url(img/cslider.png); top:30px; left:174px;}
+
+   /* the class we'll toggle with jQuery to trigger our transitions */
+   .col-anim {top:96px;}
+
+</style>
+
+<script>
+
+// assign toggle the col-anim class for each of our columns when they are clicked
+
+$(function() {   
+   // bind hammer to our columns tp listen for down drag
+   $(".col").hammer({prevent_default:true}).bind("drag", function(ev) {
+      if (ev.direction == "down") {
+         $(this).addClass("col-anim");
+      }
+   });
+
+   // once the columns are down, the drag event is triggered on the mask
+   $(".mask").hammer({prevent_default:true}).bind("drag", function(ev) {
+      // check the position in the mask to determine which item the user attempted to drag
+      if (ev.direction == "up") {
+         if (ev.position.x > 26 && ev.position.x < 98) {
+            $(".col1").removeClass("col-anim");
+         }
+         else if (ev.position.x > 100 && ev.position.x < 172) {
+            $(".col2").removeClass("col-anim");
+         }
+         else if (ev.position.x > 174 && ev.position.x < 246) {
+            $(".col3").removeClass("col-anim");
+         }
+      }
+   });
+});
+
+</script>
+
 </head>
 
 <body>
-    <div id="container">
-        <div id="textbox"></div>
-    </div>
-    <script src="js/third_party/jquery-1.7.2.min.js"></script>
-    <script src="http://eightmedia.github.com/hammer.js/hammer.js"></script>
-    <script type/="text/javascript">
-    var hammer = new Hammer(document.getElementById("container"));
-    
-    hammer.ontap = function(ev) { 
-        $("#textbox").append("HI!");
-    };
-    </script>
+   <div id="wrap">
+      <div class="mask"></div>
+      <div id="blocks">
+         <div class="col col1" ></div>
+         <div class="col col2"></div>
+         <div class="col col3"></div>
+      </div>
+   </div>
 </body>
+
 </html>
