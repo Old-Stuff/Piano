@@ -87,11 +87,7 @@ var automm = automm || {};
                 });
 
                 note.on('tap', function (event) {
-                    event.preventDefault();
-                    
-                    that.events.onNote.fire(note);
-                    that.events.afterNote.fire(note);
-                    console.log(note);
+                    $("#push").append("Hello");
                 });
             });
             /*jslint unparam: false*/
