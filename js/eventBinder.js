@@ -85,15 +85,9 @@ var automm = automm || {};
                     }
                     lastClicked = note;
                 });
-                
-                // note.on('tap hold', function (event) {
-                //     event.preventDefault();
-                //     console.log(event);
-                //     that.events.onNote.fire(note);
-                //     that.events.afterNote.fire(note);
-                // });
             });
             /*jslint unparam: false*/
+            
         };
 
         that.onNote = function (note) {
