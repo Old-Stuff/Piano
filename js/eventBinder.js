@@ -10,7 +10,7 @@ Choose the license that best suits your project. The text of the MIT and GPL
 licenses are at the root of the Piano directory. 
 
 */
-/*global jQuery, fluid, */
+/*global jQuery, fluid, document*/
 
 var automm = automm || {};
 
@@ -18,22 +18,39 @@ var automm = automm || {};
     "use strict";
     fluid.defaults("automm.eventBinder", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
+        preInitFunction: "automm.eventBinder.preInitFunction",
         postInitFunction: "automm.eventBinder.postInitFunction",
+
+        model: {
+            isShift: false
+        },
 
         events: {
             afterUpdate: null,
             onNote: null,
-            afterNote: null
+            afterNote: null,
+            afterPoly: null
         }
 
     });
 
-    automm.eventBinder.postInitFunction = function (that) {
+    automm.eventBinder.preInitFunction = function (that) {
         that.bindEvents = function () {
             // Variables to keep track of currently pressed notes
             var lastClicked = {},
                 isClicking = false;
 
+            $(document).keydown(function (event) {
+                if (event.shiftKey === true) {
+                    that.model.isShift = true;
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.shiftKey === false && that.model.isShift) {
+                    that.model.isShift = false;
+                }
+            });
+            
             // Get an Array of all notes on canvas
             that.notes = that.container.find(".note");
 
@@ -66,6 +83,9 @@ var automm = automm || {};
             });
             /*jslint unparam: false*/
         };
+    };
+
+    automm.eventBinder.postInitFunction = function (that) {
         that.bindEvents();
         that.events.afterUpdate.addListener(that.bindEvents);
     };

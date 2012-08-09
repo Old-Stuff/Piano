@@ -54,7 +54,8 @@ var automm = automm || {};
             afterGuiUpdate: null,
             afterNoteCalc: null,
             afterUpdate: null,
-            getNoteCalc: null
+            getNoteCalc: null,
+            afterPoly: null
         },
 
         components: {
@@ -148,7 +149,8 @@ var automm = automm || {};
                     events: {
                         afterUpdate: "{instrument}.events.afterUpdate",
                         onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote"
+                        afterNote: "{instrument}.events.afterNote",
+                        afterPoly: "{instrument}.events.afterPoly"
                     }
                 }
             },
