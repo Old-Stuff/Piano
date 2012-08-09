@@ -1,0 +1,23 @@
+icolinclark: All the interesting stuff is in the options: https://github.com/colinbdclark/Flocking/blob/synth-groups/flocking/flocking-core.js#L1151-1167
+[5:52pm] colinclark: The most notable are the "noteSpecs" and "amplitudeKey" options
+[5:52pm] colinclark: The "noteSpecs" structure defines the meaning of noteOn() and noteOff() for your particular synth def
+[5:53pm] yura left the chat room.
+[5:53pm] colinclark: you can define any input paths that you'd like to change every time noteOn and noteOff are fired
+[5:53pm] colinclark: by default, it should work with your current synthDef--it will set and unset a gate input at the path "env.gate"
+[5:54pm] colinclark: The "amplitudeKey" option is used when you want an amplitudeNormalizer strategy
+[5:54pm] colinclark: it tells the polyphonic synth how to set the volume of your voices
+colinclark: there is currently only one amplitudeNormalizer implementation...
+[5:55pm] colinclark: and all it does is set each voice's amplitude to 1.0 / maxVoices
+
+colinclark: well, that's the nice thing
+[6:02pm] colinclark: you just replace your current calls to input(…) to noteOn() and noteOff() calls
+[6:03pm] colinclark: these methods are "input-like" in that you can give them a "change object"
+[6:03pm] colinclark: (I'm using so many quotes here because I'm still not sure about terminology, given this stuff is less than 24 hours old)
+[6:03pm] colinclark: so your current call
+[6:04pm] colinclark: input({"env.gate": 1, "freq": 440})  now just becomes noteOn({"carrier.freq": 440})
+[6:05pm] colinclark: For the mouse-based interaction, I guess you could make keys "sticky" when the user shift-clicks them
+[6:06pm] colinclark: it's a pretty familiar idiom, and it would only involve a few extra lines
+[6:06pm] colinclark: I was actually sort of thinking that the "traditional" keyboard interaction might work the same way
+[6:07pm]
+
+
