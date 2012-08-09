@@ -26,14 +26,15 @@ var automm = automm || {};
 
         model: {
             freq: 440,
-            osc: "flock.ugen.sinOsc",
+            osc: "flock.ugen.sin",
             attack: 0.25,
-            sustain: 0.6,
+            sustain: 0.7,
             release: 0.5,
             gate: 0,
             afour: 69,
             afourFreq: 440,
-            octaveNotes: 12
+            octaveNotes: 12,
+            isShift: false
         },
 
         events: {
@@ -44,10 +45,10 @@ var automm = automm || {};
         // Maps parameter between this model and the model of flocking
         paramMap: {
             "freq": "carrier.freq",
-            "attack": "asr.attack",
-            "sustain": "asr.sustain",
-            "release": "asr.release",
-            "gate": "asr.gate"
+            "attack": "env.attack",
+            "sustain": "env.sustain",
+            "release": "env.release",
+            "gate": "env.gate"
         }
     });
 
@@ -60,12 +61,12 @@ var automm = automm || {};
                 flock.enviro({bufferSize: 2048}) : $.browser.mozilla && platform === "Win32" ?
                 flock.enviro({bufferSize: 4096}) : flock.enviro.shared;
 
-        that.osc = flock.synth({
+        that.osc = flock.synth.polyphonic({
             id: "carrier",
             ugen: that.model.osc,
             freq: that.model.freq,
             mul: {
-                id: "asr",
+                id: "env",
                 ugen: "flock.ugen.env.simpleASR",
                 attack: that.model.attack,
                 sustain: that.model.sustain,
@@ -93,13 +94,15 @@ var automm = automm || {};
         };
 
         that.onNote = function (note) {
-            var freq = that.midiToFreq(note[0].id);
-            that.update("freq", freq);
-            that.update("gate", 1);
+            var noteID = note[0].id,
+                freq = that.midiToFreq(noteID);
+            that.osc.noteOn(noteID, {"carrier.freq": freq});
         };
 
-        that.afterNote = function () {
-            that.update("gate", 0);
+        that.afterNote = function (note) {
+            if (!that.isShift) {
+                that.osc.noteOff(note[0].id);
+            }
         };
 
         that.midiToFreq = function (noteNum) {
