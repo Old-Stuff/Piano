@@ -51,7 +51,11 @@ var automm = automm || {};
             onNote: null,
             afterNote: null,
             afterInstrumentUpdate: null,
-            afterGuiUpdate: null
+            afterGuiUpdate: null,
+            afterNoteCalc: null,
+            afterUpdate: null,
+            getNoteCalc: null,
+            afterPoly: null
         },
 
         components: {
@@ -71,7 +75,10 @@ var automm = automm || {};
                     events: {
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
-                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
+                        afterNoteCalc: "{instrument}.events.afterNoteCalc",
+                        afterUpdate: "{instrument}.events.afterUpdate",
+                        getNoteCalc: "{instrument}.events.getNoteCalc"
                     }
                 }
             },
@@ -92,7 +99,10 @@ var automm = automm || {};
                     events: {
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
-                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
+                        afterNoteCalc: "{instrument}.events.afterNoteCalc",
+                        afterUpdate: "{instrument}.events.afterUpdate",
+                        getNoteCalc: "{instrument}.events.getNoteCalc"
                     }
                 }
             },
@@ -128,6 +138,35 @@ var automm = automm || {};
                     },
                     events: {
                         afterGuiUpdate: "{instrument}.events.afterGuiUpdate"
+                    }
+                }
+            },
+
+            eventBinder: {
+                type: "automm.eventBinder",
+                container: "{instrument}.container",
+                options: {
+                    events: {
+                        afterUpdate: "{instrument}.events.afterUpdate",
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote",
+                        afterPoly: "{instrument}.events.afterPoly"
+                    }
+                }
+            },
+
+            highlighter: {
+                type: "automm.highlighter",
+                container: "{grid}.container",
+                options: {
+                    model: {
+                        keys: "{instrument}.model.keys"
+                    },
+                    events: {
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote",
+                        afterNoteCalc: "{instrument}.events.afterNoteCalc",
+                        getNoteCalc: "{instrument}.events.getNoteCalc"
                     }
                 }
             }

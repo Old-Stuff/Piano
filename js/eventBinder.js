@@ -10,7 +10,7 @@ Choose the license that best suits your project. The text of the MIT and GPL
 licenses are at the root of the Piano directory. 
 
 */
-/*global jQuery, fluid, */
+/*global jQuery, fluid, document*/
 
 var automm = automm || {};
 
@@ -18,7 +18,12 @@ var automm = automm || {};
     "use strict";
     fluid.defaults("automm.eventBinder", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
+        preInitFunction: "automm.eventBinder.preInitFunction",
         postInitFunction: "automm.eventBinder.postInitFunction",
+
+        model: {
+            isShift: false
+        },
 
         events: {
             afterUpdate: null,
@@ -28,11 +33,24 @@ var automm = automm || {};
 
     });
 
-    automm.eventBinder.postInitFunction = function (that) {
-        that.bindEvents = function () {
+    automm.eventBinder.preInitFunction = function (that) {
+        that.init = function () {
             // Variables to keep track of currently pressed notes
             var lastClicked = {},
                 isClicking = false;
+            that.polyNotes = [];
+
+            $(document).keydown(function (event) {
+                if (event.shiftKey === true) {
+                    that.model.isShift = true;
+                }
+            });
+            $(document).keyup(function (event) {
+                if (event.shiftKey === false && that.model.isShift) {
+                    that.model.isShift = false;
+                    that.afterShift();
+                }
+            });
 
             // Get an Array of all notes on canvas
             that.notes = that.container.find(".note");
@@ -52,13 +70,17 @@ var automm = automm || {};
                 // mousup event binding
                 note.mouseup(function () {
                     isClicking = false;
-                    that.events.afterNote.fire(note);
+                    if (!that.model.isShift) {
+                        that.events.afterNote.fire(note);
+                    }
                     lastClicked = {};
                 });
                 // mouse hover event binding
                 note.mouseover(function () {
                     if (isClicking) {
-                        that.events.afterNote.fire(lastClicked);
+                        if (!that.model.isShift) {
+                            that.events.afterNote.fire(lastClicked);
+                        }
                         that.events.onNote.fire(note);
                     }
                     lastClicked = note;
@@ -66,7 +88,25 @@ var automm = automm || {};
             });
             /*jslint unparam: false*/
         };
-        that.bindEvents();
+
+        that.onNote = function (note) {
+            if (that.model.isShift) {
+                that.polyNotes[that.polyNotes.length] = note;
+            }
+        };
+
+        that.afterShift = function () {
+            /*jslint unparam: true*/
+            fluid.each(that.polyNotes, function (note) {
+                that.events.afterNote.fire(note);
+            });
+            /*jslint unparam: false*/
+        };
+    };
+
+    automm.eventBinder.postInitFunction = function (that) {
+        that.init();
         that.events.afterUpdate.addListener(that.bindEvents);
+        that.events.onNote.addListener(that.onNote);
     };
 }(jQuery));

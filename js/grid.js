@@ -15,7 +15,7 @@ licenses are at the root of the Piano directory.
 
 var automm = automm || {};
 
-(function ($) {
+(function () {
     "use strict";
 
     fluid.defaults("automm.grid", {
@@ -42,21 +42,9 @@ var automm = automm || {};
             afterUpdate: null,
             onNote: null,
             afterNote: null,
-            afterInstrumentUpdate: null
-        },
-
-        components: {
-            eventBinder: {
-                type: "automm.eventBinder",
-                container: "{grid}.container",
-                options: {
-                    events: {
-                        afterUpdate: "{grid}.events.afterUpdate",
-                        onNote: "{grid}.events.onNote",
-                        afterNote: "{grid}.events.afterNote"
-                    }
-                }
-            }
+            afterInstrumentUpdate: null,
+            afterNoteCalc: null,
+            getNoteCalc: null
         }
     });
 
@@ -153,21 +141,25 @@ var automm = automm || {};
             that.events.afterUpdate.fire();
         };
 
-        that.onNote = function (note) {
-            if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
-                note.css('fill', that.model.keys.white.highlight);
-            } else {
-                note.css('fill', that.model.keys.black.highlight);
-            }
+        that.sendNoteCalc = function () {
+            that.events.afterNoteCalc.fire(that.model.keys);
         };
 
-        that.afterNote = function (note) {
-            if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
-                note.css('fill', that.model.keys.white.fill);
-            } else {
-                note.css('fill', that.model.keys.black.fill);
-            }
-        };
+        // that.onNote = function (note) {
+        //     if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
+        //         note.css('fill', that.model.keys.white.highlight);
+        //     } else {
+        //         note.css('fill', that.model.keys.black.highlight);
+        //     }
+        // };
+        // 
+        // that.afterNote = function (note) {
+        //     if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
+        //         note.css('fill', that.model.keys.white.fill);
+        //     } else {
+        //         note.css('fill', that.model.keys.black.fill);
+        //     }
+        // };
 
     };
 
@@ -183,8 +175,10 @@ var automm = automm || {};
             that.events.afterUpdate.fire();
             // Fire event that grid is drawn
             that.events.onNote.addListener(that.onNote);
+            // Bind functions to event listeners
             that.events.afterNote.addListener(that.afterNote);
             that.events.afterInstrumentUpdate.addListener(that.update);
+            that.events.getNoteCalc.addListener(that.sendNoteCalc);
         }
     };
 
@@ -225,4 +219,4 @@ var automm = automm || {};
     //     }
     // };
 
-}(jQuery));
+}());
