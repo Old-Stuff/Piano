@@ -49,7 +49,7 @@ var automm = automm || {};
 
             // Iterate again, this time replace the id numbers with note names
             fluid.each(that.model.renderedNotes, function (note, i) {
-                that.model.renderedNotes[i] = that.model.notes[note % 12] + (Math.floor(note / 12) - 1);
+                that.model.renderedNotes[i] = [note, that.model.notes[note % 12] + (Math.floor(note / 12) - 1)];
             });
 
         };
