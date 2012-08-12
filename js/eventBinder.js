@@ -34,7 +34,7 @@ var automm = automm || {};
     });
 
     automm.eventBinder.preInitFunction = function (that) {
-        that.init = function () {
+        that.bindEvents = function () {
             // Variables to keep track of currently pressed notes
             var lastClicked = {},
                 isClicking = false;
@@ -105,7 +105,7 @@ var automm = automm || {};
     };
 
     automm.eventBinder.postInitFunction = function (that) {
-        that.init();
+        that.bindEvents();
         that.events.afterUpdate.addListener(that.bindEvents);
         that.events.onNote.addListener(that.onNote);
     };
