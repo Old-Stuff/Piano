@@ -75,10 +75,20 @@ var automm = automm || {};
         };
 
         that.fluidInit = function () {
-            var instrumentType = that.container.children()[0],
-                notes = that.container.find(".note");
-            fluid.tabbable(instrumentType);
-            // fluid.selectable
+            var instrumentType = $(that.container.children()[0]);
+            instrumentType.fluid("tabbable");
+            instrumentType.fluid("selectable", {
+                // the default orientation is vertical, so we need to specify that this is horizontal.
+                // this affects what arrow keys will move selection
+                direction: fluid.a11y.orientation.HORIZONTAL
+                // 
+                // onSelect: function (thumbEl) {
+                //     $(thumbEl).addClass(demo.imageViewer.styles.selected);
+                // },
+                // onUnselect: function (thumbEl) {
+                //     $(thumbEl).removeClass(demo.imageViewer.styles.selected);
+                // }
+            });
         };
 
         that.update = function () {
