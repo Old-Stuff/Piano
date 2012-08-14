@@ -104,7 +104,7 @@ var automm = automm || {};
                 note = that.container.find("#" + note);
                 that.events.afterNote.fire(note);
             });
-            that.model.playNotes = [];
+            that.model.playingNotes = [];
         };
 
         that.bindEscape = function () {
