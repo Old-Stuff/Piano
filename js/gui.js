@@ -131,7 +131,6 @@ var automm = automm || {};
                 that.container.append("<div id='gui' aria-hidden='true'></div>");
             } else {
                 that.container.find('gui').attr('aria-hidden', true);
-
             }
             that.init();
             that.container.append("<div class='buffer' style='height:50px;'></div>");

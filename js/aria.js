@@ -54,20 +54,26 @@ var automm = automm || {};
 
         };
 
+        that.setTitle = function () {
+            var ariaContainer = $("#aria");
+            ariaContainer.append("<div id='ariaTitle'>The Automagic Music Maker: Piano</div>");
+        };
+
         that.render = function () {
-            that.ariaContainer = $("#aria");
-            if (that.ariaContainer.length < 1) {
+            var ariaContainer = $("#aria");
+            if (ariaContainer.length < 1) {
                 that.container.append("<div id='aria' style='display:none;'><ul></ul></div>");
-                that.ariaContainer = $("#aria").children();
+                ariaContainer = $("#aria").children();
             } else {
-                that.ariaContainer.empty();
-                that.ariaContainer.append('<ul></ul>');
+                ariaContainer.empty();
+                ariaContainer.append('<ul></ul>');
             }
             fluid.each(that.model.renderedNotes, function (note) {
-                that.ariaContainer.append("<li id='aria" + note[0] + "'>" + note[1] + "</li>");
+                ariaContainer.append("<li id='aria" + note[0] + "'>" + note[1] + "</li>");
             });
+            that.setTitle();
         };
-        
+
         that.update = function () {
             that.getNotes();
             that.render();
