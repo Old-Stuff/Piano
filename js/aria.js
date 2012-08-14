@@ -86,7 +86,7 @@ var automm = automm || {};
                         noteState = $.inArray(noteId, that.model.playingNotes);
                     note = $(note);
                     if (noteState > -1) {
-                        that.model.playingNotes.splice(noteId, 1);
+                        that.model.playingNotes.splice(noteState, 1);
                         that.events.afterNote.fire(note);
                     } else {
                         that.model.playingNotes[that.model.playingNotes.length] = noteId;
