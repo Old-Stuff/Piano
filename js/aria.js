@@ -26,11 +26,14 @@ var automm = automm || {};
         model: {
             notes: ["C", "C-Sharp", "D", "D-Sharp", "E", "F", "F-Sharp", "G", "G-Sharp", "A", "A-Sharp", "B"],
             octaveNotes: 12,
-            renderedNotes: []
+            renderedNotes: [],
+            playingNotes: []
         },
 
         events: {
-            afterUpdate: null
+            afterUpdate: null,
+            onNote: null,
+            afterNote: null
         }
     });
 
@@ -74,22 +77,30 @@ var automm = automm || {};
             that.setTitle();
         };
 
-        // that.noteArray = function () {
-        //     fluid.each(that.model.renderedNotes, function (note, i) {
-        //         that.model.noteArray[i] = that.container.find("#" + note.number);
-        //     });
-        //     that.model.noteArray = $(that.model.noteArray);
-        // };
-
         that.fluidInit = function () {
             var instrumentType = that.container.children().eq(0),
-                noteArray = $(automm.fetchNotes(that.container, that.model.renderedNotes));
+                noteArray = $(automm.fetchNotes(that.container, that.model.renderedNotes)),
+                handler = function (evt) {
+                    var note = evt.target,
+                        noteId = note.id,
+                        noteState = $.inArray(noteId, that.model.playingNotes);
+                    note = $(note);
+                    if (noteState > -1) {
+                        that.model.playingNotes.splice(noteId, 1);
+                        that.events.afterNote.fire(note);
+                    } else {
+                        that.model.playingNotes[that.model.playingNotes.length] = noteId;
+                        that.events.onNote.fire(note);
+                    }
+                };
+
             instrumentType.fluid("tabbable");
             instrumentType.fluid("selectable", {
                 // the default orientation is vertical, so we need to specify that this is horizontal.
                 // this affects what arrow keys will move selection
                 direction: fluid.a11y.orientation.HORIZONTAL,
                 selectableElements: noteArray,
+                autoSelectFirstItem: false,
 
                 onSelect: function (note) {
                     note.focus();
@@ -98,6 +109,7 @@ var automm = automm || {};
                 //     $(thumbEl).removeClass(demo.imageViewer.styles.selected);
                 // }
             });
+            instrumentType.fluid("activatable", handler);
         };
 
         that.update = function () {

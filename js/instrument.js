@@ -179,7 +179,9 @@ var automm = automm || {};
                         octaveNotes: "{instrument}.model.octaveNotes"
                     },
                     events: {
-                        afterUpdate: "{instrument}.events.afterGuiUpdate"
+                        afterUpdate: "{instrument}.events.afterGuiUpdate",
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote"
                     }
                 }
             }
