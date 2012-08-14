@@ -3,7 +3,6 @@
 --------------------------------------------------------------------------------
 
 Use fluid selectors rather than costantly calling to .find()
-http://wiki.fluidproject.org/display/fluid/DOM+Binder
 
 --------------------------------------------------------------------------------
 

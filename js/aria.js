@@ -58,9 +58,10 @@ var automm = automm || {};
         };
 
         that.setTitle = function () {
-            var ariaContainer = that.container.find("#aria");
+            var ariaContainer = that.container.find("#aria"),
+                instrumentType = that.container.children()[0];
             // Append a div that will be used to title the aria application
-            ariaContainer.append("<div id='ariaTitle'>The Automagic Music Maker</div>");
+            ariaContainer.append("<div id='ariaTitle'>AutoMM " + that.container[0].id + " type: " + instrumentType.id + "</div>");
         };
 
         that.render = function () {
@@ -100,7 +101,7 @@ var automm = automm || {};
         };
 
         that.escaped = function () {
-            fluid.each(that.model.playingNotes, function (note, i) {
+            fluid.each(that.model.playingNotes, function (note) {
                 note = that.container.find("#" + note);
                 that.events.afterNote.fire(note);
             });
