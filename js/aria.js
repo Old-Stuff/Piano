@@ -74,6 +74,13 @@ var automm = automm || {};
             that.setTitle();
         };
 
+        that.fluidInit = function () {
+            var instrumentType = that.container.children()[0],
+                notes = that.container.find(".note");
+            fluid.tabbable(instrumentType);
+            // fluid.selectable
+        };
+
         that.update = function () {
             that.getNotes();
             that.render();
@@ -81,6 +88,7 @@ var automm = automm || {};
     };
 
     automm.aria.postInitFunction = function (that) {
+        that.fluidInit();
         that.update();
         that.events.afterUpdate.addListener(that.update);
     };
