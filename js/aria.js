@@ -92,7 +92,7 @@ var automm = automm || {};
                 selectableElements: noteArray,
 
                 onSelect: function (note) {
-                    console.log(note);
+                    note.focus();
                 }
                 // onUnselect: function (thumbEl) {
                 //     $(thumbEl).removeClass(demo.imageViewer.styles.selected);
