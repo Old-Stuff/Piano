@@ -57,10 +57,10 @@ var automm = automm || {};
         that.render = function () {
             that.ariaContainer = $("#aria");
             if (that.ariaContainer.length < 1) {
-                that.container.append("<div id='aria'><ul></ul></div>");
+                that.container.append("<div id='aria' style='display:none;'><ul></ul></div>");
                 that.ariaContainer = $("#aria").children();
             } else {
-                that.ariaContainer.html('');
+                that.ariaContainer.empty();
                 that.ariaContainer.append('<ul></ul>');
             }
             fluid.each(that.model.renderedNotes, function (note) {
