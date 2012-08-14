@@ -135,7 +135,7 @@ var automm = automm || {};
 
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
-            that.container.children("#grid").html('');  // Look into jquery clear
+            that.container.children("#grid").empty();
             that.draw();
             // Fire event that grid is drawn
             that.events.afterUpdate.fire();
