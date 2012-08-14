@@ -64,7 +64,7 @@ var automm = automm || {};
                 that.ariaContainer.append('<ul></ul>');
             }
             fluid.each(that.model.renderedNotes, function (note) {
-                that.ariaContainer.append("<li>" + note + "</li>");
+                that.ariaContainer.append("<li id='aria" + note[0] + "'>" + note[1] + "</li>");
             });
         };
         
