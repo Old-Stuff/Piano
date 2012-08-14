@@ -56,7 +56,7 @@ var automm = automm || {};
 
         that.setTitle = function () {
             var ariaContainer = $("#aria");
-            ariaContainer.append("<div id='ariaTitle'>The Automagic Music Maker: Piano</div>");
+            ariaContainer.append("<div id='ariaTitle'>The Automagic Music Maker</div>");
         };
 
         that.render = function () {

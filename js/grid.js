@@ -135,7 +135,6 @@ var automm = automm || {};
             that.noteGroup.attr("role", "controlgroup");
             that.noteGroup.attr("id", "noteGroup");
             that.noteGroup.attr("focusable", true);
-
             // Draw the keys
             that.render();
 
