@@ -78,7 +78,8 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
-            r.attr("data-role", "button");
+            r.attr("role", "button");
+            r.attr("aria-labelledby", "aria" + id);
             r.attr("noteType", noteType.fill);
         };
 
@@ -130,11 +131,17 @@ var automm = automm || {};
             var svg = that.d3container.append("svg");
             svg.attr("style", "height: 100%;");
             svg.attr("viewBox", that.model.viewbox.dim);
+            svg.attr("role", "application");
+            svg.attr("focusable", true);
+            svg.attr("tabindex", "0");
+            svg.attr("aria-labelledby", "ariaTitle");
+            
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
-            that.noteGroup.attr("data-role", "controlgroup");
-
+            that.noteGroup.attr("role", "controlgroup");
+            that.noteGroup.attr("id", "noteGroup");
+            that.noteGroup.attr("focusable", true);
             // Draw the keys
             that.render();
         };
