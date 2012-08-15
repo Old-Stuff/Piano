@@ -2,18 +2,8 @@
 -         Todo                                                                 -
 --------------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
-
-Automate the process of minifying my code in to a single automm.min.js
-
---------------------------------------------------------------------------------
-
-moustOut event
-
---------------------------------------------------------------------------------
-
-GUI stuffs... should I use kontrol?  Can it be done with d3?  
-Do it all in svg and embed html element?
+Use fluid selectors rather than costantly calling to .find()
+http://wiki.fluidproject.org/display/fluid/DOM+Binder
 
 --------------------------------------------------------------------------------
 
@@ -34,18 +24,15 @@ Octave  2: 36 - 47
 octave  3: 48 - 59
 Octave  4: 60 - 71 <--- This is the fourth octave on the piano
 
-A4 | Notes Per Octave | Octave Number  |  Frequency
-   |                  |                |
-69 |        12        |     4          |      440
+(Reference Note)
+
+A4 | Notes Per Octave | Octave Number  |  Frequency  |   Step in scale of Baseline
+   |                  |                |             |
+69 |        12        |     4          |      440    |              10
 
 Algorithm for Equal Tempered Tuning:
 
 ((Note - A4) / OctaveNotes)^2 * A4freq
-
---------------------------------------------------------------------------------
-
-should it only send note number?
-This would be good if each key was a note object, with its own oscillator
 
 --------------------------------------------------------------------------------
 
