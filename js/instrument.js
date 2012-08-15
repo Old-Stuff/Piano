@@ -35,14 +35,14 @@ var automm = automm || {};
             pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
                 white: {
-                    fill: '#fff000',
-                    stroke: '#000000',
-                    highlight: '#ffffff'
+                    fill: '#ffffff', // White
+                    stroke: '#000000', //  Black
+                    highlight: '#fff000' //  Yellow
                 },
                 black: {
-                    fill: '#ffa400',
-                    stroke: '#000000',
-                    highlight: '#000000'
+                    fill: '#000000', // Black
+                    stroke: '#000000', // Black
+                    highlight: '#fff000' //  Yellow
                 }
             }
         },
