@@ -169,6 +169,21 @@ var automm = automm || {};
                         getNoteCalc: "{instrument}.events.getNoteCalc"
                     }
                 }
+            },
+
+            aria: {
+                type: "automm.aria",
+                container: "{instrument}.container",
+                options: {
+                    model: {
+                        octaveNotes: "{instrument}.model.octaveNotes"
+                    },
+                    events: {
+                        afterUpdate: "{instrument}.events.afterGuiUpdate",
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote"
+                    }
+                }
             }
         }
     });

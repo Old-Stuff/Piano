@@ -11,7 +11,7 @@ licenses are at the root of the Piano directory.
 
 */
 
-/*global jQuery, fluid, d3*/
+/*global jQuery, fluid*/
 
 var automm = automm || {};
 

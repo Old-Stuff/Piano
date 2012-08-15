@@ -100,6 +100,7 @@ var automm = automm || {};
             fluid.each(that.polyNotes, function (note) {
                 that.events.afterNote.fire(note);
             });
+            that.polyNotes = [];
             /*jslint unparam: false*/
         };
     };
