@@ -61,7 +61,7 @@ var automm = automm || {};
                 flock.enviro({bufferSize: 2048}) : $.browser.mozilla && platform === "Win32" ?
                 flock.enviro({bufferSize: 4096}) : flock.enviro.shared;
 
-        that.osc = flock.synth.polyphonic({
+        that.polysynth = flock.synth.polyphonic({
             id: "carrier",
             ugen: that.model.osc,
             freq: that.model.freq,
@@ -73,6 +73,28 @@ var automm = automm || {};
                 release: that.model.release
             }
         });
+
+        that.update = function (param, value) {
+            if (that.model.hasOwnProperty(param)) {
+                that.applier.requestChange(param, value);
+            }
+        };
+
+        that.onNote = function (note) {
+            var noteID = note[0].id,
+                freq = automm.midiToFreq(noteID, that.model.octaveNotes, that.model.afour, that.model.afourFreq);
+            that.polysynth.noteOn(noteID, {"carrier.freq": freq});
+        };
+
+        that.afterNote = function (note) {
+            if (!that.isShift) {
+                that.polysynth.noteOff(note[0].id);
+            }
+        };
+
+        // that.midiToFreq = function (noteNum) {
+        //     return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
+        // };
     };
 
     automm.oscillator.postInitFunction = function (that) {
@@ -84,34 +106,17 @@ var automm = automm || {};
         that.applier.modelChanged.addListener("*", function (newModel, oldModel, changeSpec) {
             var path = changeSpec[0].path,
                 oscPath = that.options.paramMap[path];
-            that.osc.input(oscPath, newModel[path]);
+            that.polysynth.input(oscPath, newModel[path]);
         });
         /*jslint unparam: false*/
-        that.update = function (param, value) {
-            if (that.model.hasOwnProperty(param)) {
-                that.applier.requestChange(param, value);
-            }
-        };
-
-        that.onNote = function (note) {
-            var noteID = note[0].id,
-                freq = that.midiToFreq(noteID);
-            that.osc.noteOn(noteID, {"carrier.freq": freq});
-        };
-
-        that.afterNote = function (note) {
-            if (!that.isShift) {
-                that.osc.noteOff(note[0].id);
-            }
-        };
-
-        that.midiToFreq = function (noteNum) {
-            return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
-        };
         // flock.enviro.shared = flock.enviro({bufferSize: 4096})
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
         that.events.afterInstrumentUpdate.addListener(that.update);
+    };
+
+    automm.midiToFreq = function (noteNum, octaveNotes, afour, afourFreq) {
+        return Math.pow(2, ((noteNum - afour) / octaveNotes)) * afourFreq;
     };
 }(jQuery));
