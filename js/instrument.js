@@ -21,6 +21,7 @@ var automm = automm || {};
         postInitFunction: "automm.instrument.postInitFunction",
 
         model: {
+            instrumentType: "piano",
             autoPiano: false,
             autoGrid: false,
             autoGui: false,
@@ -46,7 +47,11 @@ var automm = automm || {};
                 }
             }
         },
-
+        
+        selectors: {
+            piano: ".piano"
+        },
+        
         events: {
             onNote: null,
             afterNote: null,
@@ -59,38 +64,18 @@ var automm = automm || {};
         },
 
         components: {
-            piano: {
+            userInterface: {
                 type: "automm.piano",
-                container: "{instrument}.container",
+                container: "{instrument}.dom.piano",
+                applier: "{instrument}.applier",
+                selectors: {
+                    notes: ".notes"
+                },
                 options: {
                     model: {
                         auto: "{instrument}.model.autoPiano",
                         firstNote: "{instrument}.model.firstNote", // Middle C
                         octaves: "{instrument}.model.octaves",
-                        octaveNotes: "{instrument}.model.octaveNotes",
-                        padding: "{instrument}.model.padding",
-                        pattern: "{instrument}.model.pattern",
-                        keys: "{instrument}.model.keys"
-                    },
-                    events: {
-                        onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote",
-                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
-                        afterNoteCalc: "{instrument}.events.afterNoteCalc",
-                        afterUpdate: "{instrument}.events.afterUpdate",
-                        getNoteCalc: "{instrument}.events.getNoteCalc"
-                    }
-                }
-            },
-            grid: {
-                type: "automm.grid",
-                container: "{instrument}.container",
-                options: {
-                    model: {
-                        auto: "{instrument}.model.autoGrid",
-                        columns: "{instrument}.model.columns",
-                        rows: "{instrument}.model.rows",
-                        firstNote: "{instrument}.model.firstNote", // Middle C
                         octaveNotes: "{instrument}.model.octaveNotes",
                         padding: "{instrument}.model.padding",
                         pattern: "{instrument}.model.pattern",
@@ -144,7 +129,7 @@ var automm = automm || {};
 
             eventBinder: {
                 type: "automm.eventBinder",
-                container: "{instrument}.container",
+                container: "{piano}.container",
                 options: {
                     events: {
                         afterUpdate: "{instrument}.events.afterUpdate",
@@ -174,11 +159,32 @@ var automm = automm || {};
     });
 
     automm.instrument.postInitFunction = function (that) {
+        that.container.append("<div class='" + that.model.instrumentType + "'></div>");
+        
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
             that.events.afterInstrumentUpdate.fire(param, value);
             return that;
         };
         that.events.afterGuiUpdate.addListener(that.update);
+    };
+    
+    fluid.demands("automm.instrument", "automm.instrumentWithGrid", {
+        
+        option: {
+            userInterface: {
+                type: "automm.grid"
+            }
+        }
+    });
+    
+    automm.gridstrument = function (container, options) {
+        container.append("<div class='grid'></div>");        
+        fluid.staticEnvironment.something(fluid.typeTag("automm.instrumentWithGrid"));
+        return fluid.instrument(container, options);
+    };
+    
+    automm.pianoInstrument = function (container, options) {
+        return automm.instrument(container, options);
     };
 }());
