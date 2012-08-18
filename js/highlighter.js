@@ -45,6 +45,9 @@ var automm = automm || {};
         };
 
         that.onNote = function (note) {
+            if (typeof (note) === "number") {
+                note = that.container.find("#" + note);
+            }
             // console.log(note);
             if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
                 note.css('fill', that.model.keys.white.highlight);
@@ -54,6 +57,9 @@ var automm = automm || {};
         };
 
         that.afterNote = function (note) {
+            if (typeof (note) === "number") {
+                note = that.container.find("#" + note);
+            }
             if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
                 note.css('fill', that.model.keys.white.fill);
             } else {

@@ -81,14 +81,20 @@ var automm = automm || {};
         };
 
         that.onNote = function (note) {
-            var noteID = note[0].id,
-                freq = automm.midiToFreq(noteID, that.model.octaveNotes, that.model.afour, that.model.afourFreq);
-            that.polysynth.noteOn(noteID, {"carrier.freq": freq});
+            var freq;
+            if (typeof (note) === "object") {
+                note = note[0].id;
+            }
+            freq = automm.midiToFreq(note, that.model.octaveNotes, that.model.afour, that.model.afourFreq);
+            that.polysynth.noteOn(note, {"carrier.freq": freq});
         };
 
         that.afterNote = function (note) {
+            if (typeof (note) === "object") {
+                note = note[0].id;
+            }
             if (!that.isShift) {
-                that.polysynth.noteOff(note[0].id);
+                that.polysynth.noteOff(note);
             }
         };
 

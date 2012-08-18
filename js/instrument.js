@@ -169,6 +169,16 @@ var automm = automm || {};
                         getNoteCalc: "{instrument}.events.getNoteCalc"
                     }
                 }
+            },
+
+            arpeggiator: {
+                type: "automm.arpeggiator",
+                options: {
+                    events: {
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote"
+                    }
+                }
             }
         }
     });

@@ -15,11 +15,11 @@ licenses are at the root of the Piano directory.
 
 var automm = automm || {};
 
-(function () {
+(function ($) {
     "use strict";
 
     fluid.defaults("automm.arpeggiator", {
-        gradeNames: ["fluid.viewComponent", "autoInit"],
+        gradeNames: ["fluid.modelComponent", "fluid.eventedComponent", "autoInit"],
         preInitFunction: "automm.arpeggiator.preInitFunction",
         postInitFunction: "automm.arpeggiator.postInitFunction",
 
@@ -57,6 +57,9 @@ var automm = automm || {};
         that.metronome = flock.enviro.shared.asyncScheduler;
 
         that.metronomeEvents = {};
+
+        that.currentlyPlaying = [];
+
         //  The below metronome are Web Workers running at a particular time interval
         //  They are by creating flock.
         // that.setMetronome = function (bpm) {
@@ -75,45 +78,53 @@ var automm = automm || {};
             var count = 0,
                 firstTime = true,
 
-                metronomeEvent = function (root) {
-                    var note = automm.whichNote(root, that.model.scales[that.model.scale],
-                            that.model.modes[that.model.mode], that.model.pattern, count),
+                metronomeEvent = function () {
+                    var note = automm.whichNote(root, that.model.canon.scales[that.model.scale],
+                            that.model.canon.modes[that.model.mode], that.model.pattern, count),
                         prevNote = count - 1;
 
                     if (prevNote === -1) {
-                        prevNote = count.length - 1;
+                        prevNote = that.model.pattern.length - 1;
                     }
 
-                    prevNote = automm.whichNote(root, that.model.scales[that.model.scale],
-                            that.model.modes[that.model.mode], that.model.pattern, prevNote);
+                    prevNote = automm.whichNote(root, that.model.canon.scales[that.model.scale],
+                            that.model.canon.modes[that.model.mode], that.model.pattern, prevNote);
 
                     if (!firstTime) {
                         that.events.afterNote.fire(prevNote);
+                        that.currentlyPlaying.splice(($.inArray(note, that.currentlyPlaying)), 1);
                     } else {
                         firstTime = false;
                     }
 
-                    this.events.onNote.fire(note);
+                    that.events.onNote.fire(note);
+                    that.currentlyPlaying.push(note);
 
-                    if (count > that.model.pattern.length) {
+                    if (count >= that.model.pattern.length - 1) {
                         count = 0;
                     } else {
                         count = count + 1;
                     }
                 };
 
-            if (that.metronomeEvents[that.model.interval] === undefined) {
-                that.metronomeEvents[that.model.interval] = [];
+            if (that.metronomeEvents[root] === undefined) {
+                that.metronomeEvents[root] = [];
             }
 
             that.metronomeEvents[root].push(metronomeEvent);
+
+            that.events.metronomeEvent.addListener(metronomeEvent);
         };
 
-        that.stopArpeggiator = function (note) {
-            fluid.each(that.metronomeEvents[note], function (event) {
+        that.stopArpeggiator = function (root) {
+            fluid.each(that.metronomeEvents[root], function (event) {
                 that.removeMetronomeEvent(event);
             });
             that.metronomeEvents.length = 0;
+
+            fluid.each(that.currentlyPlaying, function (note) {
+                that.events.afterNote.fire(note);
+            });
         };
 
         that.setMetronomeEvent = function (callback) {
@@ -121,7 +132,7 @@ var automm = automm || {};
         };
 
         that.removeMetronomeEvent = function (callback) {
-            that.metronomeEvent.removeListener(callback);
+            that.events.metronomeEvent.removeListener(callback);
         };
 
         // that.onNote = function (note) {
@@ -132,6 +143,16 @@ var automm = automm || {};
         //     
         // };
 
+    };
+
+    automm.arpeggiator.postInitFunction = function (that) {
+        that.startMetronome();
+
+        // that.applier.modelChanged.addListener("interval", function (newModel, oldModel, changeSpec) {
+        //     var path = changeSpec[0].path,
+        //         oscPath = that.options.paramMap[path];
+        //     that.polysynth.input(oscPath, newModel[path]);
+        // });
     };
 
     automm.relativeScale = function (scale, mode) {
@@ -154,13 +175,4 @@ var automm = automm || {};
 
         return note;
     };
-
-    automm.arpeggiator.postInitFunction = function (that) {
-        that.startMetronome();
-        // that.applier.modelChanged.addListener("interval", function (newModel, oldModel, changeSpec) {
-        //     var path = changeSpec[0].path,
-        //         oscPath = that.options.paramMap[path];
-        //     that.polysynth.input(oscPath, newModel[path]);
-        // });
-    };
-}());
+}(jQuery));
