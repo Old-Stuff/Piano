@@ -140,7 +140,8 @@ var automm = automm || {};
                     model: {
                         afour: "{instrument}.afour",
                         afourFreq: "{instrument}.afourFreq",
-                        ocaveNotes: "{instrument}.octaveNotes"
+                        ocaveNotes: "{instrument}.octaveNotes",
+                        arpActive: "{instrument}.arpActive"
                     },
                     events: {
                         onClick: "{instrument}.events.onClick",
@@ -188,7 +189,7 @@ var automm = automm || {};
 
             highlighter: {
                 type: "automm.highlighter",
-                container: "{grid}.container",
+                container: "{instrument}.container",
                 options: {
                     model: {
                         keys: "{instrument}.model.keys"
@@ -206,6 +207,7 @@ var automm = automm || {};
 
             arpeggiator: {
                 type: "automm.arpeggiator",
+                container: "{grid}.container",
                 options: {
                     model: "{instrument}.model",
 

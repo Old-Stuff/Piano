@@ -27,12 +27,11 @@ var automm = automm || {};
             keys: {
                 white: {width: 50, height: 50, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 50, height: 50, stroke: "black", fill: "black", highlight: "yellow", notes: []}
-            }
+            },
+            arpActive: false
         },
 
         events: {
-            onClick: null,
-            afterClick: null,
             getNoteCalc: null,
             onNote: null,
             afterNote: null,
@@ -69,14 +68,26 @@ var automm = automm || {};
             }
         };
 
+        that.onClick = function (note) {
+            if (!that.model.arpActive) {
+                that.onNote(note);
+            }
+        };
+
+        that.afterClick = function (note) {
+            if (!that.model.arpActive) {
+                that.afterNote(note);
+            }
+        };
+
     };
 
     automm.highlighter.postInitFunction = function (that) {
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
         that.events.afterNoteCalc.addListener(that.afterNoteCalc);
-        that.events.onClick.addListener(that.onNote);
-        that.events.afterClick.addListener(that.afterNote);
+        that.events.onClick.addListener(that.onClick);
+        that.events.afterClick.addListener(that.afterClick);
         that.events.getNoteCalc.fire();
     };
 

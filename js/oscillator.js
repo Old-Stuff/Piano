@@ -25,6 +25,7 @@ var automm = automm || {};
         postInitFunction: "automm.oscillator.postInitFunction",
 
         model: {
+            arpActive: false,
             freq: 440,
             osc: "flock.ugen.sin",
             attack: 0.25,
@@ -100,9 +101,17 @@ var automm = automm || {};
             }
         };
 
-        // that.midiToFreq = function (noteNum) {
-        //     return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
-        // };
+        that.onClick = function (note) {
+            if (!that.model.arpActive) {
+                that.onNote(note);
+            }
+        };
+
+        that.afterClick = function (note) {
+            if (!that.model.arpActive) {
+                that.afterNote(note);
+            }
+        };
     };
 
     automm.oscillator.postInitFunction = function (that) {
@@ -121,8 +130,8 @@ var automm = automm || {};
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
-        that.events.onClick.addListener(that.onNote);
-        that.events.afterClick.addListener(that.afterNote);
+        that.events.onClick.addListener(that.onClick);
+        that.events.afterClick.addListener(that.afterClick);
         that.events.afterInstrumentUpdate.addListener(that.update);
     };
 

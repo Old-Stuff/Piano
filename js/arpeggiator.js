@@ -11,7 +11,7 @@ licenses are at the root of the Piano directory.
 
 */
 
-/*global jQuery, fluid, flock*/
+/*global jQuery, fluid, flock, document, d3*/
 
 var automm = automm || {};
 
@@ -19,7 +19,7 @@ var automm = automm || {};
     "use strict";
 
     fluid.defaults("automm.arpeggiator", {
-        gradeNames: ["fluid.modelComponent", "fluid.eventedComponent", "autoInit"],
+        gradeNames: ["fluid.viewComponent", "autoInit"],
         preInitFunction: "automm.arpeggiator.preInitFunction",
         postInitFunction: "automm.arpeggiator.postInitFunction",
 
@@ -63,7 +63,8 @@ var automm = automm || {};
             onNote: null,
             afterNote: null,
             metronomeEvent: null,
-            afterInstrumentUpdate: null
+            afterInstrumentUpdate: null,
+            arpActive: null
         }
     });
 
@@ -73,6 +74,13 @@ var automm = automm || {};
         that.runningArpeggiators = {};
 
         that.currentlyPlaying = [];
+        
+        that.setupSVG = function () {
+            var container = that.container.find("#viewBox");
+            container = container[0];
+            that.svg = d3.select(container);
+            that.svgText = that.svg.append("text");
+        };
 
         that.onClick = function (note) {
             if (that.model.arpActive) {
@@ -87,6 +95,16 @@ var automm = automm || {};
                 that.stopArpeggiator(note);
             }
         };
+
+        that.bindAlt = function () {
+            $(document).keydown(function (event) {
+                if (event.altKey === true) {
+                    that.update("arpActive", !that.model.arpActive);
+                    that.events.arpActive.fire(that.model.arpActive);
+                }
+            });
+        };
+
         //  The below metronome are Web Workers running at a particular time interval
         //  They are by creating flock.
         // that.setMetronome = function (interval) {
@@ -185,6 +203,8 @@ var automm = automm || {};
         that.events.afterInstrumentUpdate.addListener(that.update);
         that.events.onClick.addListener(that.onClick);
         that.events.afterClick.addListener(that.afterClick);
+        that.bindAlt();
+        that.setupSVG();
 
         that.applier.modelChanged.addListener("interval", function (newModel, oldModel) {
             that.stopMetronome(oldModel.interval);
@@ -228,7 +248,7 @@ var automm = automm || {};
         if (i - range.low < 0) {
             i = i + count;
             i = automm.offsetMod(i, range);
-        } else if (i > range.high) {
+        } else if (i >= range.high) {
             i = i - count;
             i = automm.offsetMod(i, range);
         }

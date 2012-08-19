@@ -35,6 +35,10 @@ var automm = automm || {};
             keys: {
                 white: {width: 50, height: 50, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 50, height: 50, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+            },
+            viewBox: {
+                height: null,
+                width: null
             }
         },
 
@@ -60,10 +64,10 @@ var automm = automm || {};
                 noteNum += 1;
             }
 
-            that.model.viewbox = {
+            that.updateValue("viewbox", {
                 width: (that.model.keys.white.width * that.model.columns) + that.model.padding,
                 height: (that.model.keys.white.height * that.model.rows) + that.model.padding
-            };
+            });
 
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
             that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
@@ -128,6 +132,7 @@ var automm = automm || {};
             svg.attr("role", "application");
             svg.attr("focusable", true);
             svg.attr("tabindex", "0");
+            svg.attr("id", "viewBox");
             svg.attr("aria-labelledby", "ariaTitle");
 
             that.noteGroup = svg.append("g");
@@ -138,6 +143,10 @@ var automm = automm || {};
             // Draw the keys
             that.render();
 
+        };
+
+        that.updateValue = function (param, value) {
+            that.applier.requestChange(param, value);
         };
 
         that.update = function (param, value) {
