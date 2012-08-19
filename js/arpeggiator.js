@@ -75,7 +75,7 @@ var automm = automm || {};
         that.runningArpeggiators = {};
 
         that.currentlyPlaying = [];
-        
+
         that.drawNotification = function (isAlt) {
             var container = that.container.find("#viewBox"),
                 viewBox,
@@ -122,7 +122,7 @@ var automm = automm || {};
                 that.startArpeggiator(note);
             }
         };
-        
+
         that.afterClick = function (note) {
             if (that.model.arpActive) {
                 note = parseFloat(note[0].id);
@@ -240,10 +240,12 @@ var automm = automm || {};
         that.events.arpActive.addListener(that.drawNotification);
         that.bindAlt();
 
-        that.applier.modelChanged.addListener("interval", function (newModel, oldModel) {
+        /*jslint unparam: true*/
+        that.applier.modelChanged.addListener("interval", function (newModel, oldModel, changeSpec) {
             that.stopMetronome(oldModel.interval);
             that.startMetronome(newModel.interval);
         });
+        /*jslint unparam: false*/
     };
 
     automm.relativeScale = function (scale, mode) {
