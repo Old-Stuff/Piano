@@ -37,8 +37,6 @@ var automm = automm || {};
 
         events: {
             afterUpdate: null,
-            onNote: null,
-            afterNote: null,
             afterInstrumentUpdate: null,
             afterNoteCalc: null,
             getNoteCalc: null
@@ -170,8 +168,6 @@ var automm = automm || {};
             that.draw();
             that.events.afterUpdate.fire();
             // Fire event that piano is drawn
-            that.events.onNote.addListener(that.onNote);
-            that.events.afterNote.addListener(that.afterNote);
             that.events.afterInstrumentUpdate.addListener(that.update);
             that.events.getNoteCalc.addListener(that.sendNoteCalc);
         }

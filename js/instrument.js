@@ -55,7 +55,9 @@ var automm = automm || {};
             afterNoteCalc: null,
             afterUpdate: null,
             getNoteCalc: null,
-            afterPoly: null
+            afterPoly: null,
+            onClick: null,
+            afterClick: null
         },
 
         components: {
@@ -73,8 +75,6 @@ var automm = automm || {};
                         keys: "{instrument}.model.keys"
                     },
                     events: {
-                        onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",
                         afterUpdate: "{instrument}.events.afterUpdate",
@@ -97,8 +97,6 @@ var automm = automm || {};
                         keys: "{instrument}.model.keys"
                     },
                     events: {
-                        onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",
                         afterUpdate: "{instrument}.events.afterUpdate",
@@ -116,6 +114,8 @@ var automm = automm || {};
                         ocaveNotes: "{instrument}.octaveNotes"
                     },
                     events: {
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
@@ -148,6 +148,8 @@ var automm = automm || {};
                 options: {
                     events: {
                         afterUpdate: "{instrument}.events.afterUpdate",
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterPoly: "{instrument}.events.afterPoly"
@@ -163,6 +165,8 @@ var automm = automm || {};
                         keys: "{instrument}.model.keys"
                     },
                     events: {
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",

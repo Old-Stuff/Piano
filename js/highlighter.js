@@ -31,6 +31,8 @@ var automm = automm || {};
         },
 
         events: {
+            onClick: null,
+            afterClick: null,
             getNoteCalc: null,
             onNote: null,
             afterNote: null,
@@ -73,6 +75,8 @@ var automm = automm || {};
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
         that.events.afterNoteCalc.addListener(that.afterNoteCalc);
+        that.events.onClick.addListener(that.onNote);
+        that.events.afterClick.addListener(that.afterNote);
         that.events.getNoteCalc.fire();
     };
 

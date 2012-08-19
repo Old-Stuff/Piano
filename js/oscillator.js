@@ -40,6 +40,8 @@ var automm = automm || {};
         events: {
             onNote: null,
             afterNote: null,
+            onClick: null,
+            afterClick: null,
             afterInstrumentUpdate: null
         },
         // Maps parameter between this model and the model of flocking
@@ -119,6 +121,8 @@ var automm = automm || {};
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
+        that.events.onClick.addListener(that.onNote);
+        that.events.afterClick.addListener(that.afterNote);
         that.events.afterInstrumentUpdate.addListener(that.update);
     };
 
