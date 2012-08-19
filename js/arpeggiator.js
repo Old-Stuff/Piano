@@ -86,15 +86,18 @@ var automm = automm || {};
             interval = interval || that.model.interval;
             that.metronome.clearRepeat(interval);
         };
-        
 
         that.startArpeggiator = function (root) {
             var count = 0,
                 firstTime = true,
 
                 metronomeEvent = function () {
-                    var note = automm.whichNote(root, that.model.canon.scales[that.model.scale],
-                            that.model.canon.modes[that.model.mode], that.model.arpPattern, count),
+                    var range = {
+                            low: that.model.firstNote,
+                            high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
+                        },
+                        note = automm.whichNote(root, that.model.canon.scales[that.model.scale],
+                            that.model.canon.modes[that.model.mode], that.model.arpPattern, count, range),
                         prevNote = count - 1;
 
                     if (prevNote === -1) {
@@ -102,7 +105,7 @@ var automm = automm || {};
                     }
 
                     prevNote = automm.whichNote(root, that.model.canon.scales[that.model.scale],
-                            that.model.canon.modes[that.model.mode], that.model.arpPattern, prevNote);
+                            that.model.canon.modes[that.model.mode], that.model.arpPattern, prevNote, range);
 
                     if (!firstTime) {
                         that.events.afterNote.fire(prevNote);
@@ -138,6 +141,12 @@ var automm = automm || {};
 
             fluid.each(that.currentlyPlaying, function (note) {
                 that.events.afterNote.fire(note);
+            });
+        };
+
+        that.clearArpeggiators = function () {
+            fluid.each(that.metronomeEvents, function (root) {
+                that.stopArpeggiator(root);
             });
         };
 
@@ -179,9 +188,10 @@ var automm = automm || {};
         return relativeScale;
     };
 
-    automm.whichNote = function (root, scale, mode, arpPattern, count) {
+    automm.whichNote = function (root, scale, mode, arpPattern, count, range) {
         var relativeScale = automm.relativeScale(scale, mode),
             note = root + relativeScale[arpPattern[count]];
+        note = automm.offsetMod(note, range);
 
         return note;
     };
@@ -202,7 +212,7 @@ var automm = automm || {};
             i = automm.offsetMod(i, range);
         } else if (i > range.high) {
             i = i - count;
-            i = automm.offsetMode(i, range);
+            i = automm.offsetMod(i, range);
         }
 
         return i;
