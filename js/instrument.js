@@ -201,7 +201,8 @@ var automm = automm || {};
                 options: {
                     events: {
                         onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote"
+                        afterNote: "{instrument}.events.afterNote",
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }
             }

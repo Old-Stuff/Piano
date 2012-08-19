@@ -73,17 +73,20 @@ var automm = automm || {};
 
         //  The below metronome are Web Workers running at a particular time interval
         //  They are by creating flock.
-        // that.setMetronome = function (bpm) {
+        // that.setMetronome = function (interval) {
         //     
         // };
 
-        that.startMetronome = function () {
-            that.metronome.repeat(that.model.interval, that.events.metronomeEvent.fire);
+        that.startMetronome = function (interval) {
+            interval = interval || that.model.interval;
+            that.metronome.repeat(interval, that.events.metronomeEvent.fire);
         };
 
-        that.stopMetronome = function () {
-            that.motronome.clearRepeat(that.model.interval, that.events.metronomeEvent.fire);
+        that.stopMetronome = function (interval) {
+            interval = interval || that.model.interval;
+            that.metronome.clearRepeat(interval);
         };
+        
 
         that.startArpeggiator = function (root) {
             var count = 0,
@@ -92,11 +95,7 @@ var automm = automm || {};
                 metronomeEvent = function () {
                     var note = automm.whichNote(root, that.model.canon.scales[that.model.scale],
                             that.model.canon.modes[that.model.mode], that.model.arpPattern, count),
-                        prevNote = count - 1,
-                        range = {
-                            low: that.model.firstNote,
-                            high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
-                        };
+                        prevNote = count - 1;
 
                     if (prevNote === -1) {
                         prevNote = that.model.arpPattern.length - 1;
@@ -154,25 +153,16 @@ var automm = automm || {};
             that.applier.requestChange(param, value);
             return that;
         };
-        // that.onNote = function (note) {
-        //     
-        // };
-        // 
-        // that.afterNote = function (note) {
-        //     
-        // };
-
     };
 
     automm.arpeggiator.postInitFunction = function (that) {
-        that.startMetronome();
+        that.startMetronome(that.model.interval);
         that.events.afterInstrumentUpdate.addListener(that.update);
 
-        // that.applier.modelChanged.addListener("interval", function (newModel, oldModel, changeSpec) {
-        //     var path = changeSpec[0].path,
-        //         oscPath = that.options.paramMap[path];
-        //     that.polysynth.input(oscPath, newModel[path]);
-        // });
+        that.applier.modelChanged.addListener("interval", function (newModel, oldModel) {
+            that.stopMetronome(oldModel.interval);
+            that.startMetronome(newModel.interval);
+        });
     };
 
     automm.relativeScale = function (scale, mode) {
@@ -196,25 +186,25 @@ var automm = automm || {};
         return note;
     };
 
-automm.offsetMod = function (i, range) {
-    // i is any number
-    // range is an object
-    // 
-    // See if the number is below the range and needs to be modded down
-    // range = {
-    //     low: that.model.firstNote,
-    //     high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
-    // };
-    var count = range.high - range.low;
+    automm.offsetMod = function (i, range) {
+        // i is any number
+        // range is an object
+        // 
+        // See if the number is below the range and needs to be modded down
+        // range = {
+        //     low: that.model.firstNote,
+        //     high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
+        // };
+        var count = range.high - range.low;
 
-    if (i - range.low < 0) {
-        i = i + count;
-        i = automm.offsetMod(i, range);
-    } else if (i > range.high) {
-        i = i - count;
-        i = automm.offsetMode(i, range);
-    }
+        if (i - range.low < 0) {
+            i = i + count;
+            i = automm.offsetMod(i, range);
+        } else if (i > range.high) {
+            i = i - count;
+            i = automm.offsetMode(i, range);
+        }
 
-    return i;
-};
+        return i;
+    };
 }(jQuery));
