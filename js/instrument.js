@@ -24,6 +24,7 @@ var automm = automm || {};
             autoPiano: false,
             autoGrid: false,
             autoGui: false,
+            artActive: false,
             columns: 8,
             rows: 8,
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
@@ -46,11 +47,17 @@ var automm = automm || {};
                 }
             },
 
+            arpActive: false,
+            // Rate of the metronome... should be in npm
             interval: 500,
+            // Scale and mode to arpeggiate in
             scale: "major",
             mode: "ionian",
+            // This pattern is in Note Degrees starting from 0 ({"I"": 0, "II":1, "III":etcetcetc})
             arpPattern: [0, 2, 4],
 
+            // This is a connanon which is used to collect modes / scales / etc.... 
+            // probably shouldn't live here
             canon: {
                 modes: {
                     ionian: 0,
@@ -66,6 +73,7 @@ var automm = automm || {};
                     minor: [2, 2, 1, 2, 2, 1, 2]
                 }
             }
+
         },
 
         events: {
@@ -199,9 +207,13 @@ var automm = automm || {};
             arpeggiator: {
                 type: "automm.arpeggiator",
                 options: {
+                    model: "{instrument}.model",
+
                     events: {
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }

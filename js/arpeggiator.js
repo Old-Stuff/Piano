@@ -24,6 +24,8 @@ var automm = automm || {};
         postInitFunction: "automm.arpeggiator.postInitFunction",
 
         model: {
+            // Is it active?
+            arpActive: false,
             // Rate of the metronome... should be in npm
             interval: 500,
             // Scale and mode to arpeggiate in
@@ -56,7 +58,8 @@ var automm = automm || {};
         },
 
         events: {
-            onclick: null,
+            onClick: null,
+            afterClick: null,
             onNote: null,
             afterNote: null,
             metronomeEvent: null,
@@ -71,6 +74,19 @@ var automm = automm || {};
 
         that.currentlyPlaying = [];
 
+        that.onClick = function (note) {
+            if (that.model.arpActive) {
+                note = parseFloat(note[0].id);
+                that.startArpeggiator(note);
+            }
+        };
+        
+        that.afterClick = function (note) {
+            if (that.model.arpActive) {
+                note = parseFloat(note[0].id);
+                that.stopArpeggiator(note);
+            }
+        };
         //  The below metronome are Web Workers running at a particular time interval
         //  They are by creating flock.
         // that.setMetronome = function (interval) {
@@ -167,6 +183,8 @@ var automm = automm || {};
     automm.arpeggiator.postInitFunction = function (that) {
         that.startMetronome(that.model.interval);
         that.events.afterInstrumentUpdate.addListener(that.update);
+        that.events.onClick.addListener(that.onClick);
+        that.events.afterClick.addListener(that.afterClick);
 
         that.applier.modelChanged.addListener("interval", function (newModel, oldModel) {
             that.stopMetronome(oldModel.interval);
