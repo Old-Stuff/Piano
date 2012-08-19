@@ -25,6 +25,7 @@ var automm = automm || {};
         postInitFunction: "automm.oscillator.postInitFunction",
 
         model: {
+            arpActive: false,
             freq: 440,
             osc: "flock.ugen.sin",
             attack: 0.25,
@@ -40,6 +41,8 @@ var automm = automm || {};
         events: {
             onNote: null,
             afterNote: null,
+            onClick: null,
+            afterClick: null,
             afterInstrumentUpdate: null
         },
         // Maps parameter between this model and the model of flocking
@@ -81,20 +84,34 @@ var automm = automm || {};
         };
 
         that.onNote = function (note) {
-            var noteID = note[0].id,
-                freq = automm.midiToFreq(noteID, that.model.octaveNotes, that.model.afour, that.model.afourFreq);
-            that.polysynth.noteOn(noteID, {"carrier.freq": freq});
+            var freq;
+            if (typeof (note) === "object") {
+                note = note[0].id;
+            }
+            freq = automm.midiToFreq(note, that.model.octaveNotes, that.model.afour, that.model.afourFreq);
+            that.polysynth.noteOn(note, {"carrier.freq": freq});
         };
 
         that.afterNote = function (note) {
+            if (typeof (note) === "object") {
+                note = note[0].id;
+            }
             if (!that.isShift) {
-                that.polysynth.noteOff(note[0].id);
+                that.polysynth.noteOff(note);
             }
         };
 
-        // that.midiToFreq = function (noteNum) {
-        //     return Math.pow(2, ((noteNum - that.model.afour) / that.model.octaveNotes)) * that.model.afourFreq;
-        // };
+        that.onClick = function (note) {
+            if (!that.model.arpActive) {
+                that.onNote(note);
+            }
+        };
+
+        that.afterClick = function (note) {
+            if (!that.model.arpActive) {
+                that.afterNote(note);
+            }
+        };
     };
 
     automm.oscillator.postInitFunction = function (that) {
@@ -113,6 +130,8 @@ var automm = automm || {};
         flock.enviro.shared.play();
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
+        that.events.onClick.addListener(that.onClick);
+        that.events.afterClick.addListener(that.afterClick);
         that.events.afterInstrumentUpdate.addListener(that.update);
     };
 

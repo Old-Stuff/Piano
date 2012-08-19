@@ -27,7 +27,8 @@ var automm = automm || {};
             keys: {
                 white: {width: 50, height: 50, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 50, height: 50, stroke: "black", fill: "black", highlight: "yellow", notes: []}
-            }
+            },
+            arpActive: false
         },
 
         events: {
@@ -45,6 +46,9 @@ var automm = automm || {};
         };
 
         that.onNote = function (note) {
+            if (typeof (note) === "number") {
+                note = that.container.find("#" + note);
+            }
             // console.log(note);
             if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
                 note.css('fill', that.model.keys.white.highlight);
@@ -54,10 +58,25 @@ var automm = automm || {};
         };
 
         that.afterNote = function (note) {
+            if (typeof (note) === "number") {
+                note = that.container.find("#" + note);
+            }
             if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
                 note.css('fill', that.model.keys.white.fill);
             } else {
                 note.css('fill', that.model.keys.black.fill);
+            }
+        };
+
+        that.onClick = function (note) {
+            if (!that.model.arpActive) {
+                that.onNote(note);
+            }
+        };
+
+        that.afterClick = function (note) {
+            if (!that.model.arpActive) {
+                that.afterNote(note);
             }
         };
 
@@ -67,6 +86,8 @@ var automm = automm || {};
         that.events.onNote.addListener(that.onNote);
         that.events.afterNote.addListener(that.afterNote);
         that.events.afterNoteCalc.addListener(that.afterNoteCalc);
+        that.events.onClick.addListener(that.onClick);
+        that.events.afterClick.addListener(that.afterClick);
         that.events.getNoteCalc.fire();
     };
 

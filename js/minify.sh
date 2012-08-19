@@ -5,6 +5,7 @@ if [ -e "./automm.min.js" ]; then
 	rm ./automm.min.js
 fi
 cat oscillator.js | jsmin > automm.min.js
+cat arpeggiator.js | jsmin >> automm.min.js
 cat piano.js | jsmin >> automm.min.js
 cat grid.js | jsmin >> automm.min.js
 cat instrument.js | jsmin >> automm.min.js
