@@ -32,13 +32,15 @@ var automm = automm || {};
             keys: {
                 white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
                 black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+            },
+            viewBox: {
+                width: null,
+                height: null
             }
         },
 
         events: {
             afterUpdate: null,
-            onNote: null,
-            afterNote: null,
             afterInstrumentUpdate: null,
             afterNoteCalc: null,
             getNoteCalc: null
@@ -58,10 +60,10 @@ var automm = automm || {};
             that.model.whiteNotes = that.model.keys.white.notes.length;
             that.model.blackNotes = that.model.keys.black.notes.length;
 
-            that.model.viewbox = {
+            that.updateValue("viewbox", {
                 width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
                 height: that.model.keys.white.height + that.model.padding
-            };
+            });
 
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
             that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
@@ -134,6 +136,7 @@ var automm = automm || {};
             svg.attr("role", "application");
             svg.attr("focusable", true);
             svg.attr("tabindex", "0");
+            svg.attr("id", "viewBox");
             svg.attr("aria-labelledby", "ariaTitle");
             
 
@@ -146,9 +149,13 @@ var automm = automm || {};
             that.render();
         };
 
+        that.updateValue = function (param, value) {
+            that.applier.requestChange(param, value);
+        };
+
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
-            that.container.children("#piano").empty();  // Look into jquery clear
+            that.container.children("#piano").empty();
             that.draw();
             // Fire event that piano is drawn
             that.events.afterUpdate.fire();
@@ -170,8 +177,6 @@ var automm = automm || {};
             that.draw();
             that.events.afterUpdate.fire();
             // Fire event that piano is drawn
-            that.events.onNote.addListener(that.onNote);
-            that.events.afterNote.addListener(that.afterNote);
             that.events.afterInstrumentUpdate.addListener(that.update);
             that.events.getNoteCalc.addListener(that.sendNoteCalc);
         }

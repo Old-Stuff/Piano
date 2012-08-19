@@ -24,6 +24,7 @@ var automm = automm || {};
             autoPiano: false,
             autoGrid: false,
             autoGui: false,
+            artActive: false,
             columns: 8,
             rows: 8,
             afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
@@ -44,7 +45,35 @@ var automm = automm || {};
                     stroke: '#000000', // Black
                     highlight: '#fff000' //  Yellow
                 }
+            },
+
+            arpActive: false,
+            // Rate of the metronome... should be in npm
+            interval: 500,
+            // Scale and mode to arpeggiate in
+            scale: "major",
+            mode: "ionian",
+            // This pattern is in Note Degrees starting from 0 ({"I"": 0, "II":1, "III":etcetcetc})
+            arpPattern: [0, 2, 4],
+
+            // This is a connanon which is used to collect modes / scales / etc.... 
+            // probably shouldn't live here
+            canon: {
+                modes: {
+                    ionian: 0,
+                    dorian: 1,
+                    phyrgian: 2,
+                    lydian: 3,
+                    mixolydian: 4,
+                    aeolian: 5,
+                    locrian: 6
+                },
+                scales: {
+                    major: [2, 2, 1, 2, 2, 2, 1],
+                    minor: [2, 2, 1, 2, 2, 1, 2]
+                }
             }
+
         },
 
         events: {
@@ -55,7 +84,9 @@ var automm = automm || {};
             afterNoteCalc: null,
             afterUpdate: null,
             getNoteCalc: null,
-            afterPoly: null
+            afterPoly: null,
+            onClick: null,
+            afterClick: null
         },
 
         components: {
@@ -73,8 +104,6 @@ var automm = automm || {};
                         keys: "{instrument}.model.keys"
                     },
                     events: {
-                        onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",
                         afterUpdate: "{instrument}.events.afterUpdate",
@@ -97,8 +126,6 @@ var automm = automm || {};
                         keys: "{instrument}.model.keys"
                     },
                     events: {
-                        onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",
                         afterUpdate: "{instrument}.events.afterUpdate",
@@ -113,9 +140,12 @@ var automm = automm || {};
                     model: {
                         afour: "{instrument}.afour",
                         afourFreq: "{instrument}.afourFreq",
-                        ocaveNotes: "{instrument}.octaveNotes"
+                        ocaveNotes: "{instrument}.octaveNotes",
+                        arpActive: "{instrument}.arpActive"
                     },
                     events: {
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
@@ -148,6 +178,8 @@ var automm = automm || {};
                 options: {
                     events: {
                         afterUpdate: "{instrument}.events.afterUpdate",
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterPoly: "{instrument}.events.afterPoly"
@@ -157,16 +189,34 @@ var automm = automm || {};
 
             highlighter: {
                 type: "automm.highlighter",
-                container: "{grid}.container",
+                container: "{instrument}.container",
                 options: {
                     model: {
                         keys: "{instrument}.model.keys"
                     },
                     events: {
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",
                         getNoteCalc: "{instrument}.events.getNoteCalc"
+                    }
+                }
+            },
+
+            arpeggiator: {
+                type: "automm.arpeggiator",
+                container: "{grid}.container",
+                options: {
+                    model: "{instrument}.model",
+
+                    events: {
+                        onNote: "{instrument}.events.onNote",
+                        afterNote: "{instrument}.events.afterNote",
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
+                        afterInstrumentUpdate: "{instrument}.events.afterInstrumentUpdate"
                     }
                 }
             }
