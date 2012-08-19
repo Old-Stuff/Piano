@@ -70,7 +70,7 @@ var automm = automm || {};
     });
 
     automm.arpeggiator.preInitFunction = function (that) {
-        that.metronome = flock.enviro.shared.asyncScheduler;
+        that.metronome = flock.scheduler.async();
 
         that.runningArpeggiators = {};
 
