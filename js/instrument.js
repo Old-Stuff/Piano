@@ -49,7 +49,7 @@ var automm = automm || {};
 
             arpActive: false,
             // Rate of the metronome... should be in npm
-            interval: 500,
+            interval: 150,
             // Scale and mode to arpeggiate in
             scale: "major",
             mode: "ionian",
