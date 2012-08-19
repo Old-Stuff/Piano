@@ -44,6 +44,27 @@ var automm = automm || {};
                     stroke: '#000000', // Black
                     highlight: '#fff000' //  Yellow
                 }
+            },
+
+            interval: 500,
+            scale: "major",
+            mode: "ionian",
+            arpPattern: [0, 2, 4],
+
+            canon: {
+                modes: {
+                    ionian: 0,
+                    dorian: 1,
+                    phyrgian: 2,
+                    lydian: 3,
+                    mixolydian: 4,
+                    aeolian: 5,
+                    locrian: 6
+                },
+                scales: {
+                    major: [2, 2, 1, 2, 2, 2, 1],
+                    minor: [2, 2, 1, 2, 2, 1, 2]
+                }
             }
         },
 

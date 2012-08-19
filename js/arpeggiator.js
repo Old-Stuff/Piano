@@ -27,7 +27,10 @@ var automm = automm || {};
             interval: 500,
             scale: "major",
             mode: "ionian",
-            pattern: [0, 2, 4],
+            arpPattern: [0, 2, 4],
+            firstNote: 60,
+            octaves: 1,
+            octaveNotes: 12,
 
             canon: {
                 modes: {
@@ -47,6 +50,7 @@ var automm = automm || {};
         },
 
         events: {
+            onclick: null,
             onNote: null,
             afterNote: null,
             metronomeEvent: null
@@ -80,15 +84,20 @@ var automm = automm || {};
 
                 metronomeEvent = function () {
                     var note = automm.whichNote(root, that.model.canon.scales[that.model.scale],
-                            that.model.canon.modes[that.model.mode], that.model.pattern, count),
-                        prevNote = count - 1;
+                            that.model.canon.modes[that.model.mode], that.model.arpPattern, count),
+                        prevNote = count - 1,
+                        range = {
+                            number: that.model.octaves * that.model.octaveNotes,
+                            low: that.model.firstNote,
+                            high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
+                        };
 
                     if (prevNote === -1) {
-                        prevNote = that.model.pattern.length - 1;
+                        prevNote = that.model.arpPattern.length - 1;
                     }
 
                     prevNote = automm.whichNote(root, that.model.canon.scales[that.model.scale],
-                            that.model.canon.modes[that.model.mode], that.model.pattern, prevNote);
+                            that.model.canon.modes[that.model.mode], that.model.arpPattern, prevNote);
 
                     if (!firstTime) {
                         that.events.afterNote.fire(prevNote);
@@ -100,7 +109,7 @@ var automm = automm || {};
                     that.events.onNote.fire(note);
                     that.currentlyPlaying.push(note);
 
-                    if (count >= that.model.pattern.length - 1) {
+                    if (count >= that.model.arpPattern.length - 1) {
                         count = 0;
                     } else {
                         count = count + 1;
@@ -135,6 +144,10 @@ var automm = automm || {};
             that.events.metronomeEvent.removeListener(callback);
         };
 
+        that.update = function (param, value) {
+            that.applier.requestChange(param, value);
+            return that;
+        };
         // that.onNote = function (note) {
         //     
         // };
@@ -169,9 +182,9 @@ var automm = automm || {};
         return relativeScale;
     };
 
-    automm.whichNote = function (root, scale, mode, pattern, count) {
+    automm.whichNote = function (root, scale, mode, arpPattern, count) {
         var relativeScale = automm.relativeScale(scale, mode),
-            note = root + relativeScale[pattern[count]];
+            note = root + relativeScale[arpPattern[count]];
 
         return note;
     };
