@@ -11,7 +11,7 @@ licenses are at the root of the Piano directory.
 
 */
 
-/*global jQuery, fluid, flock, document, d3*/
+/*global jQuery, fluid, flock, document, d3, setTimeout*/
 
 var automm = automm || {};
 
@@ -26,6 +26,7 @@ var automm = automm || {};
         model: {
             // Is it active?
             arpActive: false,
+            notificationShowing: false,
             // Rate of the metronome... should be in npm
             interval: 500,
             // Scale and mode to arpeggiate in
@@ -75,11 +76,44 @@ var automm = automm || {};
 
         that.currentlyPlaying = [];
         
-        that.setupSVG = function () {
-            var container = that.container.find("#viewBox");
+        that.drawNotification = function (isAlt) {
+            var container = that.container.find("#viewBox"),
+                viewBox,
+                textRect;
+            that.model.notificationShowing = true;
             container = container[0];
             that.svg = d3.select(container);
-            that.svgText = that.svg.append("text");
+            viewBox = that.svg.attr("viewBox").split(' ');
+            fluid.each(viewBox, function (value, i) {
+                viewBox[i] = parseFloat(value);
+            });
+            that.svgTextGroup = that.svg.append("g");
+            textRect = that.svgTextGroup.append("rect");
+            textRect.attr("x", viewBox[2] / 4);
+            textRect.attr("y", viewBox[3] / 4);
+            textRect.attr("height", "50%");
+            textRect.attr("width", "50%");
+            textRect.attr("fill", "black");
+            textRect.attr("opacity", 0.5);
+            textRect.attr("rx", "20");
+            textRect.attr("ry", "20");
+            that.svgText = that.svgTextGroup.append("text");
+            that.svgText.attr("x", viewBox[2] / 2);
+            that.svgText.attr("y", viewBox[3] / 1.8);
+            that.svgText.attr("text-anchor", "middle");
+            that.svgText.attr("fill", "white");
+            that.svgText.attr("font-size", 25);
+            if (isAlt) {
+                that.svgText.text("Arpeggiator On");
+            } else {
+                that.svgText.text("Arpeggiator Off");
+            }
+            setTimeout(that.removeNotification, 500);
+        };
+
+        that.removeNotification = function () {
+            that.svgTextGroup.remove();
+            that.model.notificationShowing = false;
         };
 
         that.onClick = function (note) {
@@ -98,7 +132,7 @@ var automm = automm || {};
 
         that.bindAlt = function () {
             $(document).keydown(function (event) {
-                if (event.altKey === true) {
+                if (event.altKey === true && !that.model.notificationShowing) {
                     that.update("arpActive", !that.model.arpActive);
                     that.events.arpActive.fire(that.model.arpActive);
                 }
@@ -203,8 +237,8 @@ var automm = automm || {};
         that.events.afterInstrumentUpdate.addListener(that.update);
         that.events.onClick.addListener(that.onClick);
         that.events.afterClick.addListener(that.afterClick);
+        that.events.arpActive.addListener(that.drawNotification);
         that.bindAlt();
-        that.setupSVG();
 
         that.applier.modelChanged.addListener("interval", function (newModel, oldModel) {
             that.stopMetronome(oldModel.interval);
