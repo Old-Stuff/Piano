@@ -24,14 +24,20 @@ var automm = automm || {};
         postInitFunction: "automm.arpeggiator.postInitFunction",
 
         model: {
+            // Rate of the metronome... should be in npm
             interval: 500,
+            // Scale and mode to arpeggiate in
             scale: "major",
             mode: "ionian",
+            // This pattern is in Note Degrees starting from 0 ({"I"": 0, "II":1, "III":etcetcetc})
             arpPattern: [0, 2, 4],
+            // Stuff from the instrument model
             firstNote: 60,
             octaves: 1,
             octaveNotes: 12,
 
+            // This is a connanon which is used to collect modes / scales / etc.... 
+            // probably shouldn't live here
             canon: {
                 modes: {
                     ionian: 0,
@@ -53,7 +59,8 @@ var automm = automm || {};
             onclick: null,
             onNote: null,
             afterNote: null,
-            metronomeEvent: null
+            metronomeEvent: null,
+            afterInstrumentUpdate: null
         }
     });
 
@@ -159,6 +166,7 @@ var automm = automm || {};
 
     automm.arpeggiator.postInitFunction = function (that) {
         that.startMetronome();
+        that.events.afterInstrumentUpdate.addListener(that.update);
 
         // that.applier.modelChanged.addListener("interval", function (newModel, oldModel, changeSpec) {
         //     var path = changeSpec[0].path,
@@ -188,25 +196,25 @@ var automm = automm || {};
         return note;
     };
 
-    automm.offsetMod = function (i, range) {
-        // i is any number
-        // range is an object
-        // 
-        // See if the number is below the range and needs to be modded down
-        // range = {
-        //     low: that.model.firstNote,
-        //     high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
-        // };
-        var count = range.high - range.low;
+automm.offsetMod = function (i, range) {
+    // i is any number
+    // range is an object
+    // 
+    // See if the number is below the range and needs to be modded down
+    // range = {
+    //     low: that.model.firstNote,
+    //     high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
+    // };
+    var count = range.high - range.low;
 
-        if (i - range.low < 0) {
-            i = i + count;
-            automm.offsetMod(i, range);
-        } else if (i > range.high) {
-            i = i - count;
-            automm.offsetMode(i, range);
-        }
+    if (i - range.low < 0) {
+        i = i + count;
+        i = automm.offsetMod(i, range);
+    } else if (i > range.high) {
+        i = i - count;
+        i = automm.offsetMode(i, range);
+    }
 
-        return i;
-    };
+    return i;
+};
 }(jQuery));
