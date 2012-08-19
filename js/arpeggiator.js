@@ -87,7 +87,6 @@ var automm = automm || {};
                             that.model.canon.modes[that.model.mode], that.model.arpPattern, count),
                         prevNote = count - 1,
                         range = {
-                            number: that.model.octaves * that.model.octaveNotes,
                             low: that.model.firstNote,
                             high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
                         };
@@ -187,5 +186,27 @@ var automm = automm || {};
             note = root + relativeScale[arpPattern[count]];
 
         return note;
+    };
+
+    automm.offsetMod = function (i, range) {
+        // i is any number
+        // range is an object
+        // 
+        // See if the number is below the range and needs to be modded down
+        // range = {
+        //     low: that.model.firstNote,
+        //     high: (that.model.octaves * that.model.octaveNotes) + that.model.firstNote
+        // };
+        var count = range.high - range.low;
+
+        if (i - range.low < 0) {
+            i = i + count;
+            automm.offsetMod(i, range);
+        } else if (i > range.high) {
+            i = i - count;
+            automm.offsetMode(i, range);
+        }
+
+        return i;
     };
 }(jQuery));
