@@ -209,7 +209,19 @@ var automm = automm || {};
                 type: "automm.arpeggiator",
                 container: "{grid}.container",
                 options: {
-                    model: "{instrument}.model",
+                    model: {
+                        arpActive: "{instrument}.model.arpActive",
+                        notificationShowing: "{instrument}.model.notificationShowing",
+                        interval: "{instrument}.model.interval",
+                        scale: "{instrument}.model.scale",
+                        mode: "{instrument}.model.mode",
+                        arpPattern: "{instrument}.model.arpPattern",
+                        firstNote: "{instrument}.model.firstNote",
+                        octaves: "{instrument}.model.octaves",
+                        octaveNotes: "{instrument}.model.octaveNotes",
+                        
+                        canon: "{instrument}.model.canon"
+                    },
 
                     events: {
                         onNote: "{instrument}.events.onNote",
