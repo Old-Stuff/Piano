@@ -67,7 +67,7 @@ var automm = automm || {};
     automm.arpeggiator.preInitFunction = function (that) {
         that.metronome = flock.enviro.shared.asyncScheduler;
 
-        that.metronomeEvents = {};
+        that.runningArpeggiators = {};
 
         that.currentlyPlaying = [];
 
@@ -124,20 +124,20 @@ var automm = automm || {};
                     }
                 };
 
-            if (that.metronomeEvents[root] === undefined) {
-                that.metronomeEvents[root] = [];
+            if (that.runningArpeggiators[root] === undefined) {
+                that.runningArpeggiators[root] = [];
             }
 
-            that.metronomeEvents[root].push(metronomeEvent);
+            that.runningArpeggiators[root].push(metronomeEvent);
 
             that.events.metronomeEvent.addListener(metronomeEvent);
         };
 
         that.stopArpeggiator = function (root) {
-            fluid.each(that.metronomeEvents[root], function (event) {
+            fluid.each(that.runningArpeggiators[root], function (event) {
                 that.removeMetronomeEvent(event);
             });
-            that.metronomeEvents.length = 0;
+            that.runningArpeggiators[root].length = 0;
 
             fluid.each(that.currentlyPlaying, function (note) {
                 that.events.afterNote.fire(note);
@@ -145,7 +145,7 @@ var automm = automm || {};
         };
 
         that.clearArpeggiators = function () {
-            fluid.each(that.metronomeEvents, function (root) {
+            fluid.each(that.runningArpeggiators, function (root) {
                 that.stopArpeggiator(root);
             });
         };

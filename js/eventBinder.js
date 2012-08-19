@@ -65,7 +65,7 @@ var automm = automm || {};
                     // For Keeping track
                     lastClicked = note;
                     isClicking = true;
-                    that.events.onClick.fire(note);
+                    that.onClick(note);
                 });
                 // mousup event binding
                 note.mouseup(function () {
@@ -81,7 +81,7 @@ var automm = automm || {};
                         if (!that.model.isShift) {
                             that.events.afterClick.fire(lastClicked);
                         }
-                        that.events.onClick.fire(note);
+                        that.onClick(note);
                     }
                     lastClicked = note;
                 });
@@ -90,9 +90,17 @@ var automm = automm || {};
         };
 
         that.onClick = function (note) {
+            var inArray = $.inArray(note, that.polyNotes);
             if (that.model.isShift) {
-                that.polyNotes[that.polyNotes.length] = note;
+                if (inArray >= 0) {
+                    that.events.afterClick.fire(note);
+                    that.polyNotes.splice(inArray, 1);
+                    return that;
+                } else {
+                    that.polyNotes[that.polyNotes.length] = note;
+                }
             }
+            that.events.onClick.fire(note);
         };
 
         that.afterShift = function () {
@@ -108,6 +116,5 @@ var automm = automm || {};
     automm.eventBinder.postInitFunction = function (that) {
         that.bindEvents();
         that.events.afterUpdate.addListener(that.bindEvents);
-        that.events.onClick.addListener(that.onClick);
     };
 }(jQuery));
