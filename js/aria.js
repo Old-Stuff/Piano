@@ -11,7 +11,7 @@ licenses are at the root of the Piano directory.
 
 */
 
-/*global jQuery, fluid, document*/
+/*global jQuery, fluid, document, console*/
 
 var automm = automm || {};
 
@@ -38,6 +38,8 @@ var automm = automm || {};
     });
 
     automm.aria.preInitFunction = function (that) {
+        that.currentlySelected = null;
+
         that.getNotes = function () {
             // Dump all notes within the container into an array
             var domNotes = that.container.find(".note");
@@ -70,20 +72,13 @@ var automm = automm || {};
             // If that container does not exist, make it
             if (ariaContainer.length < 1) {
                 that.container.append("<div id='aria' style='display:none;'><ul></ul></div>");
-                ariaContainer = that.container.find("#aria").children();
-            } else {
-                // If it does exist empty it out and put an unordered list in it
-                ariaContainer.empty();
-                ariaContainer.append('<ul></ul>');
             }
-            // For each note that has been rendered to the screen make a list element
-            fluid.each(that.model.renderedNotes, function (note) {
-                ariaContainer.append("<li id='aria" + note.number + "'>" + note.name + "</li>");
-            });
             // Call the function to make the div used to title application
             that.setTitle();
         };
 
+        // The Below function is called when spacebar is hit on a selected Note
+        // It fires onNote and afterNote events depending on if a note is currently playing
         that.onActivation = function (note) {
             // get the id of the current note and see if it is already playing
             var noteId = note.id,
@@ -100,6 +95,9 @@ var automm = automm || {};
             }
         };
 
+        // The below function is ran when the escape button is hit
+        // It stops all currently playing notes
+        // Perhaps this should be moved into the oscillator
         that.escaped = function () {
             fluid.each(that.model.playingNotes, function (note) {
                 note = that.container.find("#" + note);
@@ -108,6 +106,7 @@ var automm = automm || {};
             that.model.playingNotes = [];
         };
 
+        // Binds the escape key to that.escaped
         that.bindEscape = function () {
             $(document).keydown(function (event) {
                 if (event.keyCode === 27) {
@@ -116,6 +115,8 @@ var automm = automm || {};
             });
         };
 
+        // This function intializes a container to be selectable
+        // and traversable using the arrow keys
         that.fluidInit = function () {
             // Find type of instrument that has been rendered
             var instrumentType = that.container.children().eq(0),
@@ -132,24 +133,26 @@ var automm = automm || {};
                 autoSelectFirstItem: false,
 
                 onSelect: function (note) {
-                    note.focus();
+                    that.currentlySelected = note;
                 }
             });
             // Set the handler to be used when notes are activated
+            /*jslint unparam: true*/
             instrumentType.fluid("activatable", function (evt) {
-                that.onActivation(evt.target);
+                that.onActivation(that.currentlySelected);
             });
+            /*jslint unparam: false*/
         };
 
         that.update = function () {
             that.getNotes();
             that.render();
-            that.fluidInit();
-            that.bindEscape();
+            that.fluidInit();   // Take the instrument container, make it both tabbable and able to be traverse with keys
         };
     };
 
     automm.aria.postInitFunction = function (that) {
+        that.bindEscape();
         that.update();
         that.events.afterUpdate.addListener(that.update);
     };

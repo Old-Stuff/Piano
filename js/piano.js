@@ -80,8 +80,6 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
-            r.attr("role", "button");
-            r.attr("aria-labelledby", "aria" + id);
             r.attr("noteType", noteType.fill);
         };
 
@@ -141,7 +139,6 @@ var automm = automm || {};
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
-            that.noteGroup.attr("role", "controlgroup");
             that.noteGroup.attr("id", "noteGroup");
             that.noteGroup.attr("focusable", true);
             // Draw the keys
@@ -181,42 +178,4 @@ var automm = automm || {};
         }
 
     };
-
-    // fluid.defaults("automm.key", {
-    //     gradeNames: ["fluid.modelComponent", "autoInit"],
-    //     postInitFunction: "automm.key.postInitFunction",
-    //         
-    //     model: {
-    //         x: 0,
-    //         y: 0,
-    //         id: 60,
-    //         cssclass: "note",
-    //         shape: "rect",
-    //         keyType: "keyOne"
-    //     }
-    // });
-    //     
-    // automm.key.postInitFunction = function (that){
-    //     that.html = function (){
-    //         return "<" + that.model.shape +" style\"stoke: " + piano.model[that.model.keyType].stroke + "><" + that.model.shape + ">";
-    //     };
-    // };
-
-
-    // fluid.defaults("automm.viewBox", {
-    //     gradeNames: ["fluid.modelComponent", "autoInit"],
-    //     postInitFunction: "automm.viewBox.postInitFunction",
-    //     
-    //     model: {
-    //         width: 600,
-    //         height: 200
-    //     }
-    // });
-    // 
-    // automm.viewBox.postInitFunction = function (that){
-    //     that.html = function(){
-    //         return ["<svg viewbox=\"0 0 " + that.model.width + " " + that.model.height + "\" id=\"viewbox\">", "</svg>"];
-    //     }
-    // };
-
 }());
