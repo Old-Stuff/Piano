@@ -38,12 +38,14 @@ var automm = automm || {};
                 white: {
                     fill: '#ffffff', // White
                     stroke: '#000000', //  Black
-                    highlight: '#fff000' //  Yellow
+                    highlight: '#fff000', //  Yellow
+                    selected: '#00F5FF'  // Turquoise
                 },
                 black: {
                     fill: '#000000', // Black
                     stroke: '#000000', // Black
-                    highlight: '#fff000' //  Yellow
+                    highlight: '#fff000', //  Yellow
+                    selected: '#00F5FF'  // Turquoise
                 }
             },
 
@@ -86,7 +88,8 @@ var automm = automm || {};
             getNoteCalc: null,
             afterPoly: null,
             onClick: null,
-            afterClick: null
+            afterClick: null,
+            onSelect: null
         },
 
         components: {
@@ -200,7 +203,24 @@ var automm = automm || {};
                         onNote: "{instrument}.events.onNote",
                         afterNote: "{instrument}.events.afterNote",
                         afterNoteCalc: "{instrument}.events.afterNoteCalc",
-                        getNoteCalc: "{instrument}.events.getNoteCalc"
+                        getNoteCalc: "{instrument}.events.getNoteCalc",
+                        onSelect: "{instrument}.events.onSelect"
+                    }
+                }
+            },
+
+            aria: {
+                type: "automm.aria",
+                container: "{instrument}.container",
+                options: {
+                    model: {
+                        octaveNotes: "{instrument}.model.octaveNotes"
+                    },
+                    events: {
+                        afterUpdate: "{instrument}.events.afterGuiUpdate",
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
+                        onSelect: "{instrument}.events.onSelect"
                     }
                 }
             },

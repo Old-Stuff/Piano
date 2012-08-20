@@ -35,37 +35,35 @@ var automm = automm || {};
             getNoteCalc: null,
             onNote: null,
             afterNote: null,
-            afterNoteCalc: null
+            afterNoteCalc: null,
+            onSelect: null
         }
     });
 
     automm.highlighter.preInitFunction = function (that) {
+        that.currentlySelected = null;
+        that.currentlyPlaying = [];
 
         that.afterNoteCalc = function (newKeys) {
             that.model.keys = newKeys;
         };
 
         that.onNote = function (note) {
-            if (typeof (note) === "number") {
-                note = that.container.find("#" + note);
-            }
-            // console.log(note);
-            if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
-                note.css('fill', that.model.keys.white.highlight);
-            } else {
-                note.css('fill', that.model.keys.black.highlight);
-            }
+            note = automm.numberToNote(note, that.container);
+            automm.updateCssFill(note, 'highlight', that.model.keys);
+            that.currentlyPlaying.push(note[0].id);
         };
 
         that.afterNote = function (note) {
-            if (typeof (note) === "number") {
-                note = that.container.find("#" + note);
-            }
-            if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
-                note.css('fill', that.model.keys.white.fill);
+            var playPosition;
+            note = automm.numberToNote(note, that.container);
+            playPosition = automm.isCurrentlyPlaying(note[0].id, that.currentlyPlaying);
+            if (that.currentlySelected !== null && note[0] === that.currentlySelected[0]) {
+                automm.updateCssFill(note, 'selected', that.model.keys);
             } else {
-                note.css('fill', that.model.keys.black.fill);
+                automm.updateCssFill(note, 'fill', that.model.keys);
             }
+            that.currentlyPlaying.splice(playPosition, 1);
         };
 
         that.onClick = function (note) {
@@ -80,6 +78,20 @@ var automm = automm || {};
             }
         };
 
+        that.onSelect = function (note) {
+            var prevPlaying;
+            note = automm.numberToNote(note, that.container);
+            if (that.currentlySelected !== null) {
+                prevPlaying = automm.isCurrentlyPlaying(that.currentlySelected[0].id, that.currentlyPlaying);
+                if (prevPlaying === -1) {
+                    automm.updateCssFill(that.currentlySelected, 'fill', that.model.keys);
+                } else {
+                    automm.updateCssFill(that.currentlySelected, 'highlight', that.model.keys);
+                }
+            }
+            automm.updateCssFill(note, 'selected', that.model.keys);
+            that.currentlySelected = note;
+        };
     };
 
     automm.highlighter.postInitFunction = function (that) {
@@ -88,7 +100,29 @@ var automm = automm || {};
         that.events.afterNoteCalc.addListener(that.afterNoteCalc);
         that.events.onClick.addListener(that.onClick);
         that.events.afterClick.addListener(that.afterClick);
+        that.events.onSelect.addListener(that.onSelect);
         that.events.getNoteCalc.fire();
     };
 
+    automm.numberToNote = function (note, container) {
+        if (typeof (note) === "number") {
+            note = container.find("#" + note);
+        }
+        note = $(note);
+        return note;
+    };
+
+    automm.updateCssFill = function (note, attribute, keys) {
+        if ($.inArray(parseInt(note[0].id, 10), keys.white.notes) !== -1) {
+            note.css("fill", keys.white[attribute]);
+        } else {
+            note.css("fill", keys.black[attribute]);
+        }
+    };
+
+    automm.isCurrentlyPlaying = function (note, currentlyPlaying) {
+        var isPlaying = $.inArray(note, currentlyPlaying);
+        return isPlaying;
+    };
+    
 }(jQuery));
