@@ -152,6 +152,7 @@ var automm = automm || {};
             svg.attr("tabindex", "0");
             svg.attr("id", "viewBox");
             svg.attr("aria-labelledby", "ariaTitle");
+            svg.attr("aria-describedby", "ariaDescription");
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
