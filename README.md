@@ -48,7 +48,7 @@ $ ./build
 
 The AutoMM has a model that can be viewed via the console
 ````
-\> instrument.model
+> instrument.model
 Object
 ````
 You can use your development tools to dig into the model and see what its current state is. Here is an example of the default model for reference
@@ -115,6 +115,13 @@ Any element of that model can be updated while the application is running, these
 ````
 > instrument.update("octaveNotes", 10)
 ````
+As you can see the update command is issued as *update(parameter, value)*.  There are some commands that might be trickier, such as modifying a color.
+````
+> instrument.update("keys.white.fill", "#ffffff")
+````
+As you can see dot notation is used to reference keys within an object.
+
+The update function can be bound to any event, this allows you the flexibility to make your own user interfaces, or ways in which the application can be interactive.  Updates can also be cascaded, allow for complex model changes.
 
 ##Credits
 
