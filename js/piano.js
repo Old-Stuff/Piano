@@ -30,8 +30,24 @@ var automm = automm || {};
             padding: 50,
             pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
-                white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-                black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+                white: {
+                    width: 50,
+                    height: 200,
+                    stroke: "black",
+                    fill: "white",
+                    highlight: "yellow",
+                    selected: "blue",
+                    notes: []
+                },
+                black: {
+                    width: 30,
+                    height: 125,
+                    stroke: "black",
+                    fill: "black",
+                    highlight: "yellow",
+                    selected: "blue",
+                    notes: []
+                }
             },
             viewBox: {
                 width: null,

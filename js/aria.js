@@ -33,7 +33,8 @@ var automm = automm || {};
         events: {
             afterUpdate: null,
             onNote: null,
-            afterNote: null
+            afterNote: null,
+            onSelect: null
         }
     });
 
@@ -134,6 +135,7 @@ var automm = automm || {};
 
                 onSelect: function (note) {
                     that.currentlySelected = note;
+                    that.events.onSelect.fire(note);
                 }
             });
             // Set the handler to be used when notes are activated
