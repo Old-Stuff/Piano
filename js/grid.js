@@ -35,7 +35,7 @@ var automm = automm || {};
             keys: {
                 white: {
                     width: 50,
-                    height: 200,
+                    height: 50,
                     stroke: "black",
                     fill: "white",
                     highlight: "yellow",
@@ -43,8 +43,8 @@ var automm = automm || {};
                     notes: []
                 },
                 black: {
-                    width: 30,
-                    height: 125,
+                    width: 50,
+                    height: 50,
                     stroke: "black",
                     fill: "black",
                     highlight: "yellow",
