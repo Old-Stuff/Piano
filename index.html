@@ -72,7 +72,9 @@ https://github.com/fluid-project/infusion/raw/master/Infusion-LICENSE.txt -->
           
         <h3><center>Make music, in your browser!</center></h3>
 <center>
-<p>Built using the <a href="https://github.com/colinbdclark/Flocking">flocking</a> audio synthesis library and the <a href="http://fluidproject.org/">fluid infusion framework</a> "The Automagic Music Maker" offers developers and musicians the ability to generate various types of accessible and responsive instruments in the browser.  These instruments have been design to be AutoMagic and have a number of special features.  They are designed with screen-reader support in mind, allowing the applications to be easily found using industry standard software such as Apple's Voice Over, Jaws, and NVDA.  Once selected individuals will find the applications have an in depth description showing how to traverse and interact with the instrument with their keyboard.  Other feature include pressing shift to enable sustain, and pressing alt to enable the arpeggiator.
+<p>Built using the <a href="https://github.com/colinbdclark/Flocking">flocking</a> audio synthesis library and the <a href="http://fluidproject.org/">fluid infusion framework</a> "The Automagic Music Maker" offers developers and musicians the ability to generate various types of accessible and responsive instruments in the browser.  Press shift for sustain and alt for arpeggiation!
+<br><br>
+All generated instruments are designed to work with industry standard screen-reader software such as Apple's Voice Over, Jaws, and NVDA.  Once selected individuals will find the applications have an in depth description explaining how to traverse and interact with the instrument with their keyboard. 
 <br><br>
 Create keyboards of custom sizes, colors, and tunings.  Want a 7 note octave of pink and brown notes, easy peasey.  Microtonal compositions with 100 equal tempered notes per octaves, our specialty!
 <br><br>
@@ -86,7 +88,15 @@ $ instrument.update("afourFreq", 435)  // 19th Century Austria
 $ instrument.update("octaveNotes", 7)  // Just try it!
 </code></pre>
 <br>
-<h1><center><b>Now with grids!</b></center></h1>
+You can also modify to arpeggiator to your hearts content
+<br><br>
+<pre><code>$ instrument.update("interval", 350)             // Set Interval
+$ instrument.update("arpPattern", [0, 2, 1, 3])  // Set The pattern
+$ instrument.update("scale", "minor")            // Feeling sad?
+$ instrument.update("mode", "mixolydian")        // Feeling jerry?
+</code></pre>
+<br>
+<span style="font-size: 20pt;font-weight:bold;"><center>Now With Grids!!!</center></span>
 <br>
     <div id="gridFrame"></div>
 <br>
