@@ -1,8 +1,7 @@
-#The Automagic Music Maker
-####Google Summer of Code 2012
+#Google Summer of Code 2012: The Automagic Music Maker
 
 ##About
-The Automagic Music Maker (henceforth refered to as AutoMM) is a javascript library to create responsive instruments inside the browser.  It doesn't require Flash or any other proprietary plugins but it does have a few dependencies.
+The Automagic Music Maker (henceforth refered to as AutoMM) is a javascript library to create responsive instruments inside the browser.  It doesn't require Flash or any other proprietary plugins but it does have a few dependencies.  
 
 [jQuery](http://jquery.com/)
 
@@ -18,9 +17,9 @@ The Automagic Music Maker (henceforth refered to as AutoMM) is a javascript libr
 
 To make you life easy all dependencies have been included in */js/third_party*  A number of the dependencies are included as submodules, you will need to initialize these before anything will work.
 
-''''$ git submodule init
+````$ git submodule init
 $ git submodule update
-''''
+````
 
 ##Credits
 
