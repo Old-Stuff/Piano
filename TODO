@@ -7,8 +7,23 @@ http://wiki.fluidproject.org/display/fluid/DOM+Binder
 
 --------------------------------------------------------------------------------
 
-Add signature to events... can use that to filter for arpeggios
-Add Arpegiator
+Global dom events (hitting shift / alt) should prevent defualt if the application
+it is interacting with is highlighted... 
+
+--------------------------------------------------------------------------------
+
+Remove erroneous events... this could possibly be done with super / sub appliers
+everything should share the same model / applier
+componetned listen to changes in the model that they are interested in
+(fluid.demands can be used)
+
+--------------------------------------------------------------------------------
+
+break out functions from grid / piano to be free functions that can be used by both
+
+--------------------------------------------------------------------------------
+
+break stuff out of bindEvents into their own function (free?)
 
 --------------------------------------------------------------------------------
 
