@@ -36,11 +36,85 @@ $ git submodule init
 $ git submodule update
 ````
 
-Once this is done you can open up index.html to take a peak at how to setup a basic piano.  Also included is grid.html (an example of making grid instruments), multiple_divs.html (an example showing how to declare multiple instruments on a single page), and simple.html (and example of using minimal options and minified versions of the source)
+Once this is done you can open up index.html to take a peak at how to setup a basic piano.  Also included is grid.html (an example of making grid instruments), multiple_divs.html (an example showing how to declare multiple instruments on a single page), and simple.html (and example of using minimal options and minified versions of the source).
+
+If you make any changes to the main source and would like to implement them into the minified version you can do so using the *build.sh* that has been included
+
+````
+$ ./build
+````
 
 ## The Model
 
+The AutoMM has a model that can be viewed via the console
+````
+\> instrument.model
+Object
+````
+You can use your development tools to dig into the model and see what its current state is. Here is an example of the default model for reference
+````
+model: {
+    autoPiano: false,
+    autoGrid: false,
+    autoGui: false,
+    artActive: false,
+    columns: 8,
+    rows: 8,
+    afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
+    afourFreq: 440, // Standard freq for A4, used to calculate all other notes
+    firstNote: 60, // Middle C
+    octaves: 1,
+    octaveNotes: 12,
+    padding: 0,
+    pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
+    keys: {
+        white: {
+            fill: '#ffffff', // White
+            stroke: '#000000', //  Black
+            highlight: '#fff000', //  Yellow
+            selected: '#00F5FF'  // Turquoise
+        },
+        black: {
+            fill: '#000000', // Black
+            stroke: '#000000', // Black
+            highlight: '#fff000', //  Yellow
+            selected: '#00F5FF'  // Turquoise
+        }
+    },
 
+    arpActive: false,
+    // Rate of the metronome... should be in npm
+    interval: 150,
+    // Scale and mode to arpeggiate in
+    scale: "major",
+    mode: "ionian",
+    // This pattern is in Note Degrees starting from 0 ({"I"": 0, "II":1, "III":etcetcetc})
+    arpPattern: [0, 2, 4],
+
+    // This is a connanon which is used to collect modes / scales / etc.... 
+    // probably shouldn't live here
+    canon: {
+        modes: {
+            ionian: 0,
+            dorian: 1,
+            phyrgian: 2,
+            lydian: 3,
+            mixolydian: 4,
+            aeolian: 5,
+            locrian: 6
+        },
+        scales: {
+            major: [2, 2, 1, 2, 2, 2, 1],
+            minor: [2, 2, 1, 2, 2, 1, 2]
+        }
+    }
+
+}
+````
+Any element of that model can be updated while the application is running, these changes (including visual) will automatically be implemented. For example, if you wanted to modify the piano to use a ten note octave you can use the command.
+````
+\> instrument.update("octaveNotes", 10)
+````
 
 ##Credits
 
