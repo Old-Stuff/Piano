@@ -17,7 +17,8 @@ The Automagic Music Maker (henceforth refered to as AutoMM) is a javascript libr
 
 To make you life easy all dependencies have been included in */js/third_party*  A number of the dependencies are included as submodules, you will need to initialize these before anything will work.
 
-````$ git submodule init
+````
+$ git submodule init
 $ git submodule update
 ````
 
