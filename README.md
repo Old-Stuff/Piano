@@ -113,7 +113,7 @@ model: {
 ````
 Any element of that model can be updated while the application is running, these changes (including visual) will automatically be implemented. For example, if you wanted to modify the piano to use a ten note octave you can use the command.
 ````
-\> instrument.update("octaveNotes", 10)
+> instrument.update("octaveNotes", 10)
 ````
 
 ##Credits
