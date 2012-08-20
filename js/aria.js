@@ -95,6 +95,7 @@ var automm = automm || {};
             if (ariaContainer.length < 1) {
                 that.container.append("<div id='aria' style='display:none;'></div>");
             }
+            ariaContainer.empty();
             // Call the function to make the div used to title application
             that.setTitle();
             that.setDescription();
