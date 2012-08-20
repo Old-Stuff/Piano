@@ -1,7 +1,5 @@
 #Google Summer of Code 2012: The Automagic Music Maker
 
-------------
-
 ##About
 The Automagic Music Maker (henceforth referred to as AutoMM) is an open source javascript library used to create responsive and accessible instruments inside the browser.  Instruments are extremely flexible, allowing the end-user to customize almost every aspect. Visually, users can pick what interface they would like to use, piano or grid, and specify colors for both keys and actions.  Instruments can come in any size, pianos can specify number of octaves, grids can specify columns and rows.  The musical canon that the instrument will be based on can be manipulated as well, with the ability to specify the frequency of A4, and the number of notes per octave.  The AutoMM also comes with a nifty Arpeggiator that can be customized in various ways, from the pattern it will play, to the key and mode it will iterate over.  
 
@@ -29,8 +27,6 @@ D3.js is a JavaScript library for manipulating documents based on data. D3 helps
 
 A lightweight graphical user interface for changing variables in JavaScript. 
 
-------------
-
 ## Getting Started
 
 To make you life easy all dependencies have been included in */js/third_party*  A number of the dependencies are included as submodules, you will need to initialize these before anything will work.
@@ -47,8 +43,6 @@ If you make any changes to the main source and would like to implement them into
 ````
 $ ./build
 ````
-
-------------
 
 ## The Model
 
@@ -129,8 +123,6 @@ As you can see dot notation is used to reference keys within an object.
 
 The update function can be bound to any event, this allows you the flexibility to make your own user interfaces, or ways in which the application can be interactive.  Updates can also be cascaded, allow for complex model changes.
 
-------------
-
 ##Credits
 
 It was primarily written by [Myles Borins](https://github.com/TheAlphaNerd)
@@ -144,8 +136,6 @@ I'm going to thank [Colin Clark](https://github.com/colinbdclark) one more time,
 I would also like to thank the various individuals at the [IDRC](http://idrc.ocad.ca/), my mentoring organization, who helped me with this project.  It has been educational and inspiring getting to know those of you I have met in person at the office, and those I have only met in #fluidwork.  I'd like to specifically thank Michelle, Anastasia, Alex, Yura, Bosmon and Justin O.
 
 Of course I would also like to thank [Google](http://www.google.com) for making the Google Summer of Code happen, this experience has been life changing!
-
-------------
 
 ##Licensing
 
