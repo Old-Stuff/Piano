@@ -27,8 +27,8 @@ var automm = automm || {};
 
         events: {
             afterUpdate: null,
-            onNote: null,
-            afterNote: null
+            afterClick: null,
+            onClick: null
         }
 
     });
@@ -65,13 +65,13 @@ var automm = automm || {};
                     // For Keeping track
                     lastClicked = note;
                     isClicking = true;
-                    that.events.onNote.fire(note);
+                    that.onClick(note);
                 });
                 // mousup event binding
                 note.bind('mouseup', function () {
                     isClicking = false;
                     if (!that.model.isShift) {
-                        that.events.afterNote.fire(note);
+                        that.events.afterClick.fire(note);
                     }
                     lastClicked = {};
                 });
@@ -79,9 +79,9 @@ var automm = automm || {};
                 note.bind('mouseover', function () {
                     if (isClicking) {
                         if (!that.model.isShift) {
-                            that.events.afterNote.fire(lastClicked);
+                            that.events.afterClick.fire(lastClicked);
                         }
-                        that.events.onNote.fire(note);
+                        that.onClick(note);
                     }
                     lastClicked = note;
                 });
@@ -89,16 +89,24 @@ var automm = automm || {};
             /*jslint unparam: false*/
         };
 
-        that.onNote = function (note) {
+        that.onClick = function (note) {
+            var inArray = $.inArray(note, that.polyNotes);
             if (that.model.isShift) {
-                that.polyNotes[that.polyNotes.length] = note;
+                if (inArray >= 0) {
+                    that.events.afterClick.fire(note);
+                    that.polyNotes.splice(inArray, 1);
+                    return that;
+                } else {
+                    that.polyNotes[that.polyNotes.length] = note;
+                }
             }
+            that.events.onClick.fire(note);
         };
 
         that.afterShift = function () {
             /*jslint unparam: true*/
             fluid.each(that.polyNotes, function (note) {
-                that.events.afterNote.fire(note);
+                that.events.afterClick.fire(note);
             });
             that.polyNotes = [];
             /*jslint unparam: false*/
@@ -108,6 +116,5 @@ var automm = automm || {};
     automm.eventBinder.postInitFunction = function (that) {
         that.bindEvents();
         that.events.afterUpdate.addListener(that.bindEvents);
-        that.events.onNote.addListener(that.onNote);
     };
 }(jQuery));

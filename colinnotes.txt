@@ -1,0 +1,14 @@
+colinclark: I just did a quick check of the ARIA documentation, as I said I would
+[7:22pm] colinclark: And, if we want to go with the traditional model, it's really easy
+[7:23pm] colinclark: Just give each of your keys the attribute role="button"
+[7:23pm] thealphanerd: done
+[7:23pm] colinclark: and create another list of labels somewhere, styling it so it's not visible
+[7:23pm] colinclark: I'd probably literally just make a list like this:
+[7:23pm] colinclark: <ol><li>A1</li><li>A#1</li>…</ol>
+[7:24pm] colinclark: Give each of those <li>s an id
+[7:24pm] colinclark: Then give each of your keys another attribute: aria-labelledby="<id of the label>"
+[7:24pm] colinclark: So, then each key on the piano will be a button
+colinclark: You stick a flock.ugen.xLine on the frequency
+colinclark: thealphanerd: So instead of directly updating the frequency of your carrier input, you'd update the start and end inputs of an xLine
+
+conductor.schedulePeriodic()

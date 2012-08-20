@@ -30,15 +30,33 @@ var automm = automm || {};
             padding: 50,
             pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
-                white: {width: 50, height: 200, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-                black: {width: 30, height: 125, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+                white: {
+                    width: 50,
+                    height: 200,
+                    stroke: "black",
+                    fill: "white",
+                    highlight: "yellow",
+                    selected: "blue",
+                    notes: []
+                },
+                black: {
+                    width: 30,
+                    height: 125,
+                    stroke: "black",
+                    fill: "black",
+                    highlight: "yellow",
+                    selected: "blue",
+                    notes: []
+                }
+            },
+            viewBox: {
+                width: null,
+                height: null
             }
         },
 
         events: {
             afterUpdate: null,
-            onNote: null,
-            afterNote: null,
             afterInstrumentUpdate: null,
             afterNoteCalc: null,
             getNoteCalc: null
@@ -58,10 +76,10 @@ var automm = automm || {};
             that.model.whiteNotes = that.model.keys.white.notes.length;
             that.model.blackNotes = that.model.keys.black.notes.length;
 
-            that.model.viewbox = {
+            that.updateValue("viewbox", {
                 width: (that.model.keys.white.width * that.model.whiteNotes) + that.model.padding,
                 height: that.model.keys.white.height + that.model.padding
-            };
+            });
 
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
             that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
@@ -78,8 +96,6 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
-            r.attr("role", "button");
-            r.attr("aria-labelledby", "aria" + id);
             r.attr("noteType", noteType.fill);
         };
 
@@ -134,21 +150,25 @@ var automm = automm || {};
             svg.attr("role", "application");
             svg.attr("focusable", true);
             svg.attr("tabindex", "0");
+            svg.attr("id", "viewBox");
             svg.attr("aria-labelledby", "ariaTitle");
-            
+            svg.attr("aria-describedby", "ariaDescription");
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
-            that.noteGroup.attr("role", "controlgroup");
             that.noteGroup.attr("id", "noteGroup");
             that.noteGroup.attr("focusable", true);
             // Draw the keys
             that.render();
         };
 
+        that.updateValue = function (param, value) {
+            that.applier.requestChange(param, value);
+        };
+
         that.update = function (param, value) {
             that.applier.requestChange(param, value);
-            that.container.children("#piano").empty();  // Look into jquery clear
+            that.container.children("#piano").empty();
             that.draw();
             // Fire event that piano is drawn
             that.events.afterUpdate.fire();
@@ -170,49 +190,9 @@ var automm = automm || {};
             that.draw();
             that.events.afterUpdate.fire();
             // Fire event that piano is drawn
-            that.events.onNote.addListener(that.onNote);
-            that.events.afterNote.addListener(that.afterNote);
             that.events.afterInstrumentUpdate.addListener(that.update);
             that.events.getNoteCalc.addListener(that.sendNoteCalc);
         }
 
     };
-
-    // fluid.defaults("automm.key", {
-    //     gradeNames: ["fluid.modelComponent", "autoInit"],
-    //     postInitFunction: "automm.key.postInitFunction",
-    //         
-    //     model: {
-    //         x: 0,
-    //         y: 0,
-    //         id: 60,
-    //         cssclass: "note",
-    //         shape: "rect",
-    //         keyType: "keyOne"
-    //     }
-    // });
-    //     
-    // automm.key.postInitFunction = function (that){
-    //     that.html = function (){
-    //         return "<" + that.model.shape +" style\"stoke: " + piano.model[that.model.keyType].stroke + "><" + that.model.shape + ">";
-    //     };
-    // };
-
-
-    // fluid.defaults("automm.viewBox", {
-    //     gradeNames: ["fluid.modelComponent", "autoInit"],
-    //     postInitFunction: "automm.viewBox.postInitFunction",
-    //     
-    //     model: {
-    //         width: 600,
-    //         height: 200
-    //     }
-    // });
-    // 
-    // automm.viewBox.postInitFunction = function (that){
-    //     that.html = function(){
-    //         return ["<svg viewbox=\"0 0 " + that.model.width + " " + that.model.height + "\" id=\"viewbox\">", "</svg>"];
-    //     }
-    // };
-
 }());

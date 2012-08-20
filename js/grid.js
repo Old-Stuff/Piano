@@ -33,8 +33,28 @@ var automm = automm || {};
             padding: 50,
             pattern: ['white', 'black', 'white', 'black', 'white', 'white', 'black', 'white', 'black', 'white', 'black', 'white'],
             keys: {
-                white: {width: 50, height: 50, stroke: "black", fill: "white", highlight: "yellow", notes: []},
-                black: {width: 50, height: 50, stroke: "black", fill: "black", highlight: "yellow", notes: []}
+                white: {
+                    width: 50,
+                    height: 200,
+                    stroke: "black",
+                    fill: "white",
+                    highlight: "yellow",
+                    selected: "blue",
+                    notes: []
+                },
+                black: {
+                    width: 30,
+                    height: 125,
+                    stroke: "black",
+                    fill: "black",
+                    highlight: "yellow",
+                    selected: "blue",
+                    notes: []
+                }
+            },
+            viewBox: {
+                height: null,
+                width: null
             }
         },
 
@@ -60,10 +80,10 @@ var automm = automm || {};
                 noteNum += 1;
             }
 
-            that.model.viewbox = {
+            that.updateValue("viewbox", {
                 width: (that.model.keys.white.width * that.model.columns) + that.model.padding,
                 height: (that.model.keys.white.height * that.model.rows) + that.model.padding
-            };
+            });
 
             // Calculate to create string neccesary to generate viewbox (should be in JSON?)
             that.model.viewbox.dim = "0 0 " + that.model.viewbox.width + " " + that.model.viewbox.height;
@@ -80,8 +100,6 @@ var automm = automm || {};
             r.attr("height", noteType.height);
             r.attr("id", id);
             r.attr("class", "note");
-            r.attr("role", "button");
-            r.attr("aria-labelledby", "aria" + id);
             r.attr("noteType", noteType.fill);
         };
 
@@ -128,16 +146,20 @@ var automm = automm || {};
             svg.attr("role", "application");
             svg.attr("focusable", true);
             svg.attr("tabindex", "0");
+            svg.attr("id", "viewBox");
             svg.attr("aria-labelledby", "ariaTitle");
 
             that.noteGroup = svg.append("g");
             that.noteGroup.attr("transform", "translate(" + that.model.padding / 2 + "," + that.model.padding / 2 + ")");
-            that.noteGroup.attr("role", "controlgroup");
             that.noteGroup.attr("id", "noteGroup");
             that.noteGroup.attr("focusable", true);
             // Draw the keys
             that.render();
 
+        };
+
+        that.updateValue = function (param, value) {
+            that.applier.requestChange(param, value);
         };
 
         that.update = function (param, value) {
@@ -151,23 +173,6 @@ var automm = automm || {};
         that.sendNoteCalc = function () {
             that.events.afterNoteCalc.fire(that.model.keys);
         };
-
-        // that.onNote = function (note) {
-        //     if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
-        //         note.css('fill', that.model.keys.white.highlight);
-        //     } else {
-        //         note.css('fill', that.model.keys.black.highlight);
-        //     }
-        // };
-        // 
-        // that.afterNote = function (note) {
-        //     if ($.inArray(parseInt(note[0].id, 10), that.model.keys.white.notes) !== -1) {
-        //         note.css('fill', that.model.keys.white.fill);
-        //     } else {
-        //         note.css('fill', that.model.keys.black.fill);
-        //     }
-        // };
-
     };
 
     automm.grid.postInitFunction = function (that) {
@@ -188,42 +193,4 @@ var automm = automm || {};
             that.events.getNoteCalc.addListener(that.sendNoteCalc);
         }
     };
-
-    // fluid.defaults("automm.key", {
-    //     gradeNames: ["fluid.modelComponent", "autoInit"],
-    //     postInitFunction: "automm.key.postInitFunction",
-    //         
-    //     model: {
-    //         x: 0,
-    //         y: 0,
-    //         id: 60,
-    //         cssclass: "note",
-    //         shape: "rect",
-    //         keyType: "keyOne"
-    //     }
-    // });
-    //     
-    // automm.key.postInitFunction = function (that){
-    //     that.html = function (){
-    //         return "<" + that.model.shape +" style\"stoke: " + grid.model[that.model.keyType].stroke + "><" + that.model.shape + ">";
-    //     };
-    // };
-
-
-    // fluid.defaults("automm.viewBox", {
-    //     gradeNames: ["fluid.modelComponent", "autoInit"],
-    //     postInitFunction: "automm.viewBox.postInitFunction",
-    //     
-    //     model: {
-    //         width: 600,
-    //         height: 200
-    //     }
-    // });
-    // 
-    // automm.viewBox.postInitFunction = function (that){
-    //     that.html = function(){
-    //         return ["<svg viewbox=\"0 0 " + that.model.width + " " + that.model.height + "\" id=\"viewbox\">", "</svg>"];
-    //     }
-    // };
-
 }());
