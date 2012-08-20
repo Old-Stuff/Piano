@@ -49,9 +49,9 @@ $ ./build
 The AutoMM has a model that can be viewed via the console
 ````
 > instrument.model
-Object
+Object // You can use your development tools to dig into the model and see what its current state is
 ````
-You can use your development tools to dig into the model and see what its current state is. Here is an example of the default model for reference
+Here is an example of the default model for reference
 ````
 model: {
     autoPiano: false,
