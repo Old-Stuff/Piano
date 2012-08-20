@@ -1,9 +1,11 @@
 #Google Summer of Code 2012: The Automagic Music Maker
 
-##About
-The Automagic Music Maker (henceforth refered to as AutoMM) is an open source javascript library used to create responsive and accessible instruments inside the browser.  Instruments are extremely flexible, allowing the end-user to customize almost every aspect. Visually, users can pick what interface they would like to use, piano or grid, and specify colors for both keys and actions.  Instruments can come in any size, pianos can specify number of octaves, grids can specify coloumns and rows.  The musical canon that the instrument will be based on can be manipulated as well, with the ability to specify the frequency of A4, and the number of notes per octave.  The AutoMM also comes with a nifty Arpeggiator that can be customized in various ways, from the pattern it will play, to the key and mode it will iterate over.  
+------------
 
-Dont fret if the above got your head swirling, the AutoMM comes with defaults in place to create a responsive and accessible keyboard based on the western music canon (a.k.a. a normal piano).  That being said, if you are a micro-tonal composer, the AutoMM can be used to create any number of complex instruments to aid you in your compositional process.
+##About
+The Automagic Music Maker (henceforth referred to as AutoMM) is an open source javascript library used to create responsive and accessible instruments inside the browser.  Instruments are extremely flexible, allowing the end-user to customize almost every aspect. Visually, users can pick what interface they would like to use, piano or grid, and specify colors for both keys and actions.  Instruments can come in any size, pianos can specify number of octaves, grids can specify columns and rows.  The musical canon that the instrument will be based on can be manipulated as well, with the ability to specify the frequency of A4, and the number of notes per octave.  The AutoMM also comes with a nifty Arpeggiator that can be customized in various ways, from the pattern it will play, to the key and mode it will iterate over.  
+
+Don't fret if the above got your head swirling, the AutoMM comes with defaults in place to create a responsive and accessible keyboard based on the western music canon (a.k.a. a normal piano).  That being said, if you are a micro-tonal composer, the AutoMM can be used to create any number of complex instruments to aid you in your compositional process.
 
 The AutoMM utilizes the Flocking synthesis library, allowing for all synthesis to be done in the browser. As such the AutoMM doesn't require Flash or any other proprietary plugins. That being said, the AutoMM does have a few dependencies.  
 
@@ -27,6 +29,8 @@ D3.js is a JavaScript library for manipulating documents based on data. D3 helps
 
 A lightweight graphical user interface for changing variables in JavaScript. 
 
+------------
+
 ## Getting Started
 
 To make you life easy all dependencies have been included in */js/third_party*  A number of the dependencies are included as submodules, you will need to initialize these before anything will work.
@@ -43,6 +47,8 @@ If you make any changes to the main source and would like to implement them into
 ````
 $ ./build
 ````
+
+------------
 
 ## The Model
 
@@ -91,7 +97,7 @@ model: {
     // This pattern is in Note Degrees starting from 0 ({"I"": 0, "II":1, "III":etcetcetc})
     arpPattern: [0, 2, 4],
 
-    // This is a connanon which is used to collect modes / scales / etc.... 
+    // This is a canon which is used to collect modes / scales / etc.... 
     // probably shouldn't live here
     canon: {
         modes: {
@@ -123,16 +129,26 @@ As you can see dot notation is used to reference keys within an object.
 
 The update function can be bound to any event, this allows you the flexibility to make your own user interfaces, or ways in which the application can be interactive.  Updates can also be cascaded, allow for complex model changes.
 
+------------
+
 ##Credits
 
-It was primarily written by Myles Borins
-Strongly influenced by GSOC Mentor Colin Clark
-Using the [Infusion](http://www.fluidproject.org/products/infusion/) framework and the [Flocking](https://www.github.com/colinbdclark/Flocking/) web synthesis Library
+It was primarily written by [Myles Borins](https://github.com/TheAlphaNerd)
 
+Strongly influenced by GSOC Mentor [Colin Clark](https://github.com/colinbdclark)
+
+Special thanks to [Douglas Crockford](http://www.crockford.com/) for his book [JavaScript: The Good Parts](http://shop.oreilly.com/product/9780596517748.do) and his lectures found at http://yuiblog.com/crockford/  The knowledge found in these resources proved invaluable in my architectural design, and growth as a programmer.
+
+I'm going to thank [Colin Clark](https://github.com/colinbdclark) one more time, because he's awesome and I couldn't have done it without him!
+
+I would also like to thank the various individuals at the [IDRC](http://idrc.ocad.ca/), my mentoring organization, who helped me with this project.  It has been educational and inspiring getting to know those of you I have met in person at the office, and those I have only met in #fluidwork.  I'd like to specifically thank Michelle, Anastasia, Alex, Yura, Bosmon and Justin O.
+
+Of course I would also like to thank [Google](http://www.google.com) for making the Google Summer of Code happen, this experience has been life changing!
+
+------------
 
 ##Licensing
 
 The Automagic Music Maker is distributed under the terms the MIT or GPL2 Licenses. 
 Choose the license that best suits your project. The text of the MIT and GPL 
 licenses are at the root of the Piano directory. 
-
