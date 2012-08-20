@@ -60,7 +60,7 @@ model: {
     artActive: false,
     columns: 8,
     rows: 8,
-    afour: 69,     // The note number of A4... this could probably be calculate based on all the other stuff (probably should be)
+    afour: 69,     // The note number of A4
     afourFreq: 440, // Standard freq for A4, used to calculate all other notes
     firstNote: 60, // Middle C
     octaves: 1,
@@ -83,7 +83,7 @@ model: {
     },
 
     arpActive: false,
-    // Rate of the metronome... should be in npm
+    // Rate of the metronome... should be in bpm
     interval: 150,
     // Scale and mode to arpeggiate in
     scale: "major",
