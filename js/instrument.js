@@ -218,8 +218,8 @@ var automm = automm || {};
                     },
                     events: {
                         afterUpdate: "{instrument}.events.afterGuiUpdate",
-                        onNote: "{instrument}.events.onNote",
-                        afterNote: "{instrument}.events.afterNote",
+                        onClick: "{instrument}.events.onClick",
+                        afterClick: "{instrument}.events.afterClick",
                         onSelect: "{instrument}.events.onSelect"
                     }
                 }

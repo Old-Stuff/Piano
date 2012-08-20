@@ -32,8 +32,8 @@ var automm = automm || {};
 
         events: {
             afterUpdate: null,
-            onNote: null,
-            afterNote: null,
+            onClick: null,
+            afterClick: null,
             onSelect: null
         }
     });
@@ -102,20 +102,20 @@ var automm = automm || {};
         };
 
         // The Below function is called when spacebar is hit on a selected Note
-        // It fires onNote and afterNote events depending on if a note is currently playing
+        // It fires onClick and afterClick events depending on if a note is currently playing
         that.onActivation = function (note) {
             // get the id of the current note and see if it is already playing
             var noteId = note.id,
                 noteState = $.inArray(noteId, that.model.playingNotes);
             note = $(note);
-            // If the note is in the playingNotes array, splice it out and fire afterNote
+            // If the note is in the playingNotes array, splice it out and fire afterClick
             if (noteState > -1) {
                 that.model.playingNotes.splice(noteState, 1);
-                that.events.afterNote.fire(note);
-            // If it is not in the array, put it in there and fire onNote
+                that.events.afterClick.fire(note);
+            // If it is not in the array, put it in there and fire onClick
             } else {
                 that.model.playingNotes[that.model.playingNotes.length] = noteId;
-                that.events.onNote.fire(note);
+                that.events.onClick.fire(note);
             }
         };
 
@@ -125,7 +125,7 @@ var automm = automm || {};
         that.escaped = function () {
             fluid.each(that.model.playingNotes, function (note) {
                 note = that.container.find("#" + note);
-                that.events.afterNote.fire(note);
+                that.events.afterClick.fire(note);
             });
             that.model.playingNotes = [];
         };

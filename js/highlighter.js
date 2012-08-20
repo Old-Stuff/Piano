@@ -58,7 +58,7 @@ var automm = automm || {};
             var playPosition;
             note = automm.numberToNote(note, that.container);
             playPosition = automm.isCurrentlyPlaying(note[0].id, that.currentlyPlaying);
-            if (note[0] === that.currentlySelected[0]) {
+            if (that.currentlySelected !== null && note[0] === that.currentlySelected[0]) {
                 automm.updateCssFill(note, 'selected', that.model.keys);
             } else {
                 automm.updateCssFill(note, 'fill', that.model.keys);
