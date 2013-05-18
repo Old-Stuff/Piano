@@ -1,6 +1,6 @@
 [submodule "js/third_party/Flocking"]
 	path = js/third_party/Flocking
-	url = https://github.com/TheAlphaNerd/Flocking.git
+	url = https://github.com/colinbdclark/Flocking.git
 [submodule "js/third_party/d3"]
 	path = js/third_party/d3
 	url = https://github.com/mbostock/d3.git
