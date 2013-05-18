@@ -20,8 +20,6 @@ var automm = automm || {};
 
     fluid.defaults("automm.arpeggiator", {
         gradeNames: ["fluid.viewComponent", "autoInit"],
-        preInitFunction: "automm.arpeggiator.preInitFunction",
-        postInitFunction: "automm.arpeggiator.postInitFunction",
 
         model: {
             // Is it active?
@@ -57,6 +55,19 @@ var automm = automm || {};
                 }
             }
         },
+        
+        components: {
+            metronome: {
+                type: "flock.scheduler.async",
+                options: {
+                    components: {
+                        timeConverter: {
+                            type: "flock.convert.ms"
+                        }
+                    }
+                }
+            }
+        },
 
         events: {
             onClick: null,
@@ -69,9 +80,7 @@ var automm = automm || {};
         }
     });
 
-    automm.arpeggiator.preInitFunction = function (that) {
-        that.metronome = flock.scheduler.async();
-
+    automm.arpeggiator.preInit = function (that) {
         that.runningArpeggiators = {};
 
         that.currentlyPlaying = [];
@@ -232,7 +241,7 @@ var automm = automm || {};
         };
     };
 
-    automm.arpeggiator.postInitFunction = function (that) {
+    automm.arpeggiator.finalInit = function (that) {
         that.startMetronome(that.model.interval);
         that.events.afterInstrumentUpdate.addListener(that.update);
         that.events.onClick.addListener(that.onClick);
