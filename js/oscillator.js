@@ -24,6 +24,27 @@ var automm = automm || {};
         preInitFunction: "automm.oscillator.preInitFunction",
         postInitFunction: "automm.oscillator.postInitFunction",
 
+        components: {
+            polysynth: {
+                type: "flock.synth.polyphonic",
+                options: {
+                    // TODO: Generate this synthDef using model transformation.
+                    synthDef: {
+                        id: "carrier",
+                        ugen: "{oscillator}.model.osc",
+                        freq: "{oscillator}.model.freq",
+                        mul: {
+                            id: "env",
+                            ugen: "flock.ugen.env.simpleASR",
+                            attack: "{oscillator}.model.attack",
+                            sustain: "{oscillator}.model.sustain",
+                            release: "{oscillator}.model.release"
+                        }
+                    }
+                }
+            }
+        },
+        
         model: {
             arpActive: false,
             freq: 440,
@@ -45,6 +66,7 @@ var automm = automm || {};
             afterClick: null,
             afterInstrumentUpdate: null
         },
+        
         // Maps parameter between this model and the model of flocking
         paramMap: {
             "freq": "carrier.freq",
@@ -60,19 +82,6 @@ var automm = automm || {};
             flock.init();
         }
         
-        that.polysynth = flock.synth.polyphonic({
-            id: "carrier",
-            ugen: that.model.osc,
-            freq: that.model.freq,
-            mul: {
-                id: "env",
-                ugen: "flock.ugen.env.simpleASR",
-                attack: that.model.attack,
-                sustain: that.model.sustain,
-                release: that.model.release
-            }
-        });
-
         that.update = function (param, value) {
             if (that.model.hasOwnProperty(param)) {
                 that.applier.requestChange(param, value);
