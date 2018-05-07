@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="200" height="200" src="https://user-images.githubusercontent.com/34600369/39696662-49454b5e-51e6-11e8-89e6-3e327600f421.png">
+</p>
+
 #Google Summer of Code 2012: The Automagic Music Maker
 
 ##About
